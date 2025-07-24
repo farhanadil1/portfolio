@@ -28,18 +28,21 @@ const AboutSection = () => {
         
         {/* Content */}
         <div className="space-y-6 text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed text-justify">
-          <p>
-            I'm <span className="font-semibold text-teal-600 dark:text-teal-400">Md Adil Farhan</span>, a full-stack developer with a passion for creating impactful, scalable web solutions using the MERN stack.
-          </p>
-          <p>
-            I merge clean code with sleek UI to build responsive, user-centric applications. I take pride in delivering digital products that are not only functional but visually pleasing.
-          </p>
-          <p>
-            I'm currently pursuing B.Tech in CSE at <strong className="text-teal-700 dark:text-teal-300">MCKV Institute of Engineering</strong>. With strong fundamentals and a never-ending curiosity, I’m always looking to grow and explore new tech.
-          </p>
-          <p>
-            Outside of code, I explore UI/UX trends, animation design, and creative development. Whether it's frontend finesse or backend logic, I aim to deliver excellence.
-          </p>
+        <p>
+  I'm <span className="font-semibold text-teal-600 dark:text-teal-400">Md Adil Farhan</span>, a full stack developer with a good command over the Java Full Stack and MERN stack technologies. I enjoy building web apps that are clean, scalable, and user focused.
+</p>
+<p>
+  I specialize in crafting responsive UIs and writing maintainable backend logic. My approach blends performance, usability, and sleek design to deliver quality digital experiences.
+</p>
+<p>
+  I'm currently pursuing a B.Tech in Computer Science at <strong className="text-teal-700 dark:text-teal-300">MCKV Institute of Engineering</strong>. I'm committed to continuous learning and keeping up with modern development practices.
+</p>
+<p>
+  Outside of tech, I enjoy UI/UX design, motion effects, and analyzing football tactics. I’m also passionate about fitness and love exploring different cuisines. I’m always eager to grow through meaningful projects and collaboration.
+</p>
+
+
+
         </div>
       </motion.div>
     </section>

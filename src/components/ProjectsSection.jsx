@@ -45,25 +45,25 @@ const ProjectCard = ({ title, description, imgSrc, githubLink, liveLink }) => (
 const ProjectsSection = () => {
   const projects = [
     {
-      title: 'Virtual Herbal Garden',
-      description: 'A web app for learning about different herbs, their benefits, and preparation methods.',
-      imgSrc: 'https://picsum.photos/500/300?random=1', // Random image
-      githubLink: 'https://github.com/yourusername/virtual-herbal-garden',
-      liveLink: 'https://your-website.com/virtual-herbal-garden',
+      title: 'Weatheria Weather App',
+      description: 'Weatheria is a sleek, responsive weather app that displays current conditions, hourly updates, and a 3-day forecast with smooth animations.',
+      imgSrc: './weatheria.jpg', // Random image
+      githubLink: 'https://github.com/farhanadil1/Weatheria',
+      liveLink: 'https://weatheria123.netlify.app/',
     },
     {
       title: 'E-commerce Website',
-      description: 'A fully functional e-commerce website built with React and Hibernate for back-end.',
-      imgSrc: 'https://picsum.photos/500/300?random=2', // Random image
-      githubLink: 'https://github.com/yourusername/e-commerce-website',
-      liveLink: 'https://your-website.com/e-commerce',
+      description: 'A full-stack e-commerce application built with the MERN stack, enabling users to browse products, manage carts, and place orders with secure authentication.',
+      imgSrc: './ecom.jpg', // Random image
+      githubLink: 'https://github.com/farhanadil1/anything2',
+      liveLink: 'https://anythingecom.netlify.app/',
     },
     {
-      title: 'Fitness Tracker App',
-      description: 'An app to track workouts, nutrition, and fitness goals with real-time progress updates.',
-      imgSrc: 'https://picsum.photos/500/300?random=3', // Random image
-      githubLink: 'https://github.com/yourusername/fitness-tracker',
-      liveLink: 'https://your-website.com/fitness-tracker',
+      title: 'FitMe - Fitness Tracker App',
+      description: 'Built with React and Spring Boot, FitMe lets users log workouts, track nutrition, and monitor fitness goals with real-time updates and secure login.',
+      imgSrc: './fitme.jpg', // Random image
+      githubLink: 'https://github.com/farhanadil1/FitMe',
+      liveLink: 'https://fitmeui.netlify.app/',
     },
     // Add more projects here
   ];

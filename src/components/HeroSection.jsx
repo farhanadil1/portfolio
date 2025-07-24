@@ -6,7 +6,7 @@ const HeroSection = () => {
   const linkedinURL = 'https://www.linkedin.com/in/md-adil-farhan-b4956424a/';
   const githubURL = 'https://github.com/farhanadil1'; 
   const emailURL = 'mailto:imfarhan574@gmail.com'; 
-  const resumeURL = '/MdAdilFarhan_CV.pdf';
+  const resumeURL = '/farhanadil_cv.pdf';
 
   return (
     <section
@@ -42,10 +42,10 @@ const HeroSection = () => {
           Hi, I'm <span className="text-teal-700 dark:text-teal-300">Md Adil Farhan</span>
         </h1>
         <p className="text-base md:text-lg text-gray-800 dark:text-teal-100 mb-4">
-          A passionate <strong className="text-teal-900 dark:text-white">Full Stack Developer</strong> building modern, responsive web apps with MERN and beyond.
+          A passionate <strong className="text-teal-900 dark:text-white">Full Stack Developer</strong> building modern, responsive web apps with JAVA and MERN.
         </p>
         <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 mb-6">
-          Pursuing B.Tech in CSE at MCKVIE. Skilled in JavaScript, React, Node.js, MongoDB, and Tailwind CSS. I craft beautiful UIs with great UX.
+          Pursuing B.Tech in CSE at MCKVIE. Skilled in Java, JavaScript, React, SpringBoot, Hibernate, MySql, Node.js, MongoDB, Bootstrap and Tailwind CSS. I craft beautiful UIs with great UX.
         </p>
 
         {/* Resume Button */}
