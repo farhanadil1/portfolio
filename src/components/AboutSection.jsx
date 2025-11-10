@@ -22,7 +22,7 @@ const AboutSection = () => {
     <section
       id="about"
       className="
-        relative py-32 px-6 md:px-20
+        relative py-20 px-6 md:px-20
         bg-gradient-to-b from-white to-gray-50
         dark:from-gray-900 dark:to-black
         overflow-hidden
@@ -60,7 +60,7 @@ const AboutSection = () => {
 
       {/* Section Heading */}
       <motion.h2
-        className="text-4xl md:text-6xl font-bold text-center mb-20
+        className="text-4xl md:text-6xl font-bold text-center mb-10
         bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-200 dark:to-gray-400
         bg-clip-text text-transparent"
         variants={fadeUp}

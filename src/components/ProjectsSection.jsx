@@ -65,7 +65,7 @@ const ProjectsSection = () => {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="text-3xl md:text-4xl font-bold text-center mb-12"
+        className="text-3xl md:text-4xl font-bold text-center py-10 md:py-0 md:mb-12"
       >
         <span className="bg-gradient-to-r from-teal-600 to-cyan-500 bg-clip-text text-transparent">
          Featured Projects
@@ -118,7 +118,7 @@ const ProjectsSection = () => {
               </div>
 
               {/* Live button on card */}
-              <div className="mt-5">
+              <div className="mt-5 flex gap-4">
                 <a
                   href={p.liveLink}
                   onClick={(e) => e.stopPropagation()}
@@ -130,6 +130,13 @@ const ProjectsSection = () => {
                   "
                 >
                   <FiExternalLink /> Live Demo
+                </a>
+                <a
+                  href={p.githubLink}
+                  target="_blank"
+                  className="flex items-center gap-2 px-4 py-2 rounded-full border dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-800"
+                >
+                  <FiGithub /> GitHub
                 </a>
               </div>
             </div>
