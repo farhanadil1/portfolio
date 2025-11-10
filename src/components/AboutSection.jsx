@@ -1,50 +1,119 @@
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from "framer-motion";
+import devImage from "/pp.jpeg"; // add illustration of your choice
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+};
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.18, delayChildren: 0.2 } }
+};
 
 const AboutSection = () => {
+  const { scrollYProgress } = useScroll();
+
+  // subtle parallax floating for the illustration
+  const floatY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+  const floatRotate = useTransform(scrollYProgress, [0, 1], ["0deg", "6deg"]);
+
   return (
     <section
       id="about"
-      className="py-24 px-6 md:px-20 bg-gradient-to-b from-white via-teal-50 to-teal-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-500"
+      className="
+        relative py-32 px-6 md:px-20
+        bg-gradient-to-b from-white to-gray-50
+        dark:from-gray-900 dark:to-black
+        overflow-hidden
+      "
     >
-      {/* Heading */}
+      {/* Animated Grid Background */}
+      <div className="absolute inset-0 -z-10 opacity-[0.06] pointer-events-none">
+        <motion.div
+          animate={{ y: [0, -50, 0] }}
+          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+          className="
+            w-full h-full 
+            bg-[linear-gradient(90deg,transparent_95%,rgba(0,0,0,0.4)_95%),linear-gradient(transparent_95%,rgba(0,0,0,0.4)_95%)]
+            dark:bg-[linear-gradient(90deg,transparent_95%,rgba(255,255,255,0.2)_95%),linear-gradient(transparent_95%,rgba(255,255,255,0.2)_95%)]
+            bg-[size:50px_50px]
+          "
+        />
+      </div>
+
+      {/* Soft ambient blobs */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 0.2 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.4 }}
+        className="absolute top-20 left-12 w-72 h-72 bg-teal-400/20 blur-[140px] rounded-full"
+      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 0.15 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1.6 }}
+        className="absolute bottom-24 right-12 w-80 h-80 bg-purple-500/20 blur-[150px] rounded-full"
+      />
+
+      {/* Section Heading */}
       <motion.h2
-        className="text-4xl md:text-5xl font-bold text-center mb-12 bg-gradient-to-r from-teal-500 to-teal-300 bg-clip-text text-transparent"
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
+        className="text-4xl md:text-6xl font-bold text-center mb-20
+        bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-200 dark:to-gray-400
+        bg-clip-text text-transparent"
+        variants={fadeUp}
+        initial="hidden"
+        whileInView="show"
         viewport={{ once: true }}
       >
         About Me
       </motion.h2>
 
-      {/* Card Container */}
-      <motion.div
-        className="relative max-w-4xl mx-auto bg-white dark:bg-gray-900 border dark:border-gray-700 rounded-3xl p-8 md:p-12 shadow-[8px_8px_20px_rgba(0,0,0,0.1),_-4px_-4px_12px_rgba(255,255,255,0.2)] dark:shadow-[4px_4px_10px_rgba(0,0,0,0.6),_-2px_-2px_6px_rgba(255,255,255,0.05)] transition-all duration-500"
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        viewport={{ once: true }}
-      >
-        
-        {/* Content */}
-        <div className="space-y-6 text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed text-justify">
-        <p>
-  I'm <span className="font-semibold text-teal-600 dark:text-teal-400">Md Adil Farhan</span>, a full stack developer with a good command over the Java Full Stack and MERN stack technologies. I enjoy building web apps that are clean, scalable, and user focused.
-</p>
-<p>
-  I specialize in crafting responsive UIs and writing maintainable backend logic. My approach blends performance, usability, and sleek design to deliver quality digital experiences.
-</p>
-<p>
-  I'm currently pursuing a B.Tech in Computer Science at <strong className="text-teal-700 dark:text-teal-300">MCKV Institute of Engineering</strong>. I'm committed to continuous learning and keeping up with modern development practices.
-</p>
-<p>
-  Outside of tech, I enjoy UI/UX design, motion effects, and analyzing football tactics. I’m also passionate about fitness and love exploring different cuisines. I’m always eager to grow through meaningful projects and collaboration.
-</p>
+      {/* Two-column layout */}
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
 
+        {/* Floating Illustration */}
+        <motion.div
+          style={{ y: floatY, rotate: floatRotate }}
+          className="w-64 md:w-80 opacity-90"
+        >
+          <img
+            src={devImage}
+            alt="Developer Illustration"
+            className="w-full h-auto drop-shadow-xl cursor-pointer"
+            draggable='false'
+          />
+        </motion.div>
 
+        {/* Animated Text */}
+        <motion.div
+          className="text-gray-700 dark:text-gray-300 
+          text-lg md:text-xl space-y-7 leading-relaxed max-w-2xl"
+          variants={stagger}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+        >
+          <motion.p variants={fadeUp}>
+            I’m <span className="text-teal-600 dark:text-teal-400 font-semibold">Md Adil Farhan</span>, a full-stack developer who loves crafting smooth, modern digital experiences.
+          </motion.p>
 
-        </div>
-      </motion.div>
+          <motion.p variants={fadeUp}>
+            I focus on building fast, clean UIs and writing backend logic that feels predictable and scalable.
+          </motion.p>
+
+          <motion.p variants={fadeUp}>
+            Currently pursuing B.Tech CSE at 
+            <span className="text-teal-600 dark:text-teal-400"> MCKVIE</span>, always exploring better ways to build and design.
+          </motion.p>
+
+          <motion.p variants={fadeUp}>
+            Outside of coding, I dive into UI/UX motion, fitness, football tactics, and the science of good food.
+          </motion.p>
+        </motion.div>
+      </div>
     </section>
   );
 };
