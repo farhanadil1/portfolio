@@ -9,7 +9,7 @@ const projects = [
     description:"It provides a cohesive visual design system, modular components, and essential utilities to streamline development and ensure a responsive shopping experience.",
     imgSrc: "./ecokart.png",
     githubLink: "https://github.com/farhanadil1/EcoKart",
-    liveLink: "https://anythingecom.netlify.app/",
+    liveLink: "https://ecokart-adil-farhan.netlify.app/",
     tags: ["MERN", "JWT Auth", "Product API", "Cart Context", "Figma"],
   },
   {
@@ -19,7 +19,7 @@ const projects = [
       "CVCraft is a feature-rich full-stack resume builder designed for professionals and students to create ATS-friendly resumes efficiently.Built with React on the frontend and Node.js + Express + MongoDB on the backend.",
     imgSrc: "./cvcraft.png",
     githubLink: "https://github.com/farhanadil1",
-    liveLink: "#",
+    liveLink: "https://cv-craftt.netlify.app/",
     tags: ["React", "Express", "Node.js", "MongoDB", "Figma", "JWT Auth"],
   },
   {
