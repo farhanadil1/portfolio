@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FiExternalLink, FiGithub, FiX } from "react-icons/fi";
 import { useState } from "react";
 
+
 const projects = [
   {
     title: "EcoKart ",
@@ -149,15 +150,15 @@ const ProjectsSection = () => {
         <a
           href="https://github.com/farhanadil1"
           target="_blank"
-          className="px-8 py-3 bg-teal-600 text-white rounded-full shadow-lg hover:bg-teal-500 transition active:scale-95"
+          className="flex px-8 py-3 bg-teal-600 items-center text-white rounded-full shadow-lg hover:bg-teal-500 transition active:scale-95"
         >
-          Explore All Projects →
+          Explore All Projects <FiExternalLink className="ml-2" />
         </a>
       </div>
 
       {/* MODAL */}
       <AnimatePresence>
-        {activeProject && (
+        {activeProject && ( 
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
