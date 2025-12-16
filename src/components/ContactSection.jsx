@@ -158,7 +158,7 @@ const ContactSection = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-2 md:mt-14 text-sm text-gray-500"
+          className="mt-8 md:mt-14 text-sm text-gray-500"
         >
           Based in India · Open to remote & on-site opportunities
         </motion.p>

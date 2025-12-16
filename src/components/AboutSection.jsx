@@ -51,7 +51,7 @@ const AboutSection = () => {
       <motion.h2
         className="
           text-4xl md:text-5xl font-bold text-center mb-16
-          bg-gradient-to-r from-teal-400 via-teal-200 to-purple-200
+          bg-gradient-to-r from-teal-700 via-teal-500 to-teal-600
           bg-[length:200%_200%]
           bg-clip-text text-transparent
         "

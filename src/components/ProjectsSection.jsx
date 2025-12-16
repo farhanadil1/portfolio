@@ -1,8 +1,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect, useState } from "react";
 import ProjectCard from "../components/ProjectCard";
-import { FiArrowUpRight } from "react-icons/fi";
-
 
 const projects = [
   {
@@ -26,16 +24,16 @@ const projects = [
   {
     title: "FitMe - Fitness Tracker",
     description:
-      "FitMe is a fitness tracking and personal development web application designed to help users achieve their fitness goals. It includes workout logging, progress tracking, nutrition guidance, and more. With a user-friendly interface and a strong focus on health and fitness.",
+      "FitMe is a fitness tracking and personal development web application designed to help users achieve their fitness goals. It includes workout logging, progress tracking, nutrition guidance, and more.",
     imgSrc: "./fitme.png",
     githubLink: "https://github.com/farhanadil1/FitMe",
     liveLink: "https://fitmeui.netlify.app/",
-    tags: ["React", "Tailwind CSS", "Spring Boot", "Hibernate", "MySQL"],
+    tags: ["React", "Tailwind", "Spring Boot", "Hibernate", "MySQL"],
   },
   {
     title: "Weatheria",
     description:
-      "Weatheria is a sleek weather web app built with React.js that fetches real-time weather data using a Weather API. It features a clean and modern Ul with dark and light modes and smooth animations powered by Al, providing an engaging and user-friendly experience. Perfect for quick and accurate weather updates with style.",
+      "Weatheria is a sleek weather web app built with React.js that fetches real-time weather data using an API. It features dark/light mode and smooth animations.",
     imgSrc: "./weatheria.png",
     githubLink: "https://github.com/farhanadil1/Weatheria",
     liveLink: "https://weatheria123.netlify.app/",
@@ -43,11 +41,19 @@ const projects = [
   },
 ];
 
-const PIN_SCROLL = 1;        // how long a project stays pinned
-const TRANSITION_SCROLL = 1; // how long slide animation takes
+const PIN_SCROLL = 1;
+const TRANSITION_SCROLL = 1;
 
 const ProjectsSection = () => {
   const ref = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
 
   const totalScrollUnits =
     projects.length * (PIN_SCROLL + TRANSITION_SCROLL);
@@ -55,27 +61,24 @@ const ProjectsSection = () => {
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
+    enabled: !isMobile,
   });
 
-  /**
-   * Convert vertical scroll into horizontal steps:
-   * each project gets:
-   * - pin
-   * - then slide to next
-   */
   const x = useTransform(scrollYProgress, (v) => {
+    if (isMobile) return "0%";
+
     const total = totalScrollUnits;
     const progress = v * total;
 
     const index = Math.floor(progress / (PIN_SCROLL + TRANSITION_SCROLL));
     const local = progress % (PIN_SCROLL + TRANSITION_SCROLL);
 
-    // PIN phase → no movement
+    // PIN phase
     if (local < PIN_SCROLL) {
       return `-${index * 100}%`;
     }
 
-    // TRANSITION phase → slide
+    // SLIDE phase
     const t = (local - PIN_SCROLL) / TRANSITION_SCROLL;
     return `-${(index + t) * 100}%`;
   });
@@ -84,34 +87,47 @@ const ProjectsSection = () => {
     <section
       id="projects"
       ref={ref}
-      className="relative bg-gradient-to-b from-white via-gray-50 to-white
-        dark:from-gray-950 dark:via-black dark:to-gray-950"
-      style={{ height: `${totalScrollUnits * 100}vh` }}
+      className="
+        relative
+        bg-gradient-to-b from-white via-gray-50 to-white
+        dark:from-gray-950 dark:via-black dark:to-gray-950
+      "
+      style={{ height: isMobile ? "auto" : `${totalScrollUnits * 100}vh` }}
     >
-      
+      {/* Section Title */}
       <motion.h2
         className="
-          text-4xl pb-8 md:pb-0 z-10 md:text-5xl font-bold text-center
-          bg-gradient-to-r from-teal-400 via-teal-200 to-purple-200
+          text-4xl md:text-5xl font-bold text-center py-16
+          bg-gradient-to-r from-teal-700 via-teal-500 to-teal-600
           bg-[length:200%_200%]
           bg-clip-text text-transparent
         "
         animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
         transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       >
-         Projects
+        Projects
       </motion.h2>
-      {/* PINNED VIEWPORT */}
-      <div className="sticky top-0 h-screen overflow-hidden">
-        <motion.div
-          style={{ x }}
-          className="flex h-full will-change-transform"
-        >
+
+      {/* PROJECTS VIEW */}
+      {isMobile ? (
+       
+        <div className="px-4 space-y-20 pb-24">
           {projects.map((project) => (
             <ProjectCard key={project.title} project={project} />
           ))}
-        </motion.div>
-      </div>
+        </div>
+      ) : (
+        <div className="sticky top-0 h-screen overflow-hidden">
+          <motion.div
+            style={{ x }}
+            className="flex h-full will-change-transform"
+          >
+            {projects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </motion.div>
+        </div>
+      )}
     </section>
   );
 };
