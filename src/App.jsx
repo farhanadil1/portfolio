@@ -6,6 +6,7 @@ import ProjectsSection from './components/ProjectsSection';
 import SkillsSection from './components/SkillsSection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
+import CustomCursor from './components/CustomCursor';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(() =>
@@ -19,6 +20,7 @@ export default function App() {
 
   return (
     <div className="font-sans bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-colors duration-500">
+      <CustomCursor />
       <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
       <HeroSection />
       <AboutSection />

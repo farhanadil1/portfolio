@@ -1,117 +1,164 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import devImage from "/pp.jpeg"; // add illustration of your choice
+import devImage from "/pp.jpeg";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 30 },
   show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
 };
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.18, delayChildren: 0.2 } }
+  show: { transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
 };
 
 const AboutSection = () => {
   const { scrollYProgress } = useScroll();
 
-  // subtle parallax floating for the illustration
-  const floatY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+  const floatY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
   const floatRotate = useTransform(scrollYProgress, [0, 1], ["0deg", "6deg"]);
+  const textBlur = useTransform(scrollYProgress, [0, 0.25], ["6px", "0px"]);
+  const textOpacity = useTransform(scrollYProgress, [0, 0.2], [0.6, 1]);
 
   return (
     <section
       id="about"
       className="
-        relative py-20 px-6 md:px-20
-        bg-gradient-to-b from-white to-gray-50
-        dark:from-gray-900 dark:to-black
+        relative py-24 px-6 md:px-20
+        bg-gradient-to-b from-white via-gray-50 to-white
+        dark:from-gray-950 dark:via-black dark:to-gray-950
         overflow-hidden
       "
     >
-      {/* Animated Grid Background */}
-      <div className="absolute inset-0 -z-10 opacity-[0.06] pointer-events-none">
+      {/* GRID BACKGROUND */}
+      <div className="absolute inset-0 -z-10 opacity-[0.05]">
         <motion.div
-          animate={{ y: [0, -50, 0] }}
-          transition={{ duration: 14, repeat: Infinity, ease: "linear" }}
+          animate={{ y: [0, -60, 0] }}
+          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
           className="
-            w-full h-full 
-            bg-[linear-gradient(90deg,transparent_95%,rgba(0,0,0,0.4)_95%),linear-gradient(transparent_95%,rgba(0,0,0,0.4)_95%)]
-            dark:bg-[linear-gradient(90deg,transparent_95%,rgba(255,255,255,0.2)_95%),linear-gradient(transparent_95%,rgba(255,255,255,0.2)_95%)]
-            bg-[size:50px_50px]
+            w-full h-full
+            bg-[linear-gradient(90deg,transparent_96%,rgba(0,0,0,0.4)_96%),linear-gradient(transparent_96%,rgba(0,0,0,0.4)_96%)]
+            dark:bg-[linear-gradient(90deg,transparent_96%,rgba(255,255,255,0.25)_96%),linear-gradient(transparent_96%,rgba(255,255,255,0.25)_96%)]
+            bg-[size:48px_48px]
           "
         />
       </div>
 
-      {/* Soft ambient blobs */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.2 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.4 }}
-        className="absolute top-20 left-12 w-72 h-72 bg-teal-400/20 blur-[140px] rounded-full"
-      />
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 0.15 }}
-        viewport={{ once: true }}
-        transition={{ duration: 1.6 }}
-        className="absolute bottom-24 right-12 w-80 h-80 bg-purple-500/20 blur-[150px] rounded-full"
-      />
+      {/* AMBIENT BLOBS */}
+      <div className="absolute top-24 left-16 w-72 h-72 bg-teal-400/20 blur-[140px] rounded-full" />
+      <div className="absolute bottom-24 right-16 w-80 h-80 bg-purple-500/20 blur-[160px] rounded-full" />
 
-      {/* Section Heading */}
+      {/* HEADING */}
       <motion.h2
-        className="text-4xl md:text-6xl font-bold text-center mb-10
-        bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-200 dark:to-gray-400
-        bg-clip-text text-transparent"
-        variants={fadeUp}
-        initial="hidden"
-        whileInView="show"
-        viewport={{ once: true }}
+        className="
+          text-4xl md:text-6xl font-bold text-center mb-16
+          bg-gradient-to-r from-teal-400 via-teal-200 to-purple-200
+          bg-[length:200%_200%]
+          bg-clip-text text-transparent
+        "
+        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
       >
         About Me
       </motion.h2>
 
-      {/* Two-column layout */}
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+      {/* CONTENT */}
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
 
-        {/* Floating Illustration */}
+        {/* AVATAR CARD */}
         <motion.div
           style={{ y: floatY, rotate: floatRotate }}
-          className="w-64 md:w-80 opacity-90"
+          whileHover={{ scale: 1.05 }}
+          transition={{ type: "spring", stiffness: 180 }}
+          className="
+            relative mx-auto
+            w-64 md:w-80
+            rounded-3xl
+            bg-white/10 dark:bg-white/5
+            backdrop-blur-xl
+            border border-white/20
+            shadow-[0_0_80px_-20px_rgba(45,212,191,0.6)]
+          "
         >
+          {/* Neon border */}
+          <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-r from-teal-400/40 via-purple-500/30 to-pink-500/40 blur-md -z-10" />
+
           <img
             src={devImage}
-            alt="Developer Illustration"
-            className="w-full h-auto drop-shadow-xl cursor-pointer"
-            draggable='false'
+            alt="Md Adil Farhan"
+            className="rounded-3xl w-full h-auto"
+            draggable={false}
           />
         </motion.div>
 
-        {/* Animated Text */}
+        {/* TEXT */}
         <motion.div
-          className="text-gray-700 dark:text-gray-300 
-          text-lg md:text-xl space-y-7 leading-relaxed max-w-2xl"
+          style={{ filter: textBlur, opacity: textOpacity }}
+          className="
+            text-gray-700 dark:text-gray-300
+            text-lg md:text-xl
+            leading-relaxed space-y-7
+          "
           variants={stagger}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
         >
           <motion.p variants={fadeUp}>
-            I’m <span className="text-teal-600 dark:text-teal-400 font-semibold">Md Adil Farhan</span>, a full-stack developer who loves crafting smooth, modern digital experiences.
+            I’m{" "}
+            <span className="text-teal-500 font-semibold">
+              Md Adil Farhan
+            </span>
+            , a full-stack developer passionate about crafting smooth,
+            futuristic digital experiences.
           </motion.p>
 
           <motion.p variants={fadeUp}>
-            I focus on building fast, clean UIs and writing backend logic that feels predictable and scalable.
+            I specialize in building clean, high-performance UIs and scalable
+            backend systems that feel predictable and robust.
           </motion.p>
 
           <motion.p variants={fadeUp}>
-            Currently pursuing B.Tech CSE at 
-            <span className="text-teal-600 dark:text-teal-400"> MCKVIE</span>, always exploring better ways to build and design.
+            Currently pursuing B.Tech CSE at{" "}
+            <span className="text-teal-400">MCKVIE</span>, constantly exploring
+            better ways to engineer and design products.
           </motion.p>
 
           <motion.p variants={fadeUp}>
-            Outside of coding, I dive into UI/UX motion, fitness, football tactics, and the science of good food.
+            Outside of coding, I explore UI motion design, fitness science,
+            football tactics, and the psychology of great user experiences.
           </motion.p>
+
+          {/* TECH STACK */}
+          <motion.div
+            variants={fadeUp}
+            className="flex flex-wrap gap-3 pt-4"
+          >
+            {[
+              "React",
+              "Tailwind",
+              "Node.js",
+              "Spring Boot",
+              "MongoDB",
+              "Hibernate",
+              "MySQL",
+              "Express",
+              "JavaScript",
+              "Java"
+            ].map((tech) => (
+              <span
+                key={tech}
+                className="
+                  px-4 py-1.5 rounded-full text-sm font-medium
+                  bg-white/10 dark:bg-white/5
+                  border border-white/20
+                  backdrop-blur-md
+                  text-teal-500
+                "
+              >
+                {tech}
+              </span>
+            ))}
+          </motion.div>
         </motion.div>
       </div>
     </section>

@@ -47,16 +47,6 @@ export default function HeroSection() {
           ring-4 ring-white dark:ring-gray-700 ring-offset-2
         "
       >
-        {/* Hologram Glow Ring */}
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-          className="
-            absolute inset-0 rounded-full 
-            bg-gradient-to-tr from-teal-400/40 via-transparent to-purple-500/40
-            pointer-events-none
-          "
-        />
 
         {/* Avatar Video */}
         <video
