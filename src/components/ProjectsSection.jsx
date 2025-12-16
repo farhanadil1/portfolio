@@ -82,11 +82,13 @@ const ProjectsSection = () => {
 
   return (
     <section
+      id="projects"
       ref={ref}
       className="relative bg-gradient-to-b from-white via-gray-50 to-white
         dark:from-gray-950 dark:via-black dark:to-gray-950"
       style={{ height: `${totalScrollUnits * 100}vh` }}
     >
+      
       <motion.h2
         className="
           text-4xl pb-8 md:pb-0 z-10 md:text-5xl font-bold text-center

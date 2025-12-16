@@ -20,9 +20,6 @@ const ContactSection = () => {
   return (
     <section
       id="contact"
-      onMouseMove={(e) =>
-        setMouse({ x: e.clientX, y: e.clientY })
-      }
       className="
         relative py-24 overflow-hidden
         bg-gradient-to-b from-white via-gray-50 to-white
@@ -78,7 +75,7 @@ const ContactSection = () => {
         </motion.div>
 
         {/* Actions */}
-        <div className="mt-20 flex flex-col md:flex-row gap-10">
+        <div className="mt-12 flex flex-col md:flex-row gap-10">
           {/* EMAIL – Primary */}
           <motion.button
             onClick={copyEmail}
@@ -161,7 +158,7 @@ const ContactSection = () => {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-24 text-sm text-gray-500"
+          className="mt-2 md:mt-14 text-sm text-gray-500"
         >
           Based in India · Open to remote & on-site opportunities
         </motion.p>

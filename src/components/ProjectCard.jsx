@@ -14,7 +14,7 @@ const ProjectCard = ({ project }) => {
       <div
         className="
           max-w-7xl w-full mx-auto
-          grid md:grid-cols-2 gap-20 items-center
+          grid md:grid-cols-2 gap-8 md:gap-20 items-center
         "
       >
         {/* IMAGE SIDE */}
