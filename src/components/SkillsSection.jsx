@@ -73,7 +73,7 @@ const SkillsSection = () => {
     <section
       id="skills"
       className="
-        relative py-24
+        relative py-10
         bg-gradient-to-b from-white via-gray-50 to-white
         dark:from-gray-950 dark:via-black dark:to-gray-950
         overflow-hidden
