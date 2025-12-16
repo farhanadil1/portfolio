@@ -39,6 +39,26 @@ export default function Navbar({ darkMode, setDarkMode }) {
       });
     };
   }, []);
+  
+  useEffect(() => {
+    const projectsEl = document.getElementById("projects");
+    if (!projectsEl) return;
+
+    const onScroll = () => {
+      const scrollMid = window.scrollY + window.innerHeight / 2;
+
+      const start = projectsEl.offsetTop;
+      const end = start + projectsEl.offsetHeight;
+
+      if (scrollMid >= start && scrollMid <= end) {
+        setActiveSection("projects");
+      }
+    };
+
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
 
   // Magnetic hover effect
   const magnetic = {

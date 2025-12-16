@@ -3,6 +3,7 @@ import { FiExternalLink, FiGithub } from "react-icons/fi";
 const ProjectCard = ({ project }) => {
   return (
     <section
+      id="projects"
       className="
         min-w-full h-full flex items-center
         px-8 md:px-16

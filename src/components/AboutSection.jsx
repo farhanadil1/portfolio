@@ -150,7 +150,7 @@ const AboutSection = () => {
                 className="
                   px-4 py-1.5 rounded-full text-sm font-medium
                   bg-white/10 dark:bg-white/5
-                  border border-white/20
+                  border dark:border-white/20 border-black/20
                   backdrop-blur-md
                   text-teal-500
                 "

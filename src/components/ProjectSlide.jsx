@@ -24,10 +24,8 @@ const ProjectSlide = ({ project }) => {
   
 
   return (
-    // Height is 200vh, so we have 100vh of space before and after the pinned area
-    // This allows the card to scroll in for 100vh and scroll out for 100vh
-    // The total scroll for the effect will be 200vh
-    <section ref={ref} className="h-[200vh] relative">
+  
+    <section id="projects" ref={ref} className="h-[200vh] relative">
       {/* PINNED AREA: Sticks to the top of the viewport */}
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.div
