@@ -110,7 +110,7 @@ export default function HeroSection() {
           whileTap={{ scale: 0.92 }}
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
+          transition={{ delay: 0.1, duration: 0.2 }}
           className="
             inline-block mt-6 px-6 py-3 rounded-full font-semibold shadow-lg
             bg-teal-600 text-white dark:bg-teal-300 dark:text-gray-900 

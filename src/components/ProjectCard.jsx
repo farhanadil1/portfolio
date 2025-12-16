@@ -50,7 +50,7 @@ const ProjectCard = ({ project }) => {
             "
           >
             {project.title}
-             <div className="w-20 h-[2px] bg-teal-500 mb-6" />
+             <div className="w-28 h-[2px] bg-teal-500 mb-6" />
           </h3>
 
           <p

@@ -10,101 +10,107 @@ import {
 import { TbBrandCpp } from "react-icons/tb";
 
 const skills = [
-  { icon: <FaReact size={28} />, label: "React", color: "text-teal-500" },
-  { icon: <FaJsSquare size={28} />, label: "JavaScript", color: "text-yellow-500" },
-  { icon: <FaNodeJs size={28} />, label: "Node.js", color: "text-green-500" },
-  { icon: <FaPython size={28} />, label: "Python", color: "text-blue-500" },
-  { icon: <FaJava size={28} />, label: "Java", color: "text-red-500" },
-  { icon: <SiSpringboot size={28} />, label: "Spring Boot", color: "text-green-400" },
-  { icon: <SiTailwindcss size={28} />, label: "Tailwind", color: "text-sky-400" },
-  { icon: <SiMongodb size={28} />, label: "MongoDB", color: "text-green-700" },
-  { icon: <SiMysql size={28} />, label: "MySQL", color: "text-blue-600" },
-  { icon: <SiExpress size={28} />, label: "Express", color: "text-gray-700" },
-  { icon: <SiHtml5 size={28} />, label: "HTML5", color: "text-orange-500" },
-  { icon: <SiCss3 size={28} />, label: "CSS3", color: "text-blue-600" },
-  { icon: <SiFigma size={28} />, label: "Figma", color: "text-purple-500" },
-  { icon: <FaCuttlefish size={28} />, label: "C", color: "text-blue-500" },
-  { icon: <TbBrandCpp size={28} />, label: "C++", color: "text-blue-800" },
-  { icon: <FaGitAlt size={28} />, label: "Git", color: "text-orange-600" },
-  { icon: <FaGithub size={28} />, label: "GitHub", color: "text-black dark:text-white" },
-  { icon: <SiRedhat size={28} />, label: "Red Hat", color: "text-red-600" },
+  { icon: <FaReact />, label: "React" },
+  { icon: <FaJsSquare />, label: "JavaScript" },
+  { icon: <FaNodeJs />, label: "Node.js" },
+  { icon: <FaPython />, label: "Python" },
+  { icon: <FaJava />, label: "Java" },
+  { icon: <SiSpringboot />, label: "Spring Boot" },
+  { icon: <SiTailwindcss />, label: "Tailwind CSS" },
+  { icon: <SiMongodb />, label: "MongoDB" },
+  { icon: <SiMysql />, label: "MySQL" },
+  { icon: <SiExpress />, label: "Express" },
+  { icon: <SiHtml5 />, label: "HTML5" },
+  { icon: <SiCss3 />, label: "CSS3" },
+  { icon: <SiFigma />, label: "Figma" },
+  { icon: <FaCuttlefish />, label: "C" },
+  { icon: <TbBrandCpp />, label: "C++" },
+  { icon: <FaGitAlt />, label: "Git" },
+  { icon: <FaGithub />, label: "GitHub" },
+  { icon: <SiRedhat />, label: "Red Hat" },
 ];
+
+const item = {
+  hidden: { opacity: 0, y: 20 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: "easeOut" },
+  },
+};
 
 const SkillsSection = () => {
   return (
     <section
       id="skills"
       className="
-        py-20 relative overflow-hidden
-        bg-gradient-to-b from-white to-gray-100
-        dark:from-gray-900 dark:to-black
+        relative py-24
+        bg-gradient-to-b from-white via-gray-50 to-white
+        dark:from-gray-950 dark:via-black dark:to-gray-950
+        overflow-hidden
       "
     >
-      {/* Background Accents */}
-      <div className="absolute inset-0 -z-10 opacity-20 pointer-events-none">
-        <div className="absolute top-12 right-16 w-72 h-72 bg-teal-400/30 blur-[120px] rounded-full" />
-        <div className="absolute bottom-12 left-16 w-80 h-80 bg-purple-500/20 blur-[130px] rounded-full" />
+      {/* Ambient background */}
+      <div className="absolute inset-0 -z-10 pointer-events-none">
+        <div className="absolute top-20 left-1/4 w-96 h-96 bg-teal-400/10 blur-[160px]" />
+        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-cyan-400/10 blur-[160px]" />
       </div>
 
-      {/* Heading (no fade) */}
-      <h2
-        className="
-          text-4xl font-bold text-center mb-14
-          bg-gradient-to-r from-teal-600 to-cyan-500
+      {/* Header */}
+      <div className="max-w-6xl mx-auto px-6 mb-16">
+        <h2 className="
+          text-4xl md:text-5xl font-semibold tracking-tight
+          bg-gradient-to-r from-teal-500 to-cyan-400
           bg-clip-text text-transparent
-        "
-      >
-       Tech Skills
-      </h2>
+        ">
+          Tech Stack
+        </h2>
+        <p className="mt-4 max-w-xl text-gray-600 dark:text-gray-400">
+          Technologies and tools I use to design, build, and scale modern applications.
+        </p>
+      </div>
 
       {/* Skills Grid */}
       <div
         className="
           max-w-6xl mx-auto px-6
-          grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-6
+          grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-y-14 gap-x-8
         "
       >
         {skills.map((skill, index) => (
           <motion.div
             key={index}
-            animate={{
-              y: [0, -4, 0],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 1.5,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-            }}
-            whileHover={{
-              scale: 1.12,
-              y: -6,
-              transition: { duration: 0.2 },
-            }}
+            variants={item}
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true }}
+            whileHover={{ scale: 1.08 }}
             className="
-              flex flex-col items-center p-4 rounded-xl
-              backdrop-blur-lg
-              bg-white/60 dark:bg-gray-900/40
-              border border-gray-200/40 dark:border-gray-700
-              shadow-sm hover:shadow-xl
-              hover:border-teal-500/50 dark:hover:border-teal-400/50
-              transition cursor-pointer
+              group flex flex-col items-center gap-3
+              transition-transform duration-300
             "
           >
-            {/* Icon circle */}
-            <motion.div
-              whileHover={{ rotate: 6 }}
-              className={`
-                p-3 rounded-full bg-white dark:bg-gray-900 shadow 
-                ${skill.color}
-              `}
+            {/* Icon */}
+            <div
+              className="
+                text-3xl text-gray-800 dark:text-gray-200
+                transition-colors duration-300
+                group-hover:text-teal-500
+              "
             >
               {skill.icon}
-            </motion.div>
+            </div>
 
-            <p className="mt-2 text-xs font-semibold text-gray-700 dark:text-gray-300">
+            {/* Label */}
+            <span
+              className="
+                text-xs uppercase tracking-widest
+                text-gray-500 dark:text-gray-500
+                group-hover:text-teal-500 transition-colors
+              "
+            >
               {skill.label}
-            </p>
+            </span>
           </motion.div>
         ))}
       </div>

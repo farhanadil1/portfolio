@@ -1,6 +1,8 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import ProjectCard from "../components/ProjectCard";
+import { FiArrowUpRight } from "react-icons/fi";
+
 
 const projects = [
   {
@@ -87,7 +89,7 @@ const ProjectsSection = () => {
     >
       <motion.h2
         className="
-          text-4xl z-10 md:text-5xl font-bold text-center
+          text-4xl pb-8 md:pb-0 z-10 md:text-5xl font-bold text-center
           bg-gradient-to-r from-teal-400 via-teal-200 to-purple-200
           bg-[length:200%_200%]
           bg-clip-text text-transparent
