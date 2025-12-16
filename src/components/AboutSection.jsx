@@ -50,7 +50,7 @@ const AboutSection = () => {
       {/* HEADING */}
       <motion.h2
         className="
-          text-4xl md:text-6xl font-bold text-center mb-16
+          text-4xl md:text-5xl font-bold text-center mb-16
           bg-gradient-to-r from-teal-400 via-teal-200 to-purple-200
           bg-[length:200%_200%]
           bg-clip-text text-transparent
