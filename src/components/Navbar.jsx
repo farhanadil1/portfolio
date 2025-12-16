@@ -10,9 +10,6 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
   const sections = ["Home", "About", "Projects", "Skills", "Contact"];
 
-  /* -----------------------------
-     HERO VISIBILITY TRACKING
-  ------------------------------*/
   useEffect(() => {
     const hero = document.getElementById("home");
     if (!hero) return;
@@ -26,9 +23,6 @@ export default function Navbar({ darkMode, setDarkMode }) {
     return () => observer.disconnect();
   }, []);
 
-  /* -----------------------------
-     ACTIVE SECTION TRACKING
-  ------------------------------*/
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -47,9 +41,6 @@ export default function Navbar({ darkMode, setDarkMode }) {
     return () => observer.disconnect();
   }, []);
 
-  /* -----------------------------
-     MAGNETIC HOVER
-  ------------------------------*/
   const magnetic = {
     whileHover: { scale: 1.1, y: -3 },
     transition: { type: "spring", stiffness: 250, damping: 15 }
@@ -57,9 +48,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
   return (
     <>
-      {/* =============================
-          HERO NAVBAR (VISIBLE ON TOP)
-      ==============================*/}
+
       <AnimatePresence>
         {showHeroNav && (
           <motion.header
@@ -121,9 +110,6 @@ export default function Navbar({ darkMode, setDarkMode }) {
         )}
       </AnimatePresence>
 
-      {/* =============================
-          FLOATING MENU BUTTON
-      ==============================*/}
       <AnimatePresence>
         {!showHeroNav && (
           <motion.button

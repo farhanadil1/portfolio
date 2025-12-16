@@ -1,33 +1,62 @@
 import { motion } from "framer-motion";
 import {
   FaReact, FaJsSquare, FaNodeJs, FaPython, FaJava, FaCuttlefish,
-  FaGitAlt, FaGithub
+  FaGitAlt, FaGithub, FaBootstrap,
 } from "react-icons/fa";
 import {
   SiTailwindcss, SiMongodb, SiHtml5, SiCss3,
-  SiSpringboot, SiMysql, SiExpress, SiFigma, SiRedhat
+  SiSpringboot, SiMysql, SiExpress, SiFigma, SiRedhat, SiHibernate,
+  SiPostman
 } from "react-icons/si";
 import { TbBrandCpp } from "react-icons/tb";
 
-const skills = [
-  { icon: <FaReact />, label: "React" },
-  { icon: <FaJsSquare />, label: "JavaScript" },
-  { icon: <FaNodeJs />, label: "Node.js" },
-  { icon: <FaPython />, label: "Python" },
-  { icon: <FaJava />, label: "Java" },
-  { icon: <SiSpringboot />, label: "Spring Boot" },
-  { icon: <SiTailwindcss />, label: "Tailwind CSS" },
-  { icon: <SiMongodb />, label: "MongoDB" },
-  { icon: <SiMysql />, label: "MySQL" },
-  { icon: <SiExpress />, label: "Express" },
-  { icon: <SiHtml5 />, label: "HTML5" },
-  { icon: <SiCss3 />, label: "CSS3" },
-  { icon: <SiFigma />, label: "Figma" },
-  { icon: <FaCuttlefish />, label: "C" },
-  { icon: <TbBrandCpp />, label: "C++" },
-  { icon: <FaGitAlt />, label: "Git" },
-  { icon: <FaGithub />, label: "GitHub" },
-  { icon: <SiRedhat />, label: "Red Hat" },
+const skillGroups = [
+  {
+    title: "Frontend",
+    skills: [
+      { icon: <FaReact />, label: "React" },
+      { icon: <FaJsSquare />, label: "JavaScript" },
+      { icon: <SiHtml5 />, label: "HTML5" },
+      { icon: <SiCss3 />, label: "CSS3" },
+      { icon: <SiTailwindcss />, label: "Tailwind CSS" },
+      { icon: <SiFigma />, label: "Figma" },
+      { icon: <FaBootstrap />, label: "Bootstrap" },
+    ],
+  },
+  {
+    title: "Backend",
+    skills: [
+      { icon: <FaJava />, label: "Java" },
+      { icon: <SiSpringboot />, label: "Spring Boot" },
+      { icon: <SiHibernate />, label: "Hibernate" },
+      { icon: <FaNodeJs />, label: "Node.js" },
+      { icon: <SiExpress />, label: "Express" },
+    ],
+  },
+  {
+    title: "Databases",
+    skills: [
+      { icon: <SiMongodb />, label: "MongoDB" },
+      { icon: <SiMysql />, label: "MySQL" },
+    ],
+  },
+  {
+    title: "DevOps & Tools",
+    skills: [
+      { icon: <FaGitAlt />, label: "Git" },
+      { icon: <FaGithub />, label: "GitHub" },
+      { icon: <SiRedhat />, label: "Red Hat" },
+      { icon: <SiPostman />, label: "Postman"},
+    ],
+  },
+  {
+    title: "Programming Languages",
+    skills: [
+      { icon: <FaCuttlefish />, label: "C" },
+      { icon: <FaJava />, label: "Java" },
+      { icon: <FaPython />, label: "Python" },
+    ],
+  },
 ];
 
 const item = {
@@ -70,48 +99,61 @@ const SkillsSection = () => {
         </p>
       </div>
 
-      {/* Skills Grid */}
-      <div
-        className="
-          max-w-6xl mx-auto px-6
-          grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-y-14 gap-x-8
-        "
-      >
-        {skills.map((skill, index) => (
-          <motion.div
-            key={index}
-            variants={item}
-            initial="hidden"
-            whileInView="show"
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.08 }}
-            className="
-              group flex flex-col items-center gap-3
-              transition-transform duration-300
-            "
-          >
-            {/* Icon */}
+      {/* Groups */}
+      <div className="max-w-6xl mx-auto px-6 space-y-20">
+        {skillGroups.map((group) => (
+          <div key={group.title}>
+            {/* Group title */}
+            <h3 className="
+              mb-8 text-sm uppercase tracking-widest
+              text-gray-500 dark:text-gray-400
+            ">
+              {group.title}
+            </h3>
+
+            {/* Skills Grid (UNCHANGED) */}
             <div
               className="
-                text-3xl text-gray-800 dark:text-gray-200
-                transition-colors duration-300
-                group-hover:text-teal-500
+                grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7
+                gap-y-14 gap-x-8
               "
             >
-              {skill.icon}
-            </div>
+              {group.skills.map((skill, index) => (
+                <motion.div
+                  key={index}
+                  variants={item}
+                  initial="hidden"
+                  whileInView="show"
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.08 }}
+                  className="
+                    group flex flex-col items-center gap-3
+                    transition-transform duration-300
+                  "
+                >
+                  <div
+                    className="
+                      text-3xl text-gray-800 dark:text-gray-200
+                      transition-colors duration-300
+                      group-hover:text-teal-500 text-center
+                    "
+                  >
+                    {skill.icon}
+                  </div>
 
-            {/* Label */}
-            <span
-              className="
-                text-xs uppercase tracking-widest
-                text-gray-500 dark:text-gray-500
-                group-hover:text-teal-500 transition-colors
-              "
-            >
-              {skill.label}
-            </span>
-          </motion.div>
+                  <span
+                    className="
+                      text-xs uppercase tracking-widest
+                      text-gray-500 dark:text-gray-500
+                      group-hover:text-teal-500 transition-colors
+                    "
+                  >
+                    {skill.label}
+                  </span>
+                </motion.div>
+              ))}
+            </div>
+          </div>
         ))}
       </div>
     </section>
