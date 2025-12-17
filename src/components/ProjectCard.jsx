@@ -6,7 +6,7 @@ const ProjectCard = ({ project }) => {
       id="projects"
       className="
         min-w-full h-full flex items-center
-        px-8 md:px-16
+        px-8 md:px-16 pb-4 md:pb-0
         bg-gradient-to-b
         from-white via-gray-50 to-white
         dark:from-gray-950 dark:via-black dark:to-gray-950

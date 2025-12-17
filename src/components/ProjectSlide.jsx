@@ -25,7 +25,8 @@ const ProjectSlide = ({ project }) => {
 
   return (
   
-    <section id="projects" ref={ref} className="h-[200vh] relative">
+    <section id="projects" ref={ref} className="h-[200vh] relative bg-gradient-to-b from-white via-gray-50 to-white
+        dark:from-gray-950 dark:via-black dark:to-gray-950">
       {/* PINNED AREA: Sticks to the top of the viewport */}
       <div className="sticky top-0 h-screen overflow-hidden">
         <motion.div

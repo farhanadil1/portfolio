@@ -1,23 +1,18 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import devImage from "/pp.jpeg";
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 30 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } }
+  hidden: { opacity: 0, y: 24 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } }
 };
 
 const stagger = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.15, delayChildren: 0.2 } }
+  show: { transition: { staggerChildren: 0.1 } }
 };
 
 const AboutSection = () => {
-  const { scrollYProgress } = useScroll();
-
-  const floatY = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
-  const floatRotate = useTransform(scrollYProgress, [0, 1], ["0deg", "6deg"]);
-  const textBlur = useTransform(scrollYProgress, [0, 0.25], ["6px", "0px"]);
-  const textOpacity = useTransform(scrollYProgress, [0, 0.2], [0.6, 1]);
+  const shouldReduceMotion = useReducedMotion();
 
   return (
     <section
@@ -29,11 +24,9 @@ const AboutSection = () => {
         overflow-hidden
       "
     >
-      {/* GRID BACKGROUND */}
+      {/* GRID BACKGROUND (STATIC) */}
       <div className="absolute inset-0 -z-10 opacity-[0.05]">
-        <motion.div
-          animate={{ y: [0, -60, 0] }}
-          transition={{ duration: 16, repeat: Infinity, ease: "linear" }}
+        <div
           className="
             w-full h-full
             bg-[linear-gradient(90deg,transparent_96%,rgba(0,0,0,0.4)_96%),linear-gradient(transparent_96%,rgba(0,0,0,0.4)_96%)]
@@ -43,7 +36,7 @@ const AboutSection = () => {
         />
       </div>
 
-      {/* AMBIENT BLOBS */}
+      {/* AMBIENT BLOBS (STATIC) */}
       <div className="absolute top-24 left-16 w-72 h-72 bg-teal-400/20 blur-[140px] rounded-full" />
       <div className="absolute bottom-24 right-16 w-80 h-80 bg-purple-500/20 blur-[160px] rounded-full" />
 
@@ -52,11 +45,12 @@ const AboutSection = () => {
         className="
           text-4xl md:text-5xl font-bold text-center mb-16
           bg-gradient-to-r from-teal-700 via-teal-500 to-teal-600
-          bg-[length:200%_200%]
           bg-clip-text text-transparent
         "
-        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
+        variants={!shouldReduceMotion ? fadeUp : {}}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true }}
       >
         About Me
       </motion.h2>
@@ -64,11 +58,8 @@ const AboutSection = () => {
       {/* CONTENT */}
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
 
-        {/* AVATAR CARD */}
-        <motion.div
-          style={{ y: floatY, rotate: floatRotate }}
-          whileHover={{ scale: 1.05 }}
-          transition={{ type: "spring", stiffness: 180 }}
+        {/* AVATAR CARD (STATIC) */}
+        <div
           className="
             relative mx-auto
             w-64 md:w-80
@@ -79,7 +70,6 @@ const AboutSection = () => {
             shadow-[0_0_80px_-20px_rgba(45,212,191,0.6)]
           "
         >
-          {/* Neon border */}
           <div className="absolute -inset-[1px] rounded-3xl bg-gradient-to-r from-teal-400/40 via-purple-500/30 to-pink-500/40 blur-md -z-10" />
 
           <img
@@ -88,27 +78,23 @@ const AboutSection = () => {
             className="rounded-3xl w-full h-auto"
             draggable={false}
           />
-        </motion.div>
+        </div>
 
         {/* TEXT */}
         <motion.div
-          style={{ filter: textBlur, opacity: textOpacity }}
           className="
             text-gray-700 dark:text-gray-300
             text-lg md:text-xl
             leading-relaxed space-y-7
           "
-          variants={stagger}
+          variants={!shouldReduceMotion ? stagger : {}}
           initial="hidden"
           whileInView="show"
           viewport={{ once: true }}
         >
           <motion.p variants={fadeUp}>
-            I’m{" "}
-            <span className="text-teal-500 font-semibold">
-              Md Adil Farhan
-            </span>
-            , a full-stack developer passionate about crafting smooth,
+            I’m <span className="text-teal-500 font-semibold">Md Adil Farhan</span>,
+            a full-stack developer passionate about crafting smooth,
             futuristic digital experiences.
           </motion.p>
 
@@ -128,22 +114,10 @@ const AboutSection = () => {
             football tactics, and the psychology of great user experiences.
           </motion.p>
 
-          {/* TECH STACK */}
-          <motion.div
-            variants={fadeUp}
-            className="flex flex-wrap gap-3 pt-4"
-          >
+          <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-4">
             {[
-              "React",
-              "Tailwind",
-              "Node.js",
-              "Spring Boot",
-              "MongoDB",
-              "Hibernate",
-              "MySQL",
-              "Express",
-              "JavaScript",
-              "Java"
+              "React","Tailwind","Node.js","Spring Boot","MongoDB",
+              "Hibernate","MySQL","Express","JavaScript","Java"
             ].map((tech) => (
               <span
                 key={tech}
