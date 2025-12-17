@@ -12,7 +12,7 @@ export default function HeroSection() {
       id="home"
       className="
         relative min-h-screen flex flex-col md:flex-row items-center justify-center 
-        px-6 md:px-20 pt-20 md:pt-16 md:py-0 py-10 gap-12
+        px-6 md:px-20 pt-16 md:py-0 py-10 gap-12
         bg-gradient-to-b from-white to-gray-100 
         dark:from-gray-900 dark:to-black
         transition-all duration-500 
