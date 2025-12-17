@@ -114,7 +114,7 @@ const SkillsSection = () => {
             {/* Skills Grid (UNCHANGED) */}
             <div
               className="
-                grid grid-cols-3 sm:grid-cols-4 md:grid-cols-7
+                grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7
                 gap-y-14 gap-x-8
               "
             >
@@ -134,7 +134,7 @@ const SkillsSection = () => {
                   <div
                     className="
                       text-3xl text-gray-800 dark:text-gray-200
-                      transition-colors duration-300
+                      transition-all duration-200
                       group-hover:text-teal-500 text-center
                     "
                   >

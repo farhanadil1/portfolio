@@ -124,10 +124,12 @@ const AboutSection = () => {
                 className="
                   px-4 py-1.5 rounded-full text-sm font-medium
                   bg-white/10 dark:bg-white/5
-                  border dark:border-white/20 border-black/20
-                  backdrop-blur-md
-                  text-teal-500
+                  border border-black/20 dark:border-white/20
+                  hover:border-teal-500 dark:hover:border-teal-400
+                  backdrop-blur-md cursor-pointer transition-all duration-200
+                  text-teal-500 hover:scale-[1.04]
                 "
+
               >
                 {tech}
               </span>

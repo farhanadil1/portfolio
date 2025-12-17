@@ -72,9 +72,12 @@ const ProjectCard = ({ project }) => {
               <span
                 key={tag}
                 className="
-                  text-xs uppercase tracking-wider
-                  text-gray-500 dark:text-gray-500
-                  border rounded-2xl py-1 px-2
+                  py-1 px-2 rounded-full font-medium
+                  bg-white/10 dark:bg-white/5 text-xs uppercase tracking-wider
+                  border border-black/20 dark:border-white/30
+                  hover:border-teal-500 dark:hover:border-teal-400
+                  backdrop-blur-md cursor-pointer transition-all duration-200
+                  text-teal-500 hover:scale-[1.04]
                 "
               >
                 {tag}

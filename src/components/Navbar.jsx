@@ -156,10 +156,10 @@ export default function Navbar({ darkMode, setDarkMode }) {
               className="
                 fixed top-0 right-0 z-[60]
                 h-full
-                w-[60%] md:w-[40%] lg:w-[30%]
+                w-[70%] md:w-[40%] lg:w-[30%]
                 bg-teal-600 dark:bg-teal-700 backdrop-blur-xl
                 flex flex-col justify-center
-                px-10
+                px-10 text-left
               "
             >
               {/* Close */}

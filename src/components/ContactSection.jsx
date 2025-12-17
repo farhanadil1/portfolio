@@ -75,7 +75,8 @@ const ContactSection = () => {
         </motion.div>
 
         {/* Actions */}
-        <div className="mt-12 flex flex-col md:flex-row gap-10">
+        <div className="mt-12 flex flex-col md:flex-row gap-8">
+
           {/* EMAIL – Primary */}
           <motion.button
             onClick={copyEmail}
@@ -84,11 +85,12 @@ const ContactSection = () => {
             className="
               group relative flex items-center justify-between
               w-full md:w-[340px]
-              px-8 py-3
+              px-8 py-4
               bg-teal-500 text-black
               rounded-full
               font-medium text-lg
               overflow-hidden
+              shadow-md
             "
           >
             <span className="flex items-center gap-4">
@@ -104,7 +106,7 @@ const ContactSection = () => {
                   className="
                     text-xl
                     transition-transform duration-300
-                    group-hover:translate-x-1 group-hover:-translate-y-1
+                    group-hover:translate-x-1.5 group-hover:-translate-y-1.5
                   "
                 />
               )}
@@ -113,7 +115,7 @@ const ContactSection = () => {
             {/* Hover sheen */}
             <span
               className="
-                absolute inset-0
+                pointer-events-none absolute inset-0
                 bg-gradient-to-r from-transparent via-white/40 to-transparent
                 translate-x-[-120%] group-hover:translate-x-[120%]
                 transition-transform duration-700
@@ -121,32 +123,46 @@ const ContactSection = () => {
             />
           </motion.button>
 
-          {/* LINKEDIN – Secondary */}
+          {/* LINKEDIN – Secondary (matched height & tone) */}
           <motion.a
             href={linkedinURL}
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ x: 6 }}
             className="
-              group flex items-center justify-between
-              w-full md:w-[380px]
-              px-8 py-6
+              group relative flex items-center justify-between
+              w-full md:w-[340px]
+              px-8 py-4
+              rounded-full
               text-gray-800 dark:text-gray-200
-              border-b border-gray-300/60 dark:border-gray-700
-              transition-colors duration-300
+              bg-white/40 dark:bg-white/5
+              backdrop-blur-md
+              border border-gray-300/50 dark:border-gray-700/60
+              transition-all duration-300
+              hover:border-teal-500/60
               hover:text-teal-500
             "
           >
-            <span className="flex items-center gap-4">
-              <FaLinkedin />
+            {/* subtle hover wash */}
+            <span
+              className="
+                pointer-events-none absolute inset-0 rounded-full
+                opacity-0 group-hover:opacity-100
+                transition-opacity duration-300
+                bg-gradient-to-r from-teal-400/10 to-cyan-400/10
+              "
+            />
+
+            <span className="relative flex items-center gap-4 font-medium">
+              <FaLinkedin className="text-xl" />
               Connect on LinkedIn
             </span>
 
             <FiArrowUpRight
               className="
-                text-xl
+                relative text-xl
                 transition-transform duration-300
-                group-hover:translate-x-1 group-hover:-translate-y-1
+                group-hover:translate-x-1.5 group-hover:-translate-y-1.5
               "
             />
           </motion.a>

@@ -41,7 +41,7 @@ const projects = [
   },
 ];
 
-const PIN_SCROLL = 1;
+const PIN_SCROLL = 0.6;
 const TRANSITION_SCROLL = 1;
 
 const ProjectsSection = () => {

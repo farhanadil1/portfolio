@@ -32,13 +32,15 @@ const CustomCursor = () => {
 
   return (
     <motion.div
-      className="
+      className={`
         fixed top-0 left-0 z-[9999]
         pointer-events-none
         rounded-full
         bg-teal-400
-        mix-blend-difference
-      "
+        ${document.documentElement.classList.contains("dark")
+          ? "mix-blend-difference"
+          : ""}
+      `}
       animate={{
         x: position.x - 6,
         y: position.y - 6,
