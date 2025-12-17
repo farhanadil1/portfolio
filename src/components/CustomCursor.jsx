@@ -2,33 +2,47 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const CustomCursor = () => {
+  const [enabled, setEnabled] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
 
   useEffect(() => {
+    const mq = window.matchMedia("(pointer: fine) and (hover: hover)");
+    setEnabled(mq.matches);
+
+    const handler = (e) => setEnabled(e.matches);
+    mq.addEventListener("change", handler);
+
+    return () => mq.removeEventListener("change", handler);
+  }, []);
+
+  useEffect(() => {
+    if (!enabled) return;
+
     const moveCursor = (e) => {
       setPosition({ x: e.clientX, y: e.clientY });
     };
 
-    window.addEventListener("mousemove", moveCursor);
-
-    // detect hover on clickable elements
     const addHover = () => setIsHovering(true);
     const removeHover = () => setIsHovering(false);
 
-    document.querySelectorAll("a, button, .cursor-hover").forEach(el => {
+    window.addEventListener("mousemove", moveCursor);
+
+    document.querySelectorAll("a, button, .cursor-hover").forEach((el) => {
       el.addEventListener("mouseenter", addHover);
       el.addEventListener("mouseleave", removeHover);
     });
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
-      document.querySelectorAll("a, button, .cursor-hover").forEach(el => {
+      document.querySelectorAll("a, button, .cursor-hover").forEach((el) => {
         el.removeEventListener("mouseenter", addHover);
         el.removeEventListener("mouseleave", removeHover);
       });
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) return null;
 
   return (
     <motion.div

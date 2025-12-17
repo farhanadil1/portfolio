@@ -67,7 +67,7 @@ const ContactSection = () => {
           {/* Availability indicator */}
           <div className="mt-6 flex items-center gap-3 text-sm text-gray-500">
             <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75 animate-ping" />
+              <span className="absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-100 animate-ping" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
             </span>
             Available for opportunities
