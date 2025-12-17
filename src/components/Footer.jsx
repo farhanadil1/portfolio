@@ -93,7 +93,7 @@ const Footer = () => {
                 className="
                   group flex items-center gap-2
                   text-gray-600 dark:text-gray-300
-                  hover:text-teal-500
+                  hover:text-teal-500 dark:hover:text-teal-500
                   transition-colors duration-300
                 "
               >

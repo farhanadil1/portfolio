@@ -116,13 +116,13 @@ const AboutSection = () => {
 
           <motion.div variants={fadeUp} className="flex flex-wrap gap-3 pt-4">
             {[
-              "React","Tailwind","Node.js","Spring Boot","MongoDB",
-              "Hibernate","MySQL","Express","JavaScript","Java"
+              "React","Java","JavaScript","MySQL","Tailwind",
+              "Spring Boot","Hibernate","Node.js","Express","MongoDB",
             ].map((tech) => (
               <span
                 key={tech}
                 className="
-                  px-4 py-1.5 rounded-full text-sm font-medium
+                  px-3 py-1.5 rounded-full text-sm font-medium
                   bg-white/10 dark:bg-white/5
                   border border-black/20 dark:border-white/20
                   hover:border-teal-500 dark:hover:border-teal-400

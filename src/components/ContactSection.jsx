@@ -139,8 +139,8 @@ const ContactSection = () => {
               backdrop-blur-md
               border border-gray-300/50 dark:border-gray-700/60
               transition-all duration-300
-              hover:border-teal-500/60
-              hover:text-teal-500
+              hover:border-teal-500/60 dark:hover:border-teal-500/60
+              hover:text-teal-500 dark:hover:text-teal-500
             "
           >
             {/* subtle hover wash */}

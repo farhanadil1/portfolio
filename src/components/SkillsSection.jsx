@@ -36,8 +36,8 @@ const skillGroups = [
   {
     title: "Databases",
     skills: [
-      { icon: <SiMongodb />, label: "MongoDB" },
       { icon: <SiMysql />, label: "MySQL" },
+      { icon: <SiMongodb />, label: "MongoDB" },
     ],
   },
   {
@@ -52,8 +52,8 @@ const skillGroups = [
   {
     title: "Programming Languages",
     skills: [
-      { icon: <FaCuttlefish />, label: "C" },
       { icon: <FaJava />, label: "Java" },
+      { icon: <FaCuttlefish />, label: "C" },
       { icon: <FaPython />, label: "Python" },
     ],
   },
@@ -128,7 +128,7 @@ const SkillsSection = () => {
                   whileHover={{ scale: 1.08 }}
                   className="
                     group flex flex-col items-center gap-3
-                    transition-transform duration-300
+                    transition-transform duration-200
                   "
                 >
                   <div
