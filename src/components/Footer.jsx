@@ -47,7 +47,7 @@ const Footer = () => {
         >
           <h2
             className="
-              text-4xl md:text-6xl font-semibold tracking-tight
+              text-4xl md:text-5xl font-semibold tracking-tight
               bg-gradient-to-r from-teal-500 via-cyan-400 to-purple-400
               bg-[length:200%_200%]
               bg-clip-text text-transparent

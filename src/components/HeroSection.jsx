@@ -92,7 +92,7 @@ export default function HeroSection() {
         </motion.p>
 
         <motion.p
-          className="mt-3 text-sm md:text-base text-gray-600 dark:text-gray-400"
+          className="mt-3 text-sm text-gray-600 dark:text-gray-400"
           initial={{ opacity: 0, y: 25 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.6 }}

@@ -61,14 +61,14 @@ export default function Navbar({ darkMode, setDarkMode }) {
             <nav className="max-w-7xl mx-auto px-6 flex justify-between items-center">
               {/* Logo */}
               <motion.div {...magnetic} className="cursor-pointer">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                <h1 className="text-lg font-bold text-gray-900 dark:text-white">
                   <span className="font-medium">Adil</span>
                   <span className="font-extrabold ml-1">Farhan</span>
                 </h1>
               </motion.div>
 
               {/* Desktop Menu */}
-              <ul className="hidden md:flex gap-8 items-center text-lg font-medium">
+              <ul className="hidden md:flex gap-8 items-center text-sm font-medium">
                 {sections.map((section) => (
                   <motion.li key={section} {...magnetic}>
                     <a
@@ -179,7 +179,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                   hidden: {},
                   visible: { transition: { staggerChildren: 0.12 } }
                 }}
-                className="space-y-10"
+                className="space-y-6"
               >
                 {sections.map((section) => (
                   <motion.li
@@ -208,7 +208,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
               <motion.button
                 whileTap={{ scale: 0.85 }}
                 onClick={() => setDarkMode(!darkMode)}
-                className="mt-12 w-fit py-4 px-6 rounded-full bg-white/10 text-white"
+                className="mt-8 w-fit py-4 px-6 rounded-full bg-white/10 text-white"
               >
                 {darkMode ? (
                   <>

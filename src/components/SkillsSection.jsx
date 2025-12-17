@@ -100,7 +100,7 @@ const SkillsSection = () => {
       </div>
 
       {/* Groups */}
-      <div className="max-w-6xl mx-auto px-6 space-y-20">
+      <div className="max-w-6xl mx-auto px-6 space-y-12">
         {skillGroups.map((group) => (
           <div key={group.title}>
             {/* Group title */}

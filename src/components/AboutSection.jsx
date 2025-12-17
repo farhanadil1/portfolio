@@ -84,7 +84,7 @@ const AboutSection = () => {
         <motion.div
           className="
             text-gray-700 dark:text-gray-300
-            text-lg md:text-xl
+            text-base 
             leading-relaxed space-y-7
           "
           variants={!shouldReduceMotion ? stagger : {}}
