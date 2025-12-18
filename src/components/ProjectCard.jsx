@@ -22,7 +22,7 @@ const ProjectCard = ({ project }) => {
         <div className="relative">
           {/* subtle glow */}
           <div className="absolute inset-0 bg-teal-400/10 blur-[120px] -z-10" />
-
+          <a href={project.liveLink} target="blnk">
           <img
             src={project.imgSrc}
             alt={project.title}
@@ -35,6 +35,7 @@ const ProjectCard = ({ project }) => {
               will-change-transform
             "
           />
+          </a>
         </div>
 
         {/* CONTENT SIDE */}
