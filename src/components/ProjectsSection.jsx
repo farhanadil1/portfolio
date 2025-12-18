@@ -31,6 +31,15 @@ const projects = [
     tags: ["React", "Tailwind", "Spring Boot", "Hibernate", "MySQL"],
   },
   {
+    title: "FarmPredict - Smart Agriculture",
+    description:
+      "FarmPredict is a smart agriculture platform that delivers four intelligent solutions crop prediction, fertilizer recommendation, irrigation forecasting, and market analysis to support precision farming. Built with React and Tailwind CSS for a modern frontend and powered by PyTorch trained machine learning models.",
+    imgSrc: "./farmpredict.PNG",
+    githubLink: "https://github.com/farhanadil1/Farm-Predict",
+    liveLink: "https://farm-predict.netlify.app/",
+    tags: ["React", "Tailwind", "PyTorch", "Machine Learning"],
+  },
+  {
     title: "Weatheria",
     description:
       "Weatheria is a sleek weather web app built with React.js that fetches real-time weather data using an API. It features dark/light mode and smooth animations.",
