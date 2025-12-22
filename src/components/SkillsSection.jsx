@@ -9,6 +9,7 @@ import {
   SiPostman
 } from "react-icons/si";
 import { TbBrandCpp } from "react-icons/tb";
+import Magnet from "./Magnet"
 
 const skillGroups = [
   {
@@ -69,6 +70,7 @@ const item = {
 };
 
 const SkillsSection = () => {
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
   return (
     <section
       id="skills"
@@ -101,61 +103,65 @@ const SkillsSection = () => {
 
       {/* Groups */}
       <div className="max-w-6xl mx-auto px-6 space-y-12">
-        {skillGroups.map((group) => (
-          <div key={group.title}>
-            {/* Group title */}
-            <h3 className="
-              mb-8 text-sm uppercase tracking-widest
-              text-gray-500 dark:text-gray-400
-            ">
-              {group.title}
-            </h3>
+  {skillGroups.map((group) => (
+    <div key={group.title}>
+      {/* Group title */}
+      <h3
+        className="
+          mb-8 text-sm uppercase tracking-widest
+          text-gray-500 dark:text-gray-400
+        "
+      >
+        {group.title}
+      </h3>
 
-            {/* Skills Grid (UNCHANGED) */}
+      {/* Skills Grid (UNCHANGED layout) */}
+      <div
+        className="
+          grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7
+          gap-y-14 gap-x-8
+        "
+      >
+        {group.skills.map((skill, index) => (
+          <Magnet
+            key={index}
+            padding={30}
+            magnetStrength={40}
+            disabled={isMobile}
+          >
             <div
               className="
-                grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7
-                gap-y-14 gap-x-8
+                group flex flex-col items-center gap-3
+                transition-transform duration-200
+                hover:scale-[1.10]
               "
             >
-              {group.skills.map((skill, index) => (
-                <motion.div
-                  key={index}
-                  variants={item}
-                  initial="hidden"
-                  whileInView="show"
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.08 }}
-                  className="
-                    group flex flex-col items-center gap-3
-                    transition-transform duration-200
-                  "
-                >
-                  <div
-                    className="
-                      text-3xl text-gray-800 dark:text-gray-200
-                      transition-all duration-200
-                      group-hover:text-teal-500 text-center
-                    "
-                  >
-                    {skill.icon}
-                  </div>
+              <div
+                className="
+                  text-3xl text-gray-800 dark:text-gray-200
+                  transition-all duration-200
+                  group-hover:text-teal-500 text-center
+                "
+              >
+                {skill.icon}
+              </div>
 
-                  <span
-                    className="
-                      text-xs uppercase tracking-widest
-                      text-gray-500 dark:text-gray-500
-                      group-hover:text-teal-500 transition-colors
-                    "
-                  >
-                    {skill.label}
-                  </span>
-                </motion.div>
-              ))}
+              <span
+                className="
+                  text-xs uppercase tracking-widest
+                  text-gray-500 dark:text-gray-500
+                  group-hover:text-teal-500 transition-colors
+                "
+              >
+                {skill.label}
+              </span>
             </div>
-          </div>
+          </Magnet>
         ))}
       </div>
+    </div>
+  ))}
+</div>
     </section>
   );
 };

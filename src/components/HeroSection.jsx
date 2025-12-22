@@ -1,11 +1,13 @@
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
+import Magnet from "./Magnet";
 
 export default function HeroSection() {
   const linkedinURL = "https://www.linkedin.com/in/md-adil-farhan-b4956424a/";
   const githubURL = "https://github.com/farhanadil1";
   const emailURL = "mailto:imfarhan574@gmail.com";
   const resumeURL = "/farhanadil_cv.pdf";
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
   return (
     <section
@@ -102,15 +104,15 @@ export default function HeroSection() {
         </motion.p>
 
         {/* Resume Button */}
-        <motion.a
+        <Magnet
+          padding={40}
+          magnetStrength={40}
+          disabled={isMobile}
+        >
+        <a
           href={resumeURL}
           target="_blank"
           rel="noopener noreferrer"
-          whileHover={{ scale: 1.08 }}
-          whileTap={{ scale: 0.92 }}
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.2 }}
           className="
             inline-block mt-6 px-6 py-3 rounded-full font-semibold shadow-lg
             bg-teal-600 text-white dark:bg-teal-300 dark:text-gray-900 
@@ -119,7 +121,8 @@ export default function HeroSection() {
           "
         >
           Download Resume
-        </motion.a>
+        </a>
+        </Magnet>
 
         {/* Social Icons */}
         <motion.div
