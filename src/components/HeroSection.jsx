@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
 import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
 import Magnet from "./Magnet";
+import { useRef } from 'react';
+import VariableProximity from './VariableProximity';
 
 export default function HeroSection() {
   const linkedinURL = "https://www.linkedin.com/in/md-adil-farhan-b4956424a/";
@@ -8,6 +10,7 @@ export default function HeroSection() {
   const emailURL = "mailto:imfarhan574@gmail.com";
   const resumeURL = "/farhanadil_cv.pdf";
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const containerRef = useRef(null);
 
   return (
     <section
