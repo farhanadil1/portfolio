@@ -7,30 +7,43 @@ const ProjectSlide = ({ project }) => {
 
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start end", "end start"], // Adjusted offset for better visibility
+    offset: ["start end", "end start"],
   });
 
+  // Softer horizontal travel (less aggressive)
   const x = useTransform(
     scrollYProgress,
-    [0, 0.2, 0.8, 1],
-    ["100%", "0%", "0%", "-100%"] 
+    [0, 0.25, 0.75, 1],
+    ["60%", "0%", "0%", "-60%"]
   );
 
+  // Cleaner opacity window
   const opacity = useTransform(
     scrollYProgress,
-    [0, 0.1, 0.9, 1],
+    [0, 0.15, 0.85, 1],
     [0, 1, 1, 0]
   );
-  
+
+  // Optional subtle scale for depth
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 0.25, 0.75, 1],
+    [0.96, 1, 1, 0.96]
+  );
 
   return (
-  
-    <section id="projects" ref={ref} className="h-[200vh] relative bg-gradient-to-b from-white via-gray-50 to-white
-        dark:from-gray-950 dark:via-black dark:to-gray-950">
-      {/* PINNED AREA: Sticks to the top of the viewport */}
-      <div className="sticky top-0 h-screen overflow-hidden">
+    <section
+      ref={ref}
+      className="
+        relative h-[200vh]
+        bg-white dark:bg-[#0f0f0f]
+      "
+    >
+      {/* PINNED FRAME */}
+      <div className="sticky top-0 h-screen overflow-hidden flex items-center">
         <motion.div
-          style={{ x, opacity }} // Applied the fixed transformations
+          style={{ x, opacity, scale }}
+          transition={{ ease: "easeOut" }}
           className="
             absolute inset-0
             flex items-center justify-center
@@ -42,12 +55,9 @@ const ProjectSlide = ({ project }) => {
             className="
               max-w-6xl w-full mx-auto px-6
               grid md:grid-cols-2 gap-16 items-center
-              bg-white/80 dark:bg-gray-900/70
-              backdrop-blur-xl
-              rounded-3xl
-              border border-gray-200/60 dark:border-gray-800
-              shadow-[0_40px_120px_-40px_rgba(0,0,0,0.4)]
-              p-8 md:p-12
+              bg-white dark:bg-[#0b0b0b]
+              border border-black/5 dark:border-white/10
+              p-10 md:p-14
             "
           >
             {/* IMAGE */}
@@ -55,47 +65,58 @@ const ProjectSlide = ({ project }) => {
               <img
                 src={project.imgSrc}
                 alt={project.title}
-                className="w-full h-[320px] md:h-[420px] object-contain rounded-2xl"
+                className="w-full h-[320px] md:h-[420px] object-contain"
                 draggable={false}
               />
             </div>
 
             {/* CONTENT */}
             <div>
-              <h3 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">
+              <h3 className="text-3xl md:text-4xl font-semibold">
                 {project.title}
               </h3>
 
-              <p className="mt-6 text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+              <div className="mt-3 w-24 h-px bg-teal-500" />
+
+              <p className="mt-6 text-gray-600 dark:text-gray-400 leading-relaxed">
                 {project.description}
               </p>
 
+              {/* TAGS */}
               <div className="mt-6 flex flex-wrap gap-2">
                 {project.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="text-sm px-3 py-1 rounded-full border border-gray-300/60 dark:border-gray-700 text-gray-600 dark:text-gray-300"
+                    className="
+                      px-3 py-1 text-xs uppercase tracking-wide
+                      bg-black/[0.04] dark:bg-white/[0.06]
+                      text-gray-700 dark:text-gray-300
+                      rounded-full
+                    "
                   >
                     {tag}
                   </span>
                 ))}
               </div>
 
-              <div className="mt-10 flex gap-4">
+              {/* ACTIONS */}
+              <div className="mt-10 flex gap-8 text-sm">
                 <a
                   href={project.liveLink}
                   target="_blank"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-teal-600 text-white font-medium hover:bg-teal-500 transition"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-teal-600 dark:text-teal-400"
                 >
-                  <FiExternalLink /> Live Demo
+                  Live Demo <FiExternalLink />
                 </a>
 
                 <a
                   href={project.githubLink}
                   target="_blank"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full border border-gray-300 dark:border-gray-700 text-gray-800 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 text-gray-700 dark:text-gray-300"
                 >
-                  <FiGithub /> GitHub
+                  GitHub <FiGithub />
                 </a>
               </div>
             </div>

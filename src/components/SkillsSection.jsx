@@ -1,169 +1,153 @@
-import { motion } from "framer-motion";
-import {
-  FaReact, FaJsSquare, FaNodeJs, FaPython, FaJava, FaCuttlefish,
-  FaGitAlt, FaGithub, FaBootstrap,
-} from "react-icons/fa";
-import {
-  SiTailwindcss, SiMongodb, SiHtml5, SiCss3,
-  SiSpringboot, SiMysql, SiExpress, SiFigma, SiRedhat, SiHibernate,
-  SiPostman
-} from "react-icons/si";
-import { TbBrandCpp } from "react-icons/tb";
-import Magnet from "./Magnet"
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
-const skillGroups = [
-  {
-    title: "Frontend",
-    skills: [
-      { icon: <FaReact />, label: "React" },
-      { icon: <FaJsSquare />, label: "JavaScript" },
-      { icon: <SiHtml5 />, label: "HTML5" },
-      { icon: <SiCss3 />, label: "CSS3" },
-      { icon: <SiTailwindcss />, label: "Tailwind CSS" },
-      { icon: <SiFigma />, label: "Figma" },
-      { icon: <FaBootstrap />, label: "Bootstrap" },
-    ],
-  },
-  {
-    title: "Backend",
-    skills: [
-      { icon: <FaJava />, label: "Java" },
-      { icon: <SiSpringboot />, label: "Spring Boot" },
-      { icon: <SiHibernate />, label: "Hibernate" },
-      { icon: <FaNodeJs />, label: "Node.js" },
-      { icon: <SiExpress />, label: "Express" },
-    ],
-  },
-  {
-    title: "Databases",
-    skills: [
-      { icon: <SiMysql />, label: "MySQL" },
-      { icon: <SiMongodb />, label: "MongoDB" },
-    ],
-  },
-  {
-    title: "DevOps & Tools",
-    skills: [
-      { icon: <FaGitAlt />, label: "Git" },
-      { icon: <FaGithub />, label: "GitHub" },
-      { icon: <SiRedhat />, label: "Red Hat" },
-      { icon: <SiPostman />, label: "Postman"},
-    ],
-  },
-  {
-    title: "Programming Languages",
-    skills: [
-      { icon: <FaJava />, label: "Java" },
-      { icon: <FaCuttlefish />, label: "C" },
-      { icon: <FaPython />, label: "Python" },
-    ],
-  },
+gsap.registerPlugin(ScrollTrigger);
+
+const skills = [
+  "React",
+  "JavaScript",
+  "Tailwind CSS",
+  "Java",
+  "Spring Boot",
+  "Hibernate",
+  "Node.js",
+  "Express",
+  "MongoDB",
+  "MySQL",
+  "Git",
+  "GitHub",
+  "Postman",
+  "Figma",
 ];
 
-const item = {
-  hidden: { opacity: 0, y: 20 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.5, ease: "easeOut" },
-  },
-};
+export default function SkillsSection() {
+  const sectionRef = useRef(null);
+  const ribbonRef = useRef(null);
 
-const SkillsSection = () => {
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const items = gsap.utils.toArray(".skill-item");
+
+      items.forEach((item, index) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top center",
+          end: "bottom center",
+          onEnter: () => focus(index),
+          onEnterBack: () => focus(index),
+        });
+      });
+
+      function focus(activeIndex) {
+        items.forEach((item, i) => {
+          const d = Math.abs(i - activeIndex);
+
+          gsap.to(item, {
+            opacity: d === 0 ? 1 : d === 1 ? 0.6 : 0.25,
+            filter:
+              d === 0
+                ? "blur(0px)"
+                : d === 1
+                ? "blur(1px)"
+                : "blur(2px)",
+            duration: 0.35,
+            ease: "power2.out",
+          });
+        });
+      }
+
+      const path = ribbonRef.current.querySelector("path");
+
+      gsap.to(path, {
+        strokeDashoffset: 0,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 2,
+        },
+      });
+
+      // subtle horizontal drift (water feel)
+      gsap.to(ribbonRef.current, {
+        x: 12,
+        ease: "sine.inOut",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 2,
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <section
+      ref={sectionRef}
       id="skills"
       className="
-        relative py-10
-        bg-gradient-to-b from-white via-gray-50 to-white
-        dark:from-gray-950 dark:via-black dark:to-gray-950
+        relative py-16 px-6 md:px-20
+        bg-white text-black
+        dark:bg-[#0f0f0f] dark:text-white
         overflow-hidden
       "
     >
-      {/* Ambient background */}
-      <div className="absolute inset-0 -z-10 pointer-events-none">
-        <div className="absolute top-20 left-1/4 w-96 h-96 bg-teal-400/10 blur-[160px]" />
-        <div className="absolute bottom-20 right-1/4 w-96 h-96 bg-cyan-400/10 blur-[160px]" />
-      </div>
-
-      {/* Header */}
-      <div className="max-w-6xl mx-auto px-6 mb-16">
-        <h2 className="
-          text-4xl md:text-5xl font-semibold tracking-tight
-          bg-gradient-to-r from-teal-500 to-cyan-400
-          bg-clip-text text-transparent
-        ">
-          Tech Stack
-        </h2>
-        <p className="mt-4 max-w-xl text-gray-600 dark:text-gray-400">
-          Technologies and tools I use to design, build, and scale modern applications.
-        </p>
-      </div>
-
-      {/* Groups */}
-      <div className="max-w-6xl mx-auto px-6 space-y-12">
-  {skillGroups.map((group) => (
-    <div key={group.title}>
-      {/* Group title */}
-      <h3
-        className="
-          mb-8 text-sm uppercase tracking-widest
-          text-gray-500 dark:text-gray-400
-        "
-      >
-        {group.title}
-      </h3>
-
-      {/* Skills Grid (UNCHANGED layout) */}
+      {/* Curvy Ribbon */}
       <div
-        className="
-          grid grid-cols-5 sm:grid-cols-6 md:grid-cols-7
-          gap-y-14 gap-x-8
-        "
+        ref={ribbonRef}
+        className="absolute left-80 top-0 h-full w-20 pointer-events-none"
       >
-        {group.skills.map((skill, index) => (
-          <Magnet
-            key={index}
-            padding={30}
-            magnetStrength={40}
-            disabled={isMobile}
-          >
+        <svg
+          viewBox="0 0 100 1200"
+          preserveAspectRatio="none"
+          className="h-full w-full"
+        >
+          <path
+            d="
+              M50 0
+              C30 150, 70 300, 50 450
+              C30 600, 70 750, 50 900
+              C30 1050, 70 1200, 50 1350
+            "
+            fill="none"
+            stroke="rgba(20,184,166,0.6)"
+            strokeWidth="6"
+            strokeLinecap="round"
+            strokeDasharray="1400"
+            strokeDashoffset="1400"
+          />
+        </svg>
+      </div>
+
+      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-16">
+        {/* Label */}
+        <div className="text-sm tracking-[0.2em] text-gray-500 dark:text-gray-400">
+          SKILLS
+        </div>
+
+        {/* Skills List */}
+        <div className="text-center sm:text-justify md:col-span-2 space-y-4">
+          {skills.map((skill) => (
             <div
+              key={skill}
               className="
-                group flex flex-col items-center gap-3
-                transition-transform duration-200
-                hover:scale-[1.10]
+                skill-item
+                text-2xl md:text-3xl
+                font-medium tracking-tight
+                opacity-30
+                will-change-filter
               "
             >
-              <div
-                className="
-                  text-3xl text-gray-800 dark:text-gray-200
-                  transition-all duration-200
-                  group-hover:text-teal-500 text-center
-                "
-              >
-                {skill.icon}
-              </div>
-
-              <span
-                className="
-                  text-xs uppercase tracking-widest
-                  text-gray-500 dark:text-gray-500
-                  group-hover:text-teal-500 transition-colors
-                "
-              >
-                {skill.label}
-              </span>
+              {skill}
             </div>
-          </Magnet>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
-  ))}
-</div>
     </section>
   );
-};
-
-export default SkillsSection;
+}

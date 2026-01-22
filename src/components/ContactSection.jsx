@@ -1,186 +1,172 @@
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FiArrowUpRight, FiCheck } from "react-icons/fi";
 import { FaEnvelope, FaLinkedin } from "react-icons/fa";
 
-const ContactSection = () => {
+gsap.registerPlugin(ScrollTrigger);
+
+export default function ContactSection() {
   const email = "imfarhan574@gmail.com";
   const linkedinURL =
     "https://www.linkedin.com/in/md-adil-farhan-b4956424a/";
 
+  const sectionRef = useRef(null);
+  const ctaRef = useRef(null);
+  const dotRef = useRef(null);
   const [copied, setCopied] = useState(false);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      /* Section reveal */
+      gsap.from(".contact-reveal", {
+        opacity: 0,
+        y: 28,
+        duration: 0.9,
+        ease: "power3.out",
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 65%",
+        },
+      });
+
+      /* CTA emphasis (once) */
+      gsap.fromTo(
+        ctaRef.current,
+        { scale: 0.97 },
+        {
+          scale: 1,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ctaRef.current,
+            start: "top 80%",
+            once: true,
+          },
+        }
+      );
+
+      /* Availability pulse (calm) */
+      if (dotRef.current) {
+        gsap.to(dotRef.current, {
+          opacity: 0.4,
+          scale: 1.4,
+          duration: 2,
+          repeat: -1,
+          yoyo: true,
+          ease: "sine.inOut",
+        });
+      }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const copyEmail = async () => {
     await navigator.clipboard.writeText(email);
     setCopied(true);
-    setTimeout(() => setCopied(false), 1800);
+    setTimeout(() => setCopied(false), 1600);
   };
 
   return (
     <section
+      ref={sectionRef}
       id="contact"
       className="
-        relative py-24 overflow-hidden
-        bg-gradient-to-b from-white via-gray-50 to-white
-        dark:from-gray-950 dark:via-black dark:to-gray-950
+        relative py-20 sm:pt-36 sm:pb-20
+        bg-white text-black
+        dark:bg-[#0f0f0f] dark:text-white
       "
     >
-      {/* Cursor reactive glow */}
-      <div
-        className="pointer-events-none absolute inset-0 -z-10"
-        style={{
-          background: `radial-gradient(600px at ${mouse.x}px ${mouse.y}px,
-            rgba(45,212,191,0.12),
-            transparent 70%)`,
-        }}
-      />
-
       <div className="max-w-6xl mx-auto px-6">
         {/* Intro */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="max-w-2xl"
-        >
-          <p className="text-sm uppercase tracking-widest text-gray-500 mb-4">
-            Contact
+        <div className="contact-reveal max-w-2xl">
+          <p className="text-sm tracking-[0.2em] text-gray-500 dark:text-gray-400 pb-4">
+            CONTACT
           </p>
 
-          <h2
-            className="
-              text-4xl md:text-5xl font-semibold tracking-tight
-              bg-gradient-to-r from-teal-500 to-cyan-400
-              bg-clip-text text-transparent
-            "
-          >
-            Let’s build something impactful
+          <h2 className="text-4xl md:text-5xl font-medium tracking-tight">
+            Let’s build something meaningful
           </h2>
 
           <p className="mt-6 text-lg text-gray-600 dark:text-gray-400">
-            I’m open to internships, full-time roles, collaborations, and
-            interesting conversations around tech & design.
+            I’m open to internships, full-time roles, and thoughtful
+            collaborations where engineering and design meet.
           </p>
 
-          {/* Availability indicator */}
+          {/* Availability */}
           <div className="mt-6 flex items-center gap-3 text-sm text-gray-500">
-            <span className="relative flex h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-100 animate-ping" />
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500" />
-            </span>
+            <span
+              ref={dotRef}
+              className="relative h-2 w-2 rounded-full bg-teal-500"
+            />
             Available for opportunities
           </div>
-        </motion.div>
+        </div>
 
-        {/* Actions */}
-        <div className="mt-12 flex flex-col md:flex-row gap-8">
-
-          {/* EMAIL – Primary */}
-          <motion.button
+        {/* CTAs */}
+        <div
+          ref={ctaRef}
+          className="contact-reveal mt-10 flex flex-col md:flex-row gap-6"
+        >
+          {/* Email */}
+          <button
             onClick={copyEmail}
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
             className="
               group relative flex items-center justify-between
-              w-full md:w-[340px]
-              px-8 py-4
-              bg-teal-500 text-black
+              w-full md:w-[300px]
+              px-6 py-3.5
               rounded-full
-              font-medium text-lg
-              overflow-hidden
-              shadow-md
+              border border-black/10 dark:border-white/10
+              text-base font-medium
+              transition-all duration-300
+              hover:border-teal-500
             "
           >
-            <span className="flex items-center gap-4">
+            <span className="flex items-center gap-3">
               <FaEnvelope />
-              {copied ? "Email copied!" : "Copy my email"}
+              {copied ? "Email copied" : "Start a conversation"}
             </span>
 
-            <span className="relative">
-              {copied ? (
-                <FiCheck className="text-xl" />
-              ) : (
-                <FiArrowUpRight
-                  className="
-                    text-xl
-                    transition-transform duration-300
-                    group-hover:translate-x-1.5 group-hover:-translate-y-1.5
-                  "
-                />
-              )}
-            </span>
+            {copied ? (
+              <FiCheck className="text-lg text-teal-500" />
+            ) : (
+              <FiArrowUpRight className="text-lg transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+            )}
+          </button>
 
-            {/* Hover sheen */}
-            <span
-              className="
-                pointer-events-none absolute inset-0
-                bg-gradient-to-r from-transparent via-white/40 to-transparent
-                translate-x-[-120%] group-hover:translate-x-[120%]
-                transition-transform duration-700
-              "
-            />
-          </motion.button>
-
-          {/* LINKEDIN – Secondary (matched height & tone) */}
-          <motion.a
+          {/* LinkedIn */}
+          <a
             href={linkedinURL}
             target="_blank"
             rel="noopener noreferrer"
-            whileHover={{ x: 6 }}
             className="
               group relative flex items-center justify-between
-              w-full md:w-[340px]
-              px-8 py-4
+              w-full md:w-[300px]
+              px-6 py-3.5
               rounded-full
-              text-gray-800 dark:text-gray-200
-              bg-white/40 dark:bg-white/5
-              backdrop-blur-md
-              border border-gray-300/50 dark:border-gray-700/60
-              transition-all duration-300
-              hover:border-teal-500/60 dark:hover:border-teal-500/60
-              hover:text-teal-500 dark:hover:text-teal-500
+              text-base font-medium
+              text-gray-600 dark:text-gray-400
+              border border-black/5 dark:border-white/5
+              transition-colors duration-300
+              hover:text-black dark:hover:text-white
             "
           >
-            {/* subtle hover wash */}
-            <span
-              className="
-                pointer-events-none absolute inset-0 rounded-full
-                opacity-0 group-hover:opacity-100
-                transition-opacity duration-300
-                bg-gradient-to-r from-teal-400/10 to-cyan-400/10
-              "
-            />
-
-            <span className="relative flex items-center gap-4 font-medium">
-              <FaLinkedin className="text-xl" />
-              Connect on LinkedIn
+            <span className="flex items-center gap-3">
+              <FaLinkedin />
+              LinkedIn
             </span>
 
-            <FiArrowUpRight
-              className="
-                relative text-xl
-                transition-transform duration-300
-                group-hover:translate-x-1.5 group-hover:-translate-y-1.5
-              "
-            />
-          </motion.a>
+            <FiArrowUpRight className="text-lg transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+          </a>
         </div>
 
-        {/* Footer micro-copy */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          className="mt-8 md:mt-14 text-sm text-gray-500"
-        >
-          Based in India · Open to remote & on-site opportunities
-        </motion.p>
+        {/* Footer note */}
+        <p className="contact-reveal mt-20 text-sm text-gray-500">
+          Based in India · Open to remote & on-site roles
+        </p>
       </div>
     </section>
   );
-};
-
-export default ContactSection;
+}

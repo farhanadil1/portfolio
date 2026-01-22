@@ -1,158 +1,96 @@
-import { motion } from "framer-motion";
-import { FaGithub, FaLinkedin, FaEnvelope } from "react-icons/fa";
-import Magnet from "./Magnet";
-import { useRef } from 'react';
-import VariableProximity from './VariableProximity';
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 
 export default function HeroSection() {
-  const linkedinURL = "https://www.linkedin.com/in/md-adil-farhan-b4956424a/";
-  const githubURL = "https://github.com/farhanadil1";
-  const emailURL = "mailto:imfarhan574@gmail.com";
-  const resumeURL = "/farhanadil_cv.pdf";
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
-  const containerRef = useRef(null);
+  const heroRef = useRef(null);
+  const bgRef = useRef(null);
+  const textRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(textRef.current.children, {
+        y: 60,
+        opacity: 0,
+        duration: 1.2,
+        ease: "power4.out",
+        stagger: 0.12,
+      });
+
+      const move = (e) => {
+        const { innerWidth, innerHeight } = window;
+        const x = (e.clientX / innerWidth - 0.5) * 40;
+        const y = (e.clientY / innerHeight - 0.5) * 40;
+
+        gsap.to(bgRef.current, {
+          x,
+          y,
+          duration: 0.6,
+          ease: "power3.out",
+        });
+
+        gsap.to(textRef.current, {
+          x: x * 0.3,
+          y: y * 0.3,
+          duration: 0.6,
+          ease: "power3.out",
+        });
+      };
+
+      window.addEventListener("mousemove", move);
+      return () => window.removeEventListener("mousemove", move);
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <section
+      ref={heroRef}
       id="home"
       className="
-        relative min-h-screen flex flex-col md:flex-row items-center justify-center 
-        px-6 md:px-20 pt-16 md:py-0 py-10 gap-12
-        bg-gradient-to-b from-white to-gray-100 
-        dark:from-gray-900 dark:to-black
-        transition-all duration-500 
+        relative min-h-screen overflow-hidden
+        flex items-center
+        px-6 md:px-20
+        bg-white text-black
+        dark:bg-[#0a0a0a] dark:text-white
       "
     >
-
-      {/* Soft Background Glows */}
-      <div className="absolute inset-0 -z-10 overflow-hidden">
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{ duration: 1.5 }}
-          className="absolute top-10 left-10 w-64 h-64 bg-teal-400/20 blur-[120px] rounded-full"
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.4 }}
-          transition={{ duration: 1.5, delay: 0.3 }}
-          className="absolute bottom-10 right-10 w-64 h-64 bg-purple-500/20 blur-[150px] rounded-full"
-        />
-      </div>
-
-      {/* Avatar Video (Floating Hologram Look) */}
-      <motion.div
-        initial={{ opacity: 0, y: 50, scale: 0.8 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 1, type: "spring" }}
-        whileHover={{ scale: 1.05 }}
+      {/* Reactive background */}
+      <div
+        ref={bgRef}
         className="
-          relative rounded-full w-44 h-44 sm:w-56 sm:h-56 md:w-80 md:h-80 
-          overflow-hidden shadow-2xl 
-          ring-4 ring-white dark:ring-gray-700 ring-offset-2
+          absolute inset-[-20%]
+          bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.18),transparent_60%)]
+          dark:bg-[radial-gradient(circle_at_center,rgba(20,184,166,0.12),transparent_65%)]
+          transition-colors
         "
+      />
+
+      {/* Content */}
+      <div
+        className="relative z-10 max-w-4xl space-y-6"
       >
+        <p className="text-xs tracking-[0.3em] text-gray-500 dark:text-gray-400">
+          FULL STACK DEVELOPER
+        </p>
 
-        {/* Avatar Video */}
-        <video
-          src="/a_converted.mp4"
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="object-cover object-[50%_20%] w-full h-full"
-        />
-      </motion.div>
+        <h1 className="text-[clamp(3.5rem,8vw,6.5rem)] font-medium leading-none"
+          ref={textRef}
+        >
+          MD ADIL
+          <br />
+          FARHAN
+        </h1>
 
-      {/* Right Side Content */}
-      <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 1 }}
-        className="text-center md:text-left max-w-2xl"
-      >
-        <motion.h1
-          className="text-4xl md:text-5xl font-extrabold leading-tight"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6 }}
-        >
-          Hi, I’m{" "}
-          <span className="text-teal-600 dark:text-teal-300">
-            Md Adil Farhan
-          </span>
-        </motion.h1>
+        <p className="max-w-xl text-gray-600 dark:text-gray-300 text-base">
+          I design and engineer interactive web systems where motion,
+          performance, and structure work together not separately.
+        </p>
 
-        <motion.p
-          className="mt-3 text-lg text-gray-700 dark:text-gray-300"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-        >
-          Full Stack Developer crafting elegant, high-performance apps with
-          <span className="font-semibold text-teal-700 dark:text-teal-300">
-            {" "}
-            MERN & Java.
-          </span>
-        </motion.p>
-
-        <motion.p
-          className="mt-3 text-sm text-gray-600 dark:text-gray-400"
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.6 }}
-        >
-          B.Tech CSE @ MCKVIE | React, Spring Boot, Hibernate, MySQL, Node.js, Express,
-          MongoDB. I build functional and beautiful digital experiences.
-        </motion.p>
-
-        {/* Resume Button */}
-        <Magnet
-          padding={40}
-          magnetStrength={40}
-          disabled={isMobile}
-        >
-        <a
-          href={resumeURL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="
-            inline-block mt-6 px-6 py-3 rounded-full font-semibold shadow-lg
-            bg-teal-600 text-white dark:bg-teal-300 dark:text-gray-900 
-            hover:shadow-xl hover:bg-teal-500 dark:hover:bg-teal-200
-            transition-all
-          "
-        >
-          Download Resume
-        </a>
-        </Magnet>
-
-        {/* Social Icons */}
-        <motion.div
-          className="flex justify-center md:justify-start mt-8 gap-8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 0.6 }}
-        >
-          {[
-            { icon: <FaLinkedin size={32} />, url: linkedinURL },
-            { icon: <FaGithub size={32} />, url: githubURL },
-            { icon: <FaEnvelope size={32} />, url: emailURL },
-          ].map((item, index) => (
-            <motion.a
-              key={index}
-              href={item.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.2, y: -3 }}
-              whileTap={{ scale: 0.9 }}
-              className="text-gray-500 dark:text-gray-300 hover:text-teal-500 transition"
-            >
-              {item.icon}
-            </motion.a>
-          ))}
-        </motion.div>
-      </motion.div>
+        <p className="text-sm text-gray-500 dark:text-gray-400">
+          React · Tailwind CSS · Java · Spring Boot · Node · MongoDB
+        </p>
+      </div>
     </section>
   );
 }

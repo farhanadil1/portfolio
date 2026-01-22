@@ -1,144 +1,197 @@
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
-import ProjectCard from "../components/ProjectCard";
+import { motion } from "framer-motion";
+import { FiArrowUpRight } from "react-icons/fi";
+
+const featuredProject = {
+  title: "EcoKart",
+  description:
+    "An eco-friendly e-commerce platform focused on sustainable living. Designed with clean UI, smooth interactions, and a scalable architecture.",
+  imgSrc: "./ecokart.png",
+  liveLink: "https://ecokart-adil-farhan.netlify.app/",
+};
 
 const projects = [
   {
-    title: "EcoKart",
-    description:
-      "EcoKart is an eco-friendly product selling web app built with React & Tailwind CSS. It offers sustainable products in categories like Skincare, Household, Baby Care, and Personal Care. Features include a product carousel, reviews, cart system, and responsive design for seamless shopping.",
-    imgSrc: "./ecokart.png",
-    githubLink: "https://github.com/farhanadil1/EcoKart",
-    liveLink: "https://ecokart-adil-farhan.netlify.app/",
-    tags: ["MERN", "JWT", "Cart Context", "Figma"],
-  },
-  {
-    title: "CVCraft - Resume Builder",
-    description:
-      "CVCraft is a feature-rich full-stack resume builder designed for professionals and students to create ATS-friendly resumes efficiently. Built with React + Tailwind CSS on the frontend and Node.js + Express + MongoDB on the backend.",
+    title: "CVCraft",
     imgSrc: "./cvcraft.png",
-    githubLink: "https://github.com/farhanadil1",
-    liveLink: "https://cv-craftt.netlify.app/",
-    tags: ["React", "Node", "MongoDB", "JWT"],
+    href: "/projects/cvcraft",
   },
   {
-    title: "FitMe - Fitness Tracker",
-    description:
-      "FitMe is a fitness tracking and personal development web application designed to help users achieve their fitness goals. It includes workout logging, progress tracking, nutrition guidance, and more.",
+    title: "FitMe",
     imgSrc: "./fitme.png",
-    githubLink: "https://github.com/farhanadil1/FitMe",
-    liveLink: "https://fitmeui.netlify.app/",
-    tags: ["React", "Tailwind", "Spring Boot", "Hibernate", "MySQL"],
+    href: "/projects/fitme",
   },
   {
-    title: "FarmPredict - Smart Agriculture",
-    description:
-      "FarmPredict is a smart agriculture platform that delivers four intelligent solutions crop prediction, fertilizer recommendation, irrigation forecasting, and market analysis to support precision farming. Built with React and Tailwind CSS for a modern frontend and powered by PyTorch trained machine learning models.",
+    title: "FarmPredict",
     imgSrc: "./farmpredict.PNG",
-    githubLink: "https://github.com/farhanadil1/Farm-Predict",
-    liveLink: "https://farm-predict.netlify.app/",
-    tags: ["React", "Tailwind", "PyTorch", "Machine Learning"],
+    href: "/projects/farmpredict",
   },
   {
     title: "Weatheria",
-    description:
-      "Weatheria is a sleek weather web app built with React.js that fetches real-time weather data using an API. It features dark/light mode and smooth animations.",
     imgSrc: "./weatheria.png",
-    githubLink: "https://github.com/farhanadil1/Weatheria",
-    liveLink: "https://weatheria123.netlify.app/",
-    tags: ["React", "API", "Animations"],
+    href: "/projects/weatheria",
   },
 ];
 
-const PIN_SCROLL = 0.6;
-const TRANSITION_SCROLL = 1;
-
-const ProjectsSection = () => {
-  const ref = useRef(null);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth < 768);
-    check();
-    window.addEventListener("resize", check);
-    return () => window.removeEventListener("resize", check);
-  }, []);
-
-  const totalScrollUnits =
-    projects.length * (PIN_SCROLL + TRANSITION_SCROLL);
-
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start start", "end start"],
-    enabled: !isMobile,
-  });
-
-  const x = useTransform(scrollYProgress, (v) => {
-    if (isMobile) return "0%";
-
-    const total = totalScrollUnits;
-    const progress = v * total;
-
-    const index = Math.floor(progress / (PIN_SCROLL + TRANSITION_SCROLL));
-    const local = progress % (PIN_SCROLL + TRANSITION_SCROLL);
-
-    // PIN phase
-    if (local < PIN_SCROLL) {
-      return `-${index * 100}%`;
-    }
-
-    // SLIDE phase
-    const t = (local - PIN_SCROLL) / TRANSITION_SCROLL;
-    return `-${(index + t) * 100}%`;
-  });
-
+export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      ref={ref}
       className="
-        relative
-        bg-gradient-to-b from-white via-gray-50 to-white
-        dark:from-gray-950 dark:via-black dark:to-gray-950
+        relative py-28 px-6 md:px-20
+        bg-white text-black
+        dark:bg-black dark:text-white
       "
-      style={{ height: isMobile ? "auto" : `${totalScrollUnits * 100}vh` }}
     >
-      {/* Section Title */}
-      <motion.h2
-        className="
-          text-4xl md:text-5xl font-bold text-center pt-10 md:pt-12 pb-4
-          bg-gradient-to-r from-teal-700 via-teal-500 to-teal-600
-          bg-[length:200%_200%]
-          bg-clip-text text-transparent
-        "
-        animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "linear" }}
-      >
-        Projects
-      </motion.h2>
+      <div className="max-w-7xl mx-auto">
 
-      {/* PROJECTS VIEW */}
-      {isMobile ? (
-       
-        <div className="px-4 space-y-20 pb-24">
+        {/* HEADER */}
+        <div className="mb-16">
+          <p className="text-sm tracking-[0.25em] text-gray-500 dark:text-gray-400">
+            SELECTED WORK
+          </p>
+          <p className="mt-3 max-w-xl text-gray-600 dark:text-gray-400">
+            A curated set of projects focused on interaction design,
+            system thinking, and real-world problem solving.
+          </p>
+        </div>
+
+        {/* FEATURED PROJECT */}
+        <motion.a
+          href={featuredProject.liveLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          whileHover="hover"
+          initial="rest"
+          animate="rest"
+          className="
+            group relative mb-10
+            md:aspect-[20/9] aspect-[16/10] overflow-hidden
+            bg-neutral-100 dark:bg-neutral-900
+            block
+          "
+        >
+          <motion.img
+            src={featuredProject.imgSrc}
+            alt={featuredProject.title}
+            variants={{
+              rest: { scale: 1 },
+              hover: { scale: 1.04 },
+            }}
+            transition={{ duration: 0.6, ease: "easeOut" }}
+            className="absolute inset-0 w-full h-full object-cover"
+            draggable={false}
+          />
+
+          {/* overlay */}
+          <div className="absolute inset-0 bg-black/30" />
+
+          {/* content */}
+          <div
+            className="
+              absolute bottom-0 left-0
+              w-full p-8 md:p-12
+              text-white
+            "
+          >
+            <p className="text-xs tracking-[0.2em] opacity-70 mb-3">
+              FEATURED PROJECT
+            </p>
+
+            <h3 className="text-2xl md:text-4xl font-semibold tracking-tight">
+              {featuredProject.title}
+            </h3>
+
+            <p className="mt-4 max-w-lg text-white/80 text-xs md:text-base">
+              {featuredProject.description}
+            </p>
+
+            <div className="mt-6 inline-flex items-center gap-2 text-sm font-medium">
+              View project
+              <FiArrowUpRight />
+            </div>
+          </div>
+        </motion.a>
+
+        {/* GRID PROJECTS */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
           {projects.map((project) => (
-            <ProjectCard key={project.title} project={project} />
+            <motion.a
+              key={project.title}
+              href={project.href}
+              whileHover="hover"
+              initial="rest"
+              animate="rest"
+              className="
+                group relative aspect-[16/10]
+                overflow-hidden
+                bg-neutral-100 dark:bg-neutral-900
+                block
+              "
+            >
+              <motion.img
+                src={project.imgSrc}
+                alt={project.title}
+                variants={{
+                  rest: { scale: 1 },
+                  hover: { scale: 1.06 },
+                }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="absolute inset-0 w-full h-full object-cover"
+                draggable={false}
+              />
+
+              <motion.div
+                variants={{
+                  rest: { opacity: 0.15 },
+                  hover: { opacity: 0.35 },
+                }}
+                className="absolute inset-0 bg-black"
+              />
+
+              <motion.div
+                variants={{
+                  rest: { opacity: 0, y: 8 },
+                  hover: { opacity: 1, y: 0 },
+                }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="
+                  absolute inset-0
+                  flex flex-col items-center justify-center
+                  text-white
+                "
+              >
+                <h4 className="text-2xl font-semibold tracking-tight">
+                  {project.title}
+                </h4>
+
+                <div className="mt-2 flex items-center gap-2 text-sm opacity-80">
+                  View project
+                  <FiArrowUpRight />
+                </div>
+              </motion.div>
+            </motion.a>
           ))}
         </div>
-      ) : (
-        <div className="sticky top-0 h-screen overflow-hidden">
-          <motion.div
-            style={{ x }}
-            className="flex h-full will-change-transform"
+
+        {/* MORE PROJECTS CTA */}
+        <div className="mt-16 text-center">
+          <a
+            href="https://github.com/farhanadil1"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              inline-flex items-center gap-2
+              text-sm font-medium
+              text-gray-700 dark:text-gray-300
+              hover:text-black dark:hover:text-white
+              transition-colors
+            "
           >
-            {projects.map((project) => (
-              <ProjectCard key={project.title} project={project} />
-            ))}
-          </motion.div>
+            View more projects on GitHub
+            <FiArrowUpRight />
+          </a>
         </div>
-      )}
+      </div>
     </section>
   );
-};
-
-export default ProjectsSection;
+}
