@@ -151,7 +151,7 @@ export default function AboutSection() {
               target="_blank"
               rel="noopener noreferrer"
             >
-            <p className="mt-4 text-xs text-teal-500 tracking-widest text-end">[ RESUME ]</p>
+            <p className="mt-4 text-xs text-teal-500 tracking-widest text-end">[ CV ]</p>
               
             </a>
             <p className="mt-2 text-xs text-white/40 tracking-widest text-end">

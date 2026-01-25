@@ -5,25 +5,27 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const skills = [
-  "React",
-  "JavaScript",
-  "Tailwind CSS",
-  "Java",
-  "Spring Boot",
-  "Hibernate",
-  "Node.js",
-  "Express",
-  "MongoDB",
-  "MySQL",
-  "Git",
-  "GitHub",
-  "Postman",
-  "Figma",
+  { name: "React", note: "Scalable component-based UIs" },
+  { name: "JavaScript", note: "Modern ES & async logic" },
+  { name: "Tailwind CSS", note: "Utility-first design systems" },
+  { name: "Java", note: "Strong OOP foundations" },
+  { name: "Spring Boot", note: "Production-ready REST APIs" },
+  { name: "Hibernate", note: "Efficient ORM mappings" },
+  { name: "Node.js", note: "Event-driven backend services" },
+  { name: "Express", note: "Minimal API architecture" },
+  { name: "MongoDB", note: "Flexible document modeling" },
+  { name: "MySQL", note: "Structured relational queries" },
+  { name: "Git", note: "Version control workflows" },
+  { name: "GitHub", note: "Collaborative code reviews" },
+  { name: "Postman", note: "API testing & validation" },
+  { name: "Figma", note: "Interface prototyping" },
 ];
+
 
 export default function SkillsSection() {
   const sectionRef = useRef(null);
-  const ribbonRef = useRef(null);
+  const glowRef = useRef(null);
+  const popupRef = useRef(null);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -32,8 +34,8 @@ export default function SkillsSection() {
       items.forEach((item, index) => {
         ScrollTrigger.create({
           trigger: item,
-          start: "top center",
-          end: "bottom center",
+          start: "top 55%",
+          end: "bottom 55%",
           onEnter: () => focus(index),
           onEnterBack: () => focus(index),
         });
@@ -44,43 +46,45 @@ export default function SkillsSection() {
           const d = Math.abs(i - activeIndex);
 
           gsap.to(item, {
-            opacity: d === 0 ? 1 : d === 1 ? 0.6 : 0.25,
+            opacity: d === 0 ? 1 : d === 1 ? 0.55 : 0.25,
             filter:
               d === 0
                 ? "blur(0px)"
                 : d === 1
-                ? "blur(1px)"
-                : "blur(2px)",
-            duration: 0.35,
+                ? "blur(0.8px)"
+                : "blur(1.6px)",
+            y: d === 0 ? 0 : d * 4,
+            duration: 0.3,
             ease: "power2.out",
+            overwrite: "auto",
           });
         });
+
+        const active = items[activeIndex];
+        const bounds = active.getBoundingClientRect();
+        const sectionBounds = sectionRef.current.getBoundingClientRect();
+
+        /* glow movement */
+        gsap.to(glowRef.current, {
+          y: bounds.top - sectionBounds.top + bounds.height / 2 - 120,
+          opacity: 1,
+          duration: 0.35,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
+
+        /* popup content + position */
+        popupRef.current.textContent = skills[activeIndex].note;
+
+        gsap.to(popupRef.current, {
+          y: bounds.top - sectionBounds.top - 8,
+          opacity: 1,
+          scale: 1,
+          duration: 0.35,
+          ease: "power3.out",
+          overwrite: "auto",
+        });
       }
-
-      const path = ribbonRef.current.querySelector("path");
-
-      gsap.to(path, {
-        strokeDashoffset: 0,
-        ease: "none",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 2,
-        },
-      });
-
-      // subtle horizontal drift (water feel)
-      gsap.to(ribbonRef.current, {
-        x: 12,
-        ease: "sine.inOut",
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          scrub: 2,
-        },
-      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -91,59 +95,65 @@ export default function SkillsSection() {
       ref={sectionRef}
       id="skills"
       className="
-        relative py-16 px-6 md:px-20
+        relative py-20 px-6 md:px-20
         bg-white text-black
         dark:bg-[#0f0f0f] dark:text-white
         overflow-hidden
       "
     >
-      {/* Curvy Ribbon */}
+      {/* Magnetic Glow */}
       <div
-        ref={ribbonRef}
-        className="absolute left-80 top-0 h-full w-20 pointer-events-none"
-      >
-        <svg
-          viewBox="0 0 100 1200"
-          preserveAspectRatio="none"
-          className="h-full w-full"
-        >
-          <path
-            d="
-              M50 0
-              C30 150, 70 300, 50 450
-              C30 600, 70 750, 50 900
-              C30 1050, 70 1200, 50 1350
-            "
-            fill="none"
-            stroke="rgba(20,184,166,0.6)"
-            strokeWidth="6"
-            strokeLinecap="round"
-            strokeDasharray="1400"
-            strokeDashoffset="1400"
-          />
-        </svg>
-      </div>
+        ref={glowRef}
+        className="
+          pointer-events-none
+          absolute left-1/2 -translate-x-1/2
+          w-[420px] h-[240px]
+          rounded-full
+          bg-[radial-gradient(circle,rgba(20,184,166,0.18),transparent_70%)]
+          blur-3xl
+          opacity-0
+        "
+      />
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-16">
-        {/* Label */}
+      {/* Glass Whisper Popup */}
+      <div
+        ref={popupRef}
+        className="
+          pointer-events-none
+          absolute left-[55%]
+          max-w-xs mr-4 z-20
+          px-3 py-2
+          text-xs
+          rounded-2xl
+          bg-white/60 dark:bg-white/10
+          backdrop-blur-xl
+          border border-white/30 dark:border-white/20
+          shadow-lg
+          text-gray-800 dark:text-gray-200
+          opacity-0 scale-95
+        "
+      />
+
+      <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-3 gap-16">
+        {/* LABEL */}
         <div className="text-sm tracking-[0.2em] text-gray-500 dark:text-gray-400">
           SKILLS
         </div>
 
-        {/* Skills List */}
-        <div className="text-center sm:text-justify md:col-span-2 space-y-4">
+        {/* SKILLS LIST */}
+        <div className="md:col-span-2 space-y-5">
           {skills.map((skill) => (
             <div
-              key={skill}
+              key={skill.name}
               className="
-                skill-item
+                skill-item pl-4 sm:pl-0
                 text-2xl md:text-3xl
                 font-medium tracking-tight
-                opacity-30
-                will-change-filter
+                opacity-30 
+                will-change-transform will-change-filter
               "
             >
-              {skill}
+              {skill.name}
             </div>
           ))}
         </div>

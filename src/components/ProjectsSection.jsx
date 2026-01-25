@@ -148,6 +148,10 @@ export default function ProjectsSection() {
                 className="absolute inset-0 bg-black"
               />
 
+              {/* OVERLAY BACKDROP */}
+              <div className="absolute inset-0 bg-black/30 sm:bg-black/0" />
+
+              {/* DESKTOP OVERLAY (hover) */}
               <motion.div
                 variants={{
                   rest: { opacity: 0, y: 8 },
@@ -156,11 +160,12 @@ export default function ProjectsSection() {
                 transition={{ duration: 0.4, ease: "easeOut" }}
                 className="
                   absolute inset-0
-                  flex flex-col items-center justify-center
+                  hidden md:flex
+                  flex-col items-center justify-center
                   text-white
                 "
               >
-                <h4 className="text-2xl font-semibold tracking-tight">
+                <h4 className="text-2xl font-semibold tracking-wider">
                   {project.title}
                 </h4>
 
@@ -169,6 +174,26 @@ export default function ProjectsSection() {
                   <FiArrowUpRight />
                 </div>
               </motion.div>
+
+              {/* MOBILE OVERLAY (always visible) */}
+              <div
+                className="
+                  absolute inset-0
+                  flex md:hidden
+                  flex-col items-center justify-center
+                  text-white
+                "
+              >
+                <h4 className="text-xl font-semibold tracking-tight">
+                  {project.title}
+                </h4>
+
+                <div className="mt-1 flex items-center gap-2 text-xs opacity-80">
+                  View project
+                  <FiArrowUpRight />
+                </div>
+              </div>
+
             </motion.a>
           ))}
         </div>
