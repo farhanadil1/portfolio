@@ -178,7 +178,7 @@ export default function Footer() {
           <p>
             © {new Date().getFullYear()} Md Adil Farhan · All rights reserved
           </p>
-          <p>React · Tailwind · Framer Motion</p>
+          <p>React · Tailwind · Framer Motion · GSAP</p>
         </div>
       </div>
     </footer>
