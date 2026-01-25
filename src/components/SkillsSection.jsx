@@ -21,120 +21,108 @@ const skills = [
   { name: "Figma", note: "Interface prototyping" },
 ];
 
+
 export default function SkillsSection() {
   const sectionRef = useRef(null);
-  const listRef = useRef(null);
   const glowRef = useRef(null);
   const popupRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray(".skill-item");
-      const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  const ctx = gsap.context(() => {
+    const items = gsap.utils.toArray(".skill-item");
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-      //Desktop
-      if (!isMobile) {
-        items.forEach((item, index) => {
-          ScrollTrigger.create({
-            trigger: item,
-            start: "top 55%",
-            end: "bottom 55%",
-            onEnter: () => focus(index),
-            onEnterBack: () => focus(index),
-          });
-        });
-        return;
-      }
+    // gate trigger — prevents early activation on mobile
+    let sectionActive = false;
 
-      //Mobile pinned flow
-      const total = items.length;
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: isMobile ? "top 60%" : "top 70%",
+      onEnter: () => (sectionActive = true),
+      onLeaveBack: () => (sectionActive = false),
+    });
 
+    items.forEach((item, index) => {
       ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top center",
-        end: () => `+=${total * 90}`,
-        pin: listRef.current,
-        scrub: true,
-        anticipatePin: 1,
-        onUpdate: (self) => {
-          const index = Math.min(
-            total - 1,
-            Math.floor(self.progress * total)
-          );
-          focus(index);
-        },
+        trigger: item,
+        start: isMobile ? "top 65%" : "top 55%",
+        end: isMobile ? "bottom 65%" : "bottom 55%",
+        onEnter: () => sectionActive && focus(index),
+        onEnterBack: () => sectionActive && focus(index),
       });
+    });
 
-      function focus(activeIndex) {
-        items.forEach((item, i) => {
-          const d = Math.abs(i - activeIndex);
+    function focus(activeIndex) {
+      items.forEach((item, i) => {
+        const d = Math.abs(i - activeIndex);
 
-          gsap.to(item, {
-            opacity: d === 0 ? 1 : d === 1 ? 0.55 : 0.25,
-            filter:
-              d === 0
-                ? "blur(0px)"
-                : d === 1
-                ? "blur(0.8px)"
-                : "blur(1.6px)",
-            y: d === 0 ? 0 : d * 4,
-            duration: 0.25,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        });
-
-        const active = items[activeIndex];
-        const bounds = active.getBoundingClientRect();
-        const sectionBounds = sectionRef.current.getBoundingClientRect();
-
-        /* Glow */
-        gsap.to(glowRef.current, {
-          y: bounds.top - sectionBounds.top + bounds.height / 2 - 120,
-          opacity: 1,
-          duration: 0.3,
-          ease: "power3.out",
-        });
-
-        /* Popup */
-        const popupEl = popupRef.current;
-        popupEl.textContent = skills[activeIndex].note;
-
-        const popupWidth = popupEl.offsetWidth || 200;
-        const popupHeight = popupEl.offsetHeight || 32;
-        const GAP = 20;
-
-        let x =
-          bounds.left - sectionBounds.left + bounds.width + GAP;
-
-        if (x + popupWidth > sectionBounds.width) {
-          x =
-            bounds.left -
-            sectionBounds.left -
-            popupWidth -
-            GAP;
-        }
-
-        const y =
-          bounds.top -
-          sectionBounds.top +
-          bounds.height / 2 -
-          popupHeight / 2;
-
-        gsap.to(popupEl, {
-          x,
-          y,
-          opacity: 1,
-          scale: 1,
-          duration: 0.22,
+        gsap.to(item, {
+          opacity: d === 0 ? 1 : d === 1 ? 0.55 : 0.25,
+          filter:
+            d === 0
+              ? "blur(0px)"
+              : d === 1
+              ? "blur(0.8px)"
+              : "blur(1.6px)",
+          y: d === 0 ? 0 : d * 4,
+          duration: 0.25,
           ease: "power2.out",
           overwrite: "auto",
         });
-      }
-    }, sectionRef);
+      });
 
-    return () => ctx.revert();
-  }, []);
+      const active = items[activeIndex];
+      const bounds = active.getBoundingClientRect();
+      const sectionBounds = sectionRef.current.getBoundingClientRect();
+
+      // glow
+      gsap.to(glowRef.current, {
+        y: bounds.top - sectionBounds.top + bounds.height / 2 - 120,
+        opacity: 1,
+        duration: 0.3,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
+
+      // popup
+      const popupEl = popupRef.current;
+      popupEl.textContent = skills[activeIndex].note;
+
+      const popupWidth = popupEl.offsetWidth || 200;
+      const popupHeight = popupEl.offsetHeight || 32;
+      const GAP = 24;
+
+      let targetX =
+        bounds.left - sectionBounds.left + bounds.width + GAP;
+
+      const maxX = sectionBounds.width - popupWidth - 16;
+
+      if (targetX > maxX) {
+        targetX =
+          bounds.left - sectionBounds.left - popupWidth - GAP;
+      }
+
+      const targetY =
+        bounds.top -
+        sectionBounds.top +
+        bounds.height / 2 -
+        popupHeight / 2;
+
+      gsap.to(popupEl, {
+        x: targetX,
+        y: targetY,
+        opacity: 1,
+        scale: 1,
+        duration: 0.22,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
+  }, sectionRef);
+
+  return () => ctx.revert();
+}, []);
+
 
   return (
     <section
@@ -161,49 +149,42 @@ export default function SkillsSection() {
         "
       />
 
-      {/* Glass Popup */}
+      {/* Glass Whisper Popup */}
       <div
-        ref={popupRef}
-        className="
-          pointer-events-none
-          absolute top-0 left-0 z-20
-          px-3 py-2
-          ml-[350px] sm:ml-[400px]
-          text-xs
-          rounded-2xl
-          bg-white/70 dark:bg-white/10
-          backdrop-blur-xl
-          border border-white/30 dark:border-white/20
-          shadow-lg
-          text-gray-800 dark:text-gray-200
-          opacity-0 scale-95
-        "
-      />
+  ref={popupRef}
+  className="
+    pointer-events-none
+    absolute top-0 left-0 z-20
+    ml-[350px] sm:ml-[400px]
+    px-3 py-2
+    text-xs
+    rounded-2xl
+    bg-white/70 dark:bg-white/10
+    backdrop-blur-xl
+    border border-white/30 dark:border-white/20
+    shadow-lg
+    text-gray-800 dark:text-gray-200
+    opacity-0 scale-95
+  "
+/>
 
       <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-3 gap-16">
         {/* LABEL */}
-        <div>
-          <div className="text-sm tracking-[0.2em] text-gray-500 dark:text-gray-400">
-            SKILLS
-          </div>
-          <p className="mt-3 text-sm text-gray-500 dark:text-gray-400 max-w-xs">
-            A comprehensive toolkit for building modern, scalable applications
-          </p>
+        <div className="text-sm tracking-[0.2em] text-gray-500 dark:text-gray-400">
+          SKILLS
         </div>
+        
 
         {/* SKILLS LIST */}
-        <div
-          ref={listRef}
-          className="md:col-span-2 space-y-5 ml-8 sm:ml-0"
-        >
+        <div className="md:col-span-2 space-y-5 ml-8 sm:ml-0">
           {skills.map((skill) => (
             <div
               key={skill.name}
               className="
-                skill-item
+                skill-item pl-4 sm:pl-0
                 text-2xl md:text-3xl
                 font-medium tracking-tight
-                opacity-30
+                opacity-30 
                 will-change-transform will-change-filter
               "
             >
