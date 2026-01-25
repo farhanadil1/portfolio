@@ -32,24 +32,36 @@ export default function SkillsSection() {
     const items = gsap.utils.toArray(".skill-item");
     const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    // gate trigger — prevents early activation on mobile
-    let sectionActive = false;
+    if (!isMobile) {
+      /* DESKTOP — keep your perfect behavior */
+      items.forEach((item, index) => {
+        ScrollTrigger.create({
+          trigger: item,
+          start: "top 55%",
+          end: "bottom 55%",
+          onEnter: () => focus(index),
+          onEnterBack: () => focus(index),
+        });
+      });
+      return;
+    }
+
+    /* ---------- MOBILE LOGIC (new) ---------- */
+
+    const total = items.length;
 
     ScrollTrigger.create({
       trigger: sectionRef.current,
-      start: isMobile ? "top 60%" : "top 70%",
-      onEnter: () => (sectionActive = true),
-      onLeaveBack: () => (sectionActive = false),
-    });
-
-    items.forEach((item, index) => {
-      ScrollTrigger.create({
-        trigger: item,
-        start: isMobile ? "top 65%" : "top 55%",
-        end: isMobile ? "bottom 65%" : "bottom 55%",
-        onEnter: () => sectionActive && focus(index),
-        onEnterBack: () => sectionActive && focus(index),
-      });
+      start: "top 50%",       // wait until section center
+      end: "bottom 50%",
+      scrub: true,
+      onUpdate: (self) => {
+        const index = Math.min(
+          total - 1,
+          Math.max(0, Math.floor(self.progress * total))
+        );
+        focus(index);
+      },
     });
 
     function focus(activeIndex) {
@@ -75,7 +87,7 @@ export default function SkillsSection() {
       const bounds = active.getBoundingClientRect();
       const sectionBounds = sectionRef.current.getBoundingClientRect();
 
-      // glow
+      /* glow */
       gsap.to(glowRef.current, {
         y: bounds.top - sectionBounds.top + bounds.height / 2 - 120,
         opacity: 1,
@@ -84,7 +96,7 @@ export default function SkillsSection() {
         overwrite: "auto",
       });
 
-      // popup
+      /* popup */
       const popupEl = popupRef.current;
       popupEl.textContent = skills[activeIndex].note;
 
@@ -122,6 +134,7 @@ export default function SkillsSection() {
 
   return () => ctx.revert();
 }, []);
+
 
 
   return (
