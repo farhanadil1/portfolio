@@ -28,101 +28,101 @@ export default function SkillsSection() {
   const popupRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const items = gsap.utils.toArray(".skill-item");
+  const ctx = gsap.context(() => {
+    const items = gsap.utils.toArray(".skill-item");
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-      items.forEach((item, index) => {
-        ScrollTrigger.create({
-          trigger: item,
-          start: "top 55%",
-          end: "bottom 55%",
-          onEnter: () => focus(index),
-          onEnterBack: () => focus(index),
+    // gate trigger — prevents early activation on mobile
+    let sectionActive = false;
+
+    ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: isMobile ? "top 60%" : "top 70%",
+      onEnter: () => (sectionActive = true),
+      onLeaveBack: () => (sectionActive = false),
+    });
+
+    items.forEach((item, index) => {
+      ScrollTrigger.create({
+        trigger: item,
+        start: isMobile ? "top 65%" : "top 55%",
+        end: isMobile ? "bottom 65%" : "bottom 55%",
+        onEnter: () => sectionActive && focus(index),
+        onEnterBack: () => sectionActive && focus(index),
+      });
+    });
+
+    function focus(activeIndex) {
+      items.forEach((item, i) => {
+        const d = Math.abs(i - activeIndex);
+
+        gsap.to(item, {
+          opacity: d === 0 ? 1 : d === 1 ? 0.55 : 0.25,
+          filter:
+            d === 0
+              ? "blur(0px)"
+              : d === 1
+              ? "blur(0.8px)"
+              : "blur(1.6px)",
+          y: d === 0 ? 0 : d * 4,
+          duration: 0.25,
+          ease: "power2.out",
+          overwrite: "auto",
         });
       });
 
-      function focus(activeIndex) {
-        items.forEach((item, i) => {
-          const d = Math.abs(i - activeIndex);
+      const active = items[activeIndex];
+      const bounds = active.getBoundingClientRect();
+      const sectionBounds = sectionRef.current.getBoundingClientRect();
 
-          gsap.to(item, {
-            opacity: d === 0 ? 1 : d === 1 ? 0.55 : 0.25,
-            filter:
-              d === 0
-                ? "blur(0px)"
-                : d === 1
-                ? "blur(0.8px)"
-                : "blur(1.6px)",
-            y: d === 0 ? 0 : d * 4,
-            duration: 0.3,
-            ease: "power2.out",
-            overwrite: "auto",
-          });
-        });
+      // glow
+      gsap.to(glowRef.current, {
+        y: bounds.top - sectionBounds.top + bounds.height / 2 - 120,
+        opacity: 1,
+        duration: 0.3,
+        ease: "power3.out",
+        overwrite: "auto",
+      });
 
-        const active = items[activeIndex];
-        const bounds = active.getBoundingClientRect();
-        const sectionBounds = sectionRef.current.getBoundingClientRect();
+      // popup
+      const popupEl = popupRef.current;
+      popupEl.textContent = skills[activeIndex].note;
 
-        /* glow movement */
-        gsap.to(glowRef.current, {
-          y: bounds.top - sectionBounds.top + bounds.height / 2 - 120,
-          opacity: 1,
-          duration: 0.35,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
+      const popupWidth = popupEl.offsetWidth || 200;
+      const popupHeight = popupEl.offsetHeight || 32;
+      const GAP = 24;
 
-        /* popup content */
-popupRef.current.textContent = skills[activeIndex].note;
+      let targetX =
+        bounds.left - sectionBounds.left + bounds.width + GAP;
 
-const popupEl = popupRef.current;
-const popupWidth = popupEl.offsetWidth || 200;
-const popupHeight = popupEl.offsetHeight || 32;
+      const maxX = sectionBounds.width - popupWidth - 16;
 
-const GAP = 24;
-
-// ideal position (to the right of skill)
-let targetX =
-  bounds.left -
-  sectionBounds.left +
-  bounds.width +
-  GAP;
-
-// if overflowing right → move to left side
-const maxX = sectionBounds.width - popupWidth - 16;
-
-if (targetX > maxX) {
-  targetX =
-    bounds.left -
-    sectionBounds.left -
-    popupWidth -
-    GAP;
-}
-
-// vertical center alignment
-const targetY =
-  bounds.top -
-  sectionBounds.top +
-  bounds.height / 2 -
-  popupHeight / 2;
-
-gsap.to(popupEl, {
-  x: targetX,
-  y: targetY,
-  opacity: 1,
-  scale: 1,
-  duration: 0.22,
-  ease: "power2.out",
-  overwrite: "auto",
-});
-
-
+      if (targetX > maxX) {
+        targetX =
+          bounds.left - sectionBounds.left - popupWidth - GAP;
       }
-    }, sectionRef);
 
-    return () => ctx.revert();
-  }, []);
+      const targetY =
+        bounds.top -
+        sectionBounds.top +
+        bounds.height / 2 -
+        popupHeight / 2;
+
+      gsap.to(popupEl, {
+        x: targetX,
+        y: targetY,
+        opacity: 1,
+        scale: 1,
+        duration: 0.22,
+        ease: "power2.out",
+        overwrite: "auto",
+      });
+    }
+  }, sectionRef);
+
+  return () => ctx.revert();
+}, []);
+
 
   return (
     <section
