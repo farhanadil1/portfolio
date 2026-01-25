@@ -29,9 +29,8 @@ export default function SkillsSection() {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const items = gsap.utils.toArray(".skill-item");
-      let armed = false; // 🔒 master freeze flag
+      let armed = false;
 
-      /* -------- ARM TRIGGER (50% gate) -------- */
       ScrollTrigger.create({
         trigger: sectionRef.current,
         start: "top 50%",
@@ -39,7 +38,6 @@ export default function SkillsSection() {
         onLeaveBack: () => (armed = false),
       });
 
-      /* -------- SKILL TRIGGERS -------- */
       items.forEach((item, index) => {
         ScrollTrigger.create({
           trigger: item,
@@ -73,7 +71,6 @@ export default function SkillsSection() {
         const bounds = active.getBoundingClientRect();
         const sectionBounds = sectionRef.current.getBoundingClientRect();
 
-        /* glow */
         gsap.to(glowRef.current, {
           y:
             bounds.top -
@@ -86,49 +83,43 @@ export default function SkillsSection() {
           overwrite: "auto",
         });
 
-       /* popup */
-const popupEl = popupRef.current;
-popupEl.textContent = skills[activeIndex].note;
+        const popupEl = popupRef.current;
+        popupEl.textContent = skills[activeIndex].note;
 
-// measure
-const popupWidth = popupEl.offsetWidth || 180;
-const popupHeight = popupEl.offsetHeight || 32;
-const GAP = 16;
+        const popupWidth = popupEl.offsetWidth || 180;
+        const popupHeight = popupEl.offsetHeight || 32;
+        const GAP = 16;
 
-// ideal position → right side
-let x =
-  bounds.left -
-  sectionBounds.left +
-  bounds.width +
-  GAP;
+        let x =
+          bounds.left -
+          sectionBounds.left +
+          bounds.width +
+          GAP;
 
-// clamp to viewport
-const maxX = sectionBounds.width - popupWidth - 12;
-if (x > maxX) {
-  // flip to left side
-  x =
-    bounds.left -
-    sectionBounds.left -
-    popupWidth -
-    GAP;
-}
+        const maxX = sectionBounds.width - popupWidth - 12;
+        if (x > maxX) {
+          x =
+            bounds.left -
+            sectionBounds.left -
+            popupWidth -
+            GAP;
+        }
 
-const y =
-  bounds.top -
-  sectionBounds.top +
-  bounds.height / 2 -
-  popupHeight / 2;
+        const y =
+          bounds.top -
+          sectionBounds.top +
+          bounds.height / 2 -
+          popupHeight / 2;
 
-gsap.to(popupEl, {
-  x,
-  y,
-  opacity: 1,
-  scale: 1,
-  duration: 0.22,
-  ease: "power2.out",
-  overwrite: "auto",
-});
-
+        gsap.to(popupEl, {
+          x,
+          y,
+          opacity: 1,
+          scale: 1,
+          duration: 0.22,
+          ease: "power2.out",
+          overwrite: "auto",
+        });
       }
     }, sectionRef);
 
@@ -141,8 +132,7 @@ gsap.to(popupEl, {
       id="skills"
       className="
         relative py-20 px-6 md:px-20
-        bg-white text-black
-        dark:bg-[#0f0f0f] dark:text-white
+        bg-[#0f0f0f] text-white
         overflow-hidden
       "
     >
@@ -160,27 +150,25 @@ gsap.to(popupEl, {
 
       {/* Popup */}
       <div
-  ref={popupRef}
-  className="
-    pointer-events-none
-    absolute top-0 left-0 z-20
-    px-3 py-2
-    sm:ml-[400px] ml-[320px]
-    text-xs
-    rounded-2xl
-    bg-white/70 dark:bg-white/10
-    backdrop-blur-xl
-    border border-white/30 dark:border-white/20
-    shadow-lg
-    text-gray-800 dark:text-gray-200
-    opacity-0 scale-95
-    will-change-transform
-  "
-/>
-
+        ref={popupRef}
+        className="
+          pointer-events-none absolute top-0 left-0 z-20
+          px-3 py-2
+          ml-[320px] sm:ml-[400px]
+          text-xs
+          rounded-2xl
+          bg-white/10
+          backdrop-blur-xl
+          border border-white/20
+          shadow-lg
+          text-white
+          opacity-0 scale-95
+          will-change-transform
+        "
+      />
 
       <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-16">
-        <div className="text-sm tracking-[0.2em] text-gray-500">
+        <div className="text-sm tracking-[0.25em] text-white/40">
           SKILLS
         </div>
 
@@ -190,7 +178,7 @@ gsap.to(popupEl, {
               key={skill.name}
               className="
                 skill-item
-                ml-8 sm:pl-0
+                ml-8
                 text-2xl md:text-3xl
                 font-medium tracking-tight
                 opacity-30

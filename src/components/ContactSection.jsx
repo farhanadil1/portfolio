@@ -121,7 +121,7 @@ export default function ContactSection() {
               border border-black/10 dark:border-white/10
               text-base font-medium
               transition-all duration-300
-              hover:border-teal-500
+              hover:border-teal-500 hover:dark:border-teal-500
             "
           >
             <span className="flex items-center gap-3">
@@ -148,7 +148,7 @@ export default function ContactSection() {
               rounded-full
               text-base font-medium
               text-gray-600 dark:text-gray-400
-              border border-black/5 dark:border-white/5
+              border border-black/10 dark:border-white/10 dark:hover:border-white/50
               transition-colors duration-300
               hover:text-black dark:hover:text-white
             "

@@ -135,7 +135,7 @@ export default function Footer() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="
               text-[22vw] leading-none font-medium
-              tracking-tight mt-4
+              tracking-tight sm:mt-4
             "
           >
             ADIL
