@@ -73,17 +73,51 @@ export default function SkillsSection() {
           overwrite: "auto",
         });
 
-        /* popup content + position */
-        popupRef.current.textContent = skills[activeIndex].note;
+        /* popup content */
+popupRef.current.textContent = skills[activeIndex].note;
 
-        gsap.to(popupRef.current, {
-          y: bounds.top - sectionBounds.top - 8,
-          opacity: 1,
-          scale: 1,
-          duration: 0.35,
-          ease: "power3.out",
-          overwrite: "auto",
-        });
+const popupEl = popupRef.current;
+const popupWidth = popupEl.offsetWidth || 200;
+const popupHeight = popupEl.offsetHeight || 32;
+
+const GAP = 24;
+
+// ideal position (to the right of skill)
+let targetX =
+  bounds.left -
+  sectionBounds.left +
+  bounds.width +
+  GAP;
+
+// if overflowing right → move to left side
+const maxX = sectionBounds.width - popupWidth - 16;
+
+if (targetX > maxX) {
+  targetX =
+    bounds.left -
+    sectionBounds.left -
+    popupWidth -
+    GAP;
+}
+
+// vertical center alignment
+const targetY =
+  bounds.top -
+  sectionBounds.top +
+  bounds.height / 2 -
+  popupHeight / 2;
+
+gsap.to(popupEl, {
+  x: targetX,
+  y: targetY,
+  opacity: 1,
+  scale: 1,
+  duration: 0.22,
+  ease: "power2.out",
+  overwrite: "auto",
+});
+
+
       }
     }, sectionRef);
 
@@ -117,31 +151,32 @@ export default function SkillsSection() {
 
       {/* Glass Whisper Popup */}
       <div
-        ref={popupRef}
-        className="
-          pointer-events-none
-          absolute left-[55%]
-          max-w-xs mr-4 z-20
-          px-3 py-2
-          text-xs
-          rounded-2xl
-          bg-white/60 dark:bg-white/10
-          backdrop-blur-xl
-          border border-white/30 dark:border-white/20
-          shadow-lg
-          text-gray-800 dark:text-gray-200
-          opacity-0 scale-95
-        "
-      />
+  ref={popupRef}
+  className="
+    pointer-events-none
+    absolute top-0 left-0 z-20
+    ml-[350px] sm:ml-[400px]
+    px-3 py-2
+    text-xs
+    rounded-2xl
+    bg-white/70 dark:bg-white/10
+    backdrop-blur-xl
+    border border-white/30 dark:border-white/20
+    shadow-lg
+    text-gray-800 dark:text-gray-200
+    opacity-0 scale-95
+  "
+/>
 
       <div className="relative z-10 max-w-6xl mx-auto grid md:grid-cols-3 gap-16">
         {/* LABEL */}
         <div className="text-sm tracking-[0.2em] text-gray-500 dark:text-gray-400">
           SKILLS
         </div>
+        
 
         {/* SKILLS LIST */}
-        <div className="md:col-span-2 space-y-5">
+        <div className="md:col-span-2 space-y-5 ml-8 sm:ml-0">
           {skills.map((skill) => (
             <div
               key={skill.name}

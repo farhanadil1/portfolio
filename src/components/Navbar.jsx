@@ -8,7 +8,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
   const [activeSection, setActiveSection] = useState("home");
   const [showHeroNav, setShowHeroNav] = useState(true);
 
-  const sections = ["Home", "About", "Projects", "Skills", "Contact"];
+  const sections = ["Home", "About", "Contact"];
 
   // Hero visibility
   useEffect(() => {
@@ -74,7 +74,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
                           relative
                           ${
                             activeSection === section.toLowerCase()
-                              ? "text-teal-500"
+                              ? "text-gray-600 dark:text-gray-400"
                               : "text-gray-600 dark:text-gray-400"
                           }
                         `}

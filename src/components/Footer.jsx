@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { FaLinkedin, FaGithub, FaInstagram } from "react-icons/fa";
 import { FiArrowUpRight } from "react-icons/fi";
 
 const socials = [
@@ -46,7 +45,7 @@ export default function Footer() {
       ref={ref}
       className="
         relative min-h-screen
-      bg-black text-white
+        bg-black text-white
         overflow-hidden
       "
     >
@@ -58,6 +57,7 @@ export default function Footer() {
           pt-20 pb-12
         "
       >
+        {/* TOP GRID */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-sm">
           <div>
             <p className="mb-4 tracking-widest text-white/40">
@@ -99,19 +99,25 @@ export default function Footer() {
 
           <div>
             <p className="mb-4 tracking-widest text-white/40">
-              LOCAL TIME
+              CONTACT
             </p>
-            <p className="text-lg">{time} IST</p>
+            <a
+              href="mailto:imfarhan574@gmail.com"
+              className="hover:opacity-60 transition-opacity"
+            >
+              imfarhan574@gmail.com
+            </a>
           </div>
 
           <div>
             <p className="mb-4 tracking-widest text-white/40">
-              VERSION
+              LOCAL TIME
             </p>
-            <p>2026 © Edition</p>
+            <p className="text-lg">{time} IST</p>
           </div>
         </div>
 
+        {/* MASSIVE IDENTITY / SCROLL TO TOP */}
         <motion.div
           onClick={scrollToTop}
           whileHover="hover"
@@ -129,12 +135,13 @@ export default function Footer() {
             transition={{ duration: 0.5, ease: "easeOut" }}
             className="
               text-[22vw] leading-none font-medium
-              tracking-tight
+              tracking-tight mt-6
             "
           >
             ADIL
           </motion.h1>
 
+          {/* Desktop hover cue */}
           <motion.div
             variants={{
               rest: { opacity: 0, y: 10 },
@@ -142,6 +149,20 @@ export default function Footer() {
             }}
             transition={{ duration: 0.3 }}
             className="
+              hidden md:flex
+              absolute right-2 bottom-6
+              items-center gap-2
+              text-sm text-white/50
+            "
+          >
+            <span>Back to top</span>
+            <FiArrowUpRight />
+          </motion.div>
+
+          {/* Mobile always-visible cue */}
+          <div
+            className="
+              md:hidden
               absolute right-2 bottom-6
               flex items-center gap-2
               text-sm text-white/50
@@ -149,9 +170,10 @@ export default function Footer() {
           >
             <span>Back to top</span>
             <FiArrowUpRight />
-          </motion.div>
+          </div>
         </motion.div>
 
+        {/* FOOT */}
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-white/40">
           <p>
             © {new Date().getFullYear()} Md Adil Farhan · All rights reserved
