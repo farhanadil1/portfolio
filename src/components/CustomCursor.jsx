@@ -5,6 +5,7 @@ const CustomCursor = () => {
   const [enabled, setEnabled] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [isActive, setIsActive] = useState(false);
 
   useEffect(() => {
     const mq = window.matchMedia("(pointer: fine) and (hover: hover)");
@@ -25,8 +26,12 @@ const CustomCursor = () => {
 
     const addHover = () => setIsHovering(true);
     const removeHover = () => setIsHovering(false);
+    const down = () => setIsActive(true);
+    const up = () => setIsActive(false);
 
     window.addEventListener("mousemove", moveCursor);
+    window.addEventListener("mousedown", down);
+    window.addEventListener("mouseup", up);
 
     document.querySelectorAll("a, button, .cursor-hover").forEach((el) => {
       el.addEventListener("mouseenter", addHover);
@@ -35,6 +40,8 @@ const CustomCursor = () => {
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
+      window.removeEventListener("mousedown", down);
+      window.removeEventListener("mouseup", up);
       document.querySelectorAll("a, button, .cursor-hover").forEach((el) => {
         el.removeEventListener("mouseenter", addHover);
         el.removeEventListener("mouseleave", removeHover);
@@ -44,30 +51,61 @@ const CustomCursor = () => {
 
   if (!enabled) return null;
 
+  const isDark = document.documentElement.classList.contains("dark");
+
   return (
-    <motion.div
-      className={`
-        fixed top-0 left-0 z-[9999]
-        pointer-events-none
-        rounded-full
-        bg-teal-400
-        ${document.documentElement.classList.contains("dark")
-          ? "mix-blend-difference"
-          : ""}
-      `}
-      animate={{
-        x: position.x - 6,
-        y: position.y - 6,
-        width: isHovering ? 28 : 16,
-        height: isHovering ? 28 : 16,
-      }}
-      transition={{
-        type: "spring",
-        stiffness: 400,
-        damping: 24,
-        mass: 0.4,
-      }}
-    />
+    <>
+      {/* Outer ring */}
+      <motion.div
+        className={`
+          fixed top-0 left-0 z-[9998]
+          pointer-events-none
+          rounded-full
+          border
+          ${isDark ? "border-white/30" : "border-black/20"}
+          backdrop-blur-md
+        `}
+        animate={{
+          x: position.x - 24,
+          y: position.y - 24,
+          width: isHovering ? 44 : 32,
+          height: isHovering ? 44 : 32,
+          scale: isActive ? 0.9 : 1,
+          opacity: isHovering ? 0.9 : 0.6,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 200,
+          damping: 28,
+          mass: 0.6,
+        }}
+      />
+
+      {/* Core dot */}
+      <motion.div
+        className={`
+          fixed top-0 left-0 z-[9999]
+          pointer-events-none
+          rounded-full
+          bg-teal-400
+          shadow-[0_0_20px_rgba(20,184,166,0.6)]
+          ${isDark ? "mix-blend-difference" : ""}
+        `}
+        animate={{
+          x: position.x - 5,
+          y: position.y - 5,
+          width: isHovering ? 14 : 10,
+          height: isHovering ? 14 : 10,
+          scale: isActive ? 0.7 : 1,
+        }}
+        transition={{
+          type: "spring",
+          stiffness: 500,
+          damping: 30,
+          mass: 0.3,
+        }}
+      />
+    </>
   );
 };
 

@@ -241,7 +241,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
         <div className="my-6 h-px bg-gradient-to-r from-transparent via-black/10 dark:via-white/10 to-transparent" />
 
         {/* FOOT */}
-        <div className="mt-auto flex items-center justify-between text-xs">
+        <div className="mt-auto mb-2 flex items-center justify-between text-xs">
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="
