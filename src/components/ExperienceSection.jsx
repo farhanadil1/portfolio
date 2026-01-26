@@ -4,7 +4,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-/* ✅ Mobile + iOS Safari stability */
+//Mobile + iOS Safari stability 
 ScrollTrigger.config({
   ignoreMobileResize: true,
 });
@@ -81,7 +81,7 @@ export default function ExperienceSection() {
       }
     }, sectionRef);
 
-    /* ✅ Lock correct trigger positions after mobile viewport settles */
+    //Lock correct trigger positions after mobile viewport settles 
     requestAnimationFrame(() => {
       ScrollTrigger.refresh();
     });
