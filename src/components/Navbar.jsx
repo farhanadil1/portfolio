@@ -9,7 +9,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
   const [activeSection, setActiveSection] = useState("home");
   const [showHeroNav, setShowHeroNav] = useState(true);
 
-  const sections = ["Home", "About", "Projects", "Skills", "Contact"];
+  const sections = ["Home", "About", "Projects","Experience", "Skills", "Contact"];
 
   // Hero visibility
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function Navbar({ darkMode, setDarkMode }) {
 
         {/* LINKS */}
         <nav className="mt-6">
-          <ul className="space-y-10">
+          <ul className="space-y-10 md:space-y-6">
             {sections.map((section, i) => (
               <motion.li
                 key={section}

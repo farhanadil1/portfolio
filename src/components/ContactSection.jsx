@@ -74,9 +74,9 @@ export default function ContactSection() {
       ref={sectionRef}
       id="contact"
       className="
-        relative py-20 sm:pt-36 sm:pb-20
+        relative py-24
         bg-white text-black
-        dark:bg-[#0f0f0f] dark:text-white
+        dark:bg-[#1E1E1E] dark:text-white
       "
     >
       <div className="max-w-6xl mx-auto px-6">

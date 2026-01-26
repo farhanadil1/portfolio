@@ -52,7 +52,7 @@ export default function HeroSection() {
         flex items-center
         px-6 md:px-20
         bg-white text-black
-        dark:bg-[#0a0a0a] dark:text-white
+        dark:bg-[#1E1E1E] dark:text-white
       "
     >
       {/* Reactive background */}

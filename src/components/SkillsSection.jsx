@@ -131,8 +131,8 @@ export default function SkillsSection() {
       ref={sectionRef}
       id="skills"
       className="
-        relative py-20 px-6 md:px-20
-        bg-[#0f0f0f] text-white
+        relative py-24 px-6 md:px-20
+        bg-[#1E1E1E] text-white
         overflow-hidden
       "
     >

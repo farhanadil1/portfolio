@@ -47,10 +47,10 @@ export default function AboutSection() {
       gsap.fromTo(
         sectionRef.current,
         {
-          backgroundColor: isDark ? "#000000" : "#ffffff",
+          backgroundColor: isDark ? "#1E1E1E" : "#ffffff",
         },
         {
-          backgroundColor: "#000000",
+          backgroundColor: "#1E1E1E",
           ease: "power2.out",
           scrollTrigger: {
             trigger: sectionRef.current,
@@ -71,7 +71,7 @@ export default function AboutSection() {
       ref={sectionRef}
       id="about"
       className="
-        relative py-10 sm:py-28 px-6 md:px-20
+        relative py-24 sm:py-28 px-6 md:px-20
         text-white
         overflow-hidden
       "

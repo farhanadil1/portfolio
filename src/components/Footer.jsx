@@ -45,7 +45,7 @@ export default function Footer() {
       ref={ref}
       className="
         relative min-h-screen
-        bg-black text-white
+        bg-[#1E1E1E] text-white
         overflow-hidden
       "
     >

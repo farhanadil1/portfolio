@@ -7,6 +7,7 @@ import SkillsSection from '../components/SkillsSection';
 import ContactSection from '../components/ContactSection';
 import Footer from '../components/Footer';
 import CustomCursor from '../components/CustomCursor';
+import ExperienceSection from '../components/ExperienceSection';
 
 export default function App() {
   const [darkMode, setDarkMode] = useState(() =>
@@ -25,6 +26,7 @@ export default function App() {
       <HeroSection />
       <AboutSection />
       <ProjectsSection />
+      <ExperienceSection />
       <SkillsSection />
       <ContactSection />
       <Footer />

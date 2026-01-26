@@ -39,7 +39,7 @@ export default function ProjectsSection() {
       className="
         relative py-28 px-6 md:px-20
         bg-white text-black
-        dark:bg-black dark:text-white
+        dark:bg-[#1E1E1E] dark:text-white
       "
     >
       <div className="max-w-7xl mx-auto">
