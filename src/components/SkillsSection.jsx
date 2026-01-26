@@ -4,12 +4,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
-ScrollTrigger.config({
-  ignoreMobileResize: true,
-});
-
-ScrollTrigger.normalizeScroll(true);
-
 const skills = [
   { name: "React", note: "Scalable component-based UIs" },
   { name: "JavaScript", note: "Modern ES & async logic" },
@@ -36,11 +30,6 @@ export default function SkillsSection() {
     const ctx = gsap.context(() => {
       const items = gsap.utils.toArray(".skill-item");
       let armed = false;
-
-      /* iOS Safari paint stability */
-      gsap.set([glowRef.current, popupRef.current], {
-        willChange: "transform",
-      });
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
@@ -80,8 +69,7 @@ export default function SkillsSection() {
 
         const active = items[activeIndex];
         const bounds = active.getBoundingClientRect();
-        const sectionBounds =
-          sectionRef.current.getBoundingClientRect();
+        const sectionBounds = sectionRef.current.getBoundingClientRect();
 
         gsap.to(glowRef.current, {
           y:
@@ -108,8 +96,7 @@ export default function SkillsSection() {
           bounds.width +
           GAP;
 
-        const maxX =
-          sectionBounds.width - popupWidth - 12;
+        const maxX = sectionBounds.width - popupWidth - 12;
         if (x > maxX) {
           x =
             bounds.left -
@@ -135,10 +122,6 @@ export default function SkillsSection() {
         });
       }
     }, sectionRef);
-
-    requestAnimationFrame(() => {
-      ScrollTrigger.refresh();
-    });
 
     return () => ctx.revert();
   }, []);
