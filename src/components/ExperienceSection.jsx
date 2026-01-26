@@ -4,6 +4,13 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 gsap.registerPlugin(ScrollTrigger);
 
+/* ✅ Mobile + iOS Safari stability */
+ScrollTrigger.config({
+  ignoreMobileResize: true,
+});
+
+ScrollTrigger.normalizeScroll(true);
+
 const experiences = [
   {
     title: "Software Product Developer",
@@ -34,6 +41,9 @@ export default function ExperienceSection() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
+      /* iOS Safari paint optimization */
+      gsap.set(progressRef.current, { willChange: "transform" });
+
       gsap.fromTo(
         progressRef.current,
         { scaleY: 0 },
@@ -42,7 +52,7 @@ export default function ExperienceSection() {
           ease: "none",
           scrollTrigger: {
             trigger: sectionRef.current,
-            start: "top 0%",
+            start: "top top",
             end: "bottom bottom",
             scrub: 2,
           },
@@ -71,6 +81,11 @@ export default function ExperienceSection() {
       }
     }, sectionRef);
 
+    /* ✅ Lock correct trigger positions after mobile viewport settles */
+    requestAnimationFrame(() => {
+      ScrollTrigger.refresh();
+    });
+
     return () => ctx.revert();
   }, []);
 
@@ -89,7 +104,7 @@ export default function ExperienceSection() {
         <p className="text-sm tracking-[0.25em] text-white/40">
           EXPERIENCE
         </p>
-        <h2 className="mt-4 text-4xl  font-medium tracking-wide">
+        <h2 className="mt-4 text-4xl font-medium tracking-wide">
           Professional Journey
         </h2>
       </div>
@@ -145,7 +160,11 @@ export default function ExperienceSection() {
                   className={`
                     w-full md:w-[44%]
                     pl-12 md:pl-0 py-10
-                    ${isLeft ? "md:pr-10 md:text-left" : "md:pl-10 md:text-right"}
+                    ${
+                      isLeft
+                        ? "md:pr-10 md:text-left"
+                        : "md:pl-10 md:text-right"
+                    }
                   `}
                 >
                   <p className="text-xs tracking-widest text-teal-400">
