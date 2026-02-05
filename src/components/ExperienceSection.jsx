@@ -8,9 +8,9 @@ const experiences = [
   {
     title: "Software Product Developer",
     org: "CodeClouds",
-    period: "September 2025 – Present",
+    period: "September 2025 – February 2026",
     desc:
-      "Building and maintaining scalable SaaS platforms with strong focus on performance, UX, and system reliability.",
+      "Built and maintained scalable SaaS platforms with strong focus on performance, UX, and system reliability.",
   },
   {
     title: "Machine Learning Intern",
