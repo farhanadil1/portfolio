@@ -5,19 +5,38 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const skills = [
+  // Frontend
   { name: "React", note: "Scalable component-based UIs" },
+  { name: "Angular", note: "Enterprise SPA development" },
   { name: "JavaScript", note: "Modern ES & async logic" },
   { name: "Tailwind CSS", note: "Utility-first design systems" },
-  { name: "Java", note: "Strong OOP foundations" },
+
+  // Backend
+  { name: "Java", note: "Enterprise-grade OOP development" },
   { name: "Spring Boot", note: "Production-ready REST APIs" },
-  { name: "Hibernate", note: "Efficient ORM mappings" },
+  { name: "Hibernate / JPA", note: "ORM & database integration" },
   { name: "Node.js", note: "Event-driven backend services" },
   { name: "Express", note: "Minimal API architecture" },
+
+  // Databases
   { name: "MongoDB", note: "Flexible document modeling" },
   { name: "MySQL", note: "Structured relational queries" },
+
+  // Testing & Logging
+  { name: "JUnit", note: "Unit testing & TDD practices" },
+  { name: "Mockito", note: "Mocking & test isolation" },
+  { name: "SLF4J", note: "Structured application logging" },
+
+  // DevOps & Tools
   { name: "Git", note: "Version control workflows" },
   { name: "GitHub", note: "Collaborative code reviews" },
+  { name: "Jenkins", note: "CI/CD pipeline automation" },
+  { name: "Docker", note: "Containerized deployments" },
   { name: "Postman", note: "API testing & validation" },
+
+  // Emerging
+  { name: "Cloud", note: "Deployment & infrastructure basics" },
+  { name: "GenAI", note: "AI-assisted enterprise solutions" },
   { name: "Figma", note: "Interface prototyping" },
 ];
 

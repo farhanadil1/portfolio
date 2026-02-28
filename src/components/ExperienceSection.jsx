@@ -6,6 +6,13 @@ gsap.registerPlugin(ScrollTrigger);
 
 const experiences = [
   {
+    title: "Software Developer Engineer Intern",
+    org: "Cognizant",
+    period: "February 2026 – Present",
+    desc:
+      "Java Full Stack Intern in ISG practice, building enterprise apps with Java and Angular. Working with JUnit, Mockito, SLF4J, Docker, Jenkins CI/CD, Agile, Cloud, and GenAI concepts."
+  },
+  {
     title: "Software Product Developer",
     org: "CodeClouds",
     period: "September 2025 – February 2026",
