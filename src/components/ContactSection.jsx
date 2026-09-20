@@ -8,6 +8,7 @@ import {
   FiMail,
 } from "react-icons/fi";
 import { FaLinkedin } from "react-icons/fa";
+import { PiSparkle } from "react-icons/pi";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -633,7 +634,7 @@ export default function ContactSection() {
                 </span>
 
                 <span className="text-teal-400 dark:text-[#1E1E1E]">
-                  ✳
+                 <PiSparkle className="h-5 w-5 text-teal-400 dark:text-[#1E1E1E]" />
                 </span>
               </div>
             ))

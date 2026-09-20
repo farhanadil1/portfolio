@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FiArrowUpRight } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -471,6 +472,7 @@ export default function SkillsSection() {
       id="skills"
       className="
         relative
+        overflow-hidden
         bg-[#1E1E1E]
         px-6
         py-28
@@ -853,7 +855,7 @@ export default function SkillsSection() {
                                 opacity-15
                               "
                             >
-                              ↗
+                             <FiArrowUpRight className="h-4 w-4" />
                             </span>
                           </div>
 

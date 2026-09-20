@@ -42,10 +42,8 @@ const REVEAL = { duration: 1, ease: EASE };
 
 function MaskedHeading({ text, className }) {
   return (
-    <div>
-    <p className="text-sm md:mb-[-15px] tracking-[0.25em] text-gray-500 dark:text-gray-400">
-            SELECTED WORK
-    </p>
+    
+    
     <span className={`block overflow-hidden ${className ?? ""}`}>
       <motion.span
         className="block"
@@ -54,10 +52,11 @@ function MaskedHeading({ text, className }) {
         viewport={{ once: true, amount: 0.6 }}
         transition={REVEAL}
       >
+        
         {text}
       </motion.span>
     </span>
-    </div>
+    
   );
 }
 
