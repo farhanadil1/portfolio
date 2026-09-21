@@ -289,7 +289,7 @@ export default function ContactSection() {
           font-semibold
           leading-none
           tracking-[-0.09em]
-          text-black/[0.025]
+          text-black/[0.05]
           dark:text-white/[0.018]
         "
       >
@@ -340,7 +340,7 @@ export default function ContactSection() {
         <div className="grid items-start gap-8 lg:grid-cols-[150px_minmax(0,1fr)] lg:gap-10">
           <div className="contact-reveal">
             <div className="flex items-center gap-3 lg:pt-3">
-              <span className="h-px w-7 bg-teal-500 dark:bg-teal-400" />
+             
 
               <span className="text-[10px] font-medium tracking-[0.3em] text-black/40 dark:text-white/35">
                 CONTACT

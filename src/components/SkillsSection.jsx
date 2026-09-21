@@ -565,7 +565,7 @@ export default function SkillsSection() {
           {/* LEFT */}
 
           <div className="skills-eyebrow flex items-center gap-3">
-            <span className="h-px w-8 bg-teal-400" />
+            
 
             <span className="text-[12px] font-medium tracking-[0.3em] text-white/40">
               SKILLS

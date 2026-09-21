@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { FiArrowUpRight } from "react-icons/fi";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -291,7 +292,7 @@ export default function AboutSection() {
               >
                 Resume
                 <span className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5">
-                  ↗
+                 <FiArrowUpRight className="h-4 w-4" />
                 </span>
               </a>
               <p data-tag className="text-white/40">
