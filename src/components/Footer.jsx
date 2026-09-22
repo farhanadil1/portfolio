@@ -8,7 +8,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const socials = [
   {
-    href: "https://www.linkedin.com/in/md-adil-farhan-b4956424a/",
+    href: "https://www.linkedin.com/in/adil-farhan-b4956424a/",
     label: "LinkedIn",
   },
   {

@@ -20,17 +20,17 @@ const SOCIALS = [
   {
     name: "LinkedIn",
     icon: FaLinkedinIn,
-    href: "https://www.linkedin.com/in/yourusername",
+    href: "https://www.linkedin.com/in/adil-farhan-b4956424a/",
   },
   {
     name: "Instagram",
     icon: FaInstagram,
-    href: "https://www.instagram.com/yourusername",
+    href: "https://www.instagram.com/farhanadil_",
   },
   {
     name: "GitHub",
     icon: FaGithub,
-    href: "https://github.com/yourusername",
+    href: "https://github.com/farhanadil1",
   },
 ];
 

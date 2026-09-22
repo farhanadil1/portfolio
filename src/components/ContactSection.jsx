@@ -14,7 +14,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 const email = "imfarhan574@gmail.com";
 const linkedinURL =
-  "https://www.linkedin.com/in/md-adil-farhan-b4956424a/";
+  "https://www.linkedin.com/in/adil-farhan-b4956424a/";
 
 const marqueeItems = [
   "DESIGN × ENGINEERING",
