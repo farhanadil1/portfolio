@@ -1,31 +1,54 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+import {
+  FiArrowUpRight,
+  FiMail,
+  FiMousePointer,
+} from "react-icons/fi";
+import {
+  FaLinkedinIn,
+  FaInstagram,
+  FaGithub,
+} from "react-icons/fa6";
 gsap.registerPlugin(ScrollTrigger);
 
 const NAME_LINES = ["MD ADIL", "FARHAN"];
-const STACK = ["React", "Tailwind", "Java", "Spring Boot", "Node", "MongoDB"];
 
-/* Split a string into per-character spans wrapped in a masked line. */
-function MaskedLine({ text, lineIndex }) {
-  let charIndex = 0;
+
+const SOCIALS = [
+  {
+    name: "LinkedIn",
+    icon: FaLinkedinIn,
+    href: "https://www.linkedin.com/in/yourusername",
+  },
+  {
+    name: "Instagram",
+    icon: FaInstagram,
+    href: "https://www.instagram.com/yourusername",
+  },
+  {
+    name: "GitHub",
+    icon: FaGithub,
+    href: "https://github.com/yourusername",
+  },
+];
+
+function MaskedLine({ children, className = "" }) {
   return (
-    <span className="block overflow-hidden pb-[0.12em]">
-      <span className="block">
-        {text.split("").map((ch, i) => (
+    <div className={`overflow-hidden ${className}`}>
+      <div className="flex justify-center">
+        {children.split("").map((char, index) => (
           <span
-            key={i}
+            key={`${char}-${index}`}
             data-char
-            data-line={lineIndex}
-            style={{ "--i": charIndex++ }}
-            className="inline-block will-change-transform"
+            className="inline-block"
           >
-            {ch === " " ? "\u00A0" : ch}
+            {char === " " ? "\u00A0" : char}
           </span>
         ))}
-      </span>
-    </span>
+      </div>
+    </div>
   );
 }
 
@@ -37,225 +60,482 @@ export default function HeroSection() {
   const nameRef = useRef(null);
   const magnetRefs = useRef([]);
 
-  magnetRefs.current = [];
-  const addMagnet = (el) => {
-    if (el && !magnetRefs.current.includes(el)) magnetRefs.current.push(el);
-  };
-
   useEffect(() => {
+    const hero = heroRef.current;
+    const aurora = auroraRef.current;
+    const spot = spotRef.current;
+    const content = contentRef.current;
+    const name = nameRef.current;
+
+    if (!hero || !content || !name) return;
+
     const ctx = gsap.context(() => {
+      const chars = name.querySelectorAll("[data-char]");
+      const status = hero.querySelector("[data-status]");
+      const bio = hero.querySelector("[data-bio]");
+      const stack = hero.querySelector("[data-stack]");
+      const cue = hero.querySelector("[data-cue]");
+      const cornerMeta = hero.querySelector("[data-corner-meta]");
+      const accent = hero.querySelector("[data-accent]");
+
       const mm = gsap.matchMedia();
 
-      /* ---------------- FULL MOTION ---------------- */
-      mm.add(
-        {
-          motionOK: "(prefers-reduced-motion: no-preference)",
-          isDesktop: "(min-width: 768px) and (pointer: fine)",
-        },
-        (context) => {
-          const { motionOK, isDesktop } = context.conditions;
-          if (!motionOK) return;
-
-          const chars = gsap.utils.toArray("[data-char]");
-
-          /* --- Entrance: one orchestrated sequence --- */
-          const tl = gsap.timeline({
-            defaults: { ease: "expo.out" },
-            delay: 0.15,
-          });
-
-          tl.set(heroRef.current, { autoAlpha: 1 })
-            .from("[data-status]", { yPercent: 120, opacity: 0, duration: 1 })
-            .from(
-              chars,
-              {
-                yPercent: 118,
-                rotateX: -78,
-                opacity: 0,
-                duration: 1.5,
-                stagger: { each: 0.028, from: "start" },
-              },
-              "-=0.75"
-            )
-            .from(
-              "[data-bio] > *",
-              { y: 24, opacity: 0, duration: 1.1, stagger: 0.09 },
-              "-=1.05"
-            )
-            .from(
-              "[data-stack] li",
-              { y: 18, opacity: 0, duration: 0.9, stagger: 0.05 },
-              "-=0.9"
-            )
-            .from("[data-cue]", { opacity: 0, duration: 1 }, "-=0.6");
-
-          /* --- Ambient aurora drift --- */
-          gsap.utils.toArray("[data-blob]").forEach((blob, i) => {
-            gsap.to(blob, {
-              xPercent: i % 2 ? -14 : 16,
-              yPercent: i % 2 ? 12 : -10,
-              scale: 1.18,
-              duration: 14 + i * 5,
-              ease: "sine.inOut",
-              repeat: -1,
-              yoyo: true,
-            });
-          });
-
-          /* --- Cursor parallax --- */
-          if (isDesktop) {
-            const auroraX = gsap.quickTo(auroraRef.current, "x", {
-              duration: 0.9,
-              ease: "power3.out",
-            });
-            const auroraY = gsap.quickTo(auroraRef.current, "y", {
-              duration: 0.9,
-              ease: "power3.out",
-            });
-            const spotX = gsap.quickTo(spotRef.current, "x", {
-              duration: 0.45,
-              ease: "power3.out",
-            });
-            const spotY = gsap.quickTo(spotRef.current, "y", {
-              duration: 0.45,
-              ease: "power3.out",
-            });
-            const nameRotY = gsap.quickTo(nameRef.current, "rotationY", {
-              duration: 1,
-              ease: "power3.out",
-            });
-            const nameRotX = gsap.quickTo(nameRef.current, "rotationX", {
-              duration: 1,
-              ease: "power3.out",
-            });
-
-            const onMove = (e) => {
-              const { innerWidth: w, innerHeight: h } = window;
-              const nx = e.clientX / w - 0.5;
-              const ny = e.clientY / h - 0.5;
-
-              auroraX(nx * 70);
-              auroraY(ny * 70);
-              spotX(e.clientX);
-              spotY(e.clientY);
-              nameRotY(nx * 7);
-              nameRotX(-ny * 5);
-
-              chars.forEach((c) => {
-                const r = c.getBoundingClientRect();
-                const d = (r.left + r.width / 2) / w - 0.5;
-                gsap.to(c, {
-                  y: ny * 16 * (0.4 + Math.abs(d)),
-                  x: nx * 22 * d * 2,
-                  duration: 1.1,
-                  ease: "power3.out",
-                  overwrite: "auto",
-                });
-              });
-            };
-
-            const onLeave = () => {
-              gsap.to(chars, { x: 0, y: 0, duration: 1, ease: "power3.out" });
-              nameRotX(0);
-              nameRotY(0);
-            };
-
-            window.addEventListener("mousemove", onMove);
-            document.addEventListener("mouseleave", onLeave);
-
-            const cleanups = magnetRefs.current.map((el) => {
-              const xTo = gsap.quickTo(el, "x", {
-                duration: 0.5,
-                ease: "power3.out",
-              });
-              const yTo = gsap.quickTo(el, "y", {
-                duration: 0.5,
-                ease: "power3.out",
-              });
-              const enter = (e) => {
-                const r = el.getBoundingClientRect();
-                xTo((e.clientX - (r.left + r.width / 2)) * 0.4);
-                yTo((e.clientY - (r.top + r.height / 2)) * 0.5);
-              };
-              const leave = () => {
-                xTo(0);
-                yTo(0);
-              };
-              el.addEventListener("mousemove", enter);
-              el.addEventListener("mouseleave", leave);
-              return () => {
-                el.removeEventListener("mousemove", enter);
-                el.removeEventListener("mouseleave", leave);
-              };
-            });
-
-            return () => {
-              window.removeEventListener("mousemove", onMove);
-              document.removeEventListener("mouseleave", onLeave);
-              cleanups.forEach((fn) => fn());
-            };
-          }
-        }
-      );
-
-      /* --- Scroll: the hero recedes instead of just scrolling away --- */
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const st = {
-          trigger: heroRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 0.6,
-        };
-
-        gsap.to(contentRef.current, {
-          yPercent: -14,
-          scale: 0.94,
-          opacity: 0,
-          filter: "blur(14px)",
-          ease: "none",
-          scrollTrigger: st,
+      mm.add("(prefers-reduced-motion: reduce)", () => {
+        gsap.set(hero, {
+          visibility: "visible",
         });
 
-        gsap.to(auroraRef.current, {
-          yPercent: 22,
-          scale: 1.25,
-          ease: "none",
-          scrollTrigger: st,
-        });
-
-        /* Letters peel off at different speeds on the way out.
-           fromTo with an EXPLICIT start (yPercent: 0) — not a plain .to().
-           A .to() with no "from" captures whatever the current value is
-           AT THE MOMENT THE TWEEN IS CREATED as its implicit start. This
-           tween is created synchronously on mount, before the entrance
-           timeline above has actually played (it has a 0.15s delay), so
-           without an explicit start it would snapshot the pre-entrance,
-           off-screen position (yPercent: 118) as "start." Scroll back up
-           later, and ScrollTrigger forces this tween's progress back to 0
-           — rendering that stale off-screen snapshot instead of the
-           visible resting state. That was the empty-name-on-scroll-up bug. */
-        gsap.fromTo(
-          "[data-char]",
-          { yPercent: 0 },
+        gsap.set(
+          [
+            status,
+            chars,
+            bio,
+            stack,
+            cue,
+            cornerMeta,
+            accent,
+          ].filter(Boolean),
           {
-            yPercent: () => gsap.utils.random(-70, 20),
-            ease: "none",
-            scrollTrigger: { ...st, end: "bottom 20%" },
+            clearProps: "all",
+            opacity: 1,
+            y: 0,
+            x: 0,
+            rotateX: 0,
+            rotateY: 0,
           }
         );
+      });
 
-        gsap.to("[data-cue]", {
-          opacity: 0,
-          y: 30,
-          ease: "none",
-          scrollTrigger: { ...st, end: "15% top" },
+      mm.add("(prefers-reduced-motion: no-preference)", () => {
+        gsap.set(hero, {
+          visibility: "visible",
         });
+
+        gsap.set(status, {
+          opacity: 0,
+          y: 16,
+        });
+
+        gsap.set(chars, {
+          opacity: 0,
+          yPercent: 115,
+          rotateX: -75,
+          transformOrigin: "50% 100%",
+        });
+
+        gsap.set(bio, {
+          opacity: 0,
+          y: 22,
+        });
+
+        gsap.set(stack, {
+          opacity: 0,
+          y: 18,
+        });
+
+        gsap.set(cue, {
+          opacity: 0,
+          y: 12,
+        });
+
+        gsap.set(cornerMeta, {
+          opacity: 0,
+          x: 20,
+        });
+
+        gsap.set(accent, {
+          opacity: 0,
+          scale: 0.5,
+        });
+
+        /*
+         * Hero entrance
+         */
+        const intro = gsap.timeline({
+          defaults: {
+            ease: "power4.out",
+          },
+        });
+
+        intro
+          .to(status, {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+          })
+          .to(
+            chars,
+            {
+              opacity: 1,
+              yPercent: 0,
+              rotateX: 0,
+              duration: 1.2,
+              stagger: {
+                each: 0.025,
+              },
+            },
+            "-=0.4"
+          )
+          .to(
+            accent,
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.7,
+              ease: "back.out(1.8)",
+            },
+            "-=0.65"
+          )
+          .to(
+            bio,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.85,
+            },
+            "-=0.45"
+          )
+          .to(
+            stack,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+            },
+            "-=0.5"
+          )
+          .to(
+            cue,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.7,
+            },
+            "-=0.45"
+          )
+          .to(
+            cornerMeta,
+            {
+              opacity: 1,
+              x: 0,
+              duration: 0.8,
+            },
+            "-=0.7"
+          );
+
+        /*
+         * Ambient aurora
+         */
+        if (aurora) {
+          gsap.to(aurora, {
+            xPercent: 10,
+            yPercent: -8,
+            scale: 1.08,
+            duration: 8,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          });
+        }
+
+        /*
+         * Cursor interaction
+         */
+        const handlePointerMove = (event) => {
+          const bounds = hero.getBoundingClientRect();
+
+          const x =
+            (event.clientX - bounds.left) /
+              bounds.width -
+            0.5;
+
+          const y =
+            (event.clientY - bounds.top) /
+              bounds.height -
+            0.5;
+
+          /*
+           * Aurora follows cursor softly.
+           */
+          if (aurora) {
+            gsap.to(aurora, {
+              x: x * 40,
+              y: y * 28,
+              duration: 1.25,
+              ease: "power3.out",
+              overwrite: "auto",
+            });
+          }
+
+          /*
+           * Spotlight follows cursor.
+           */
+          if (spot) {
+            gsap.to(spot, {
+              x:
+                event.clientX -
+                bounds.left,
+              y:
+                event.clientY -
+                bounds.top,
+              duration: 0.35,
+              ease: "power3.out",
+              overwrite: "auto",
+            });
+          }
+
+          /*
+           * Main typography has a very subtle
+           * 3D response to the cursor.
+           */
+          if (name) {
+            gsap.to(name, {
+              rotateX: y * -2.5,
+              rotateY: x * 3,
+              duration: 1.2,
+              ease: "power3.out",
+              overwrite: "auto",
+            });
+          }
+
+          /*
+           * Individual characters shift slightly.
+           * This keeps the typography feeling alive.
+           */
+          gsap.to(chars, {
+            x: x * 5,
+            y: y * 3,
+            duration: 0.9,
+            stagger: 0.01,
+            ease: "power3.out",
+            overwrite: "auto",
+          });
+
+          /*
+           * Accent dot reacts a little stronger.
+           */
+          if (accent) {
+            gsap.to(accent, {
+              x: x * 10,
+              y: y * 8,
+              duration: 0.8,
+              ease: "power3.out",
+              overwrite: "auto",
+            });
+          }
+        };
+
+        const handlePointerEnter = () => {
+          if (spot) {
+            gsap.to(spot, {
+              opacity: 1,
+              duration: 0.35,
+            });
+          }
+        };
+
+        const handlePointerLeave = () => {
+          if (spot) {
+            gsap.to(spot, {
+              opacity: 0,
+              duration: 0.35,
+            });
+          }
+
+          gsap.to(name, {
+            rotateX: 0,
+            rotateY: 0,
+            duration: 1,
+            ease: "power3.out",
+          });
+
+          gsap.to(chars, {
+            x: 0,
+            y: 0,
+            duration: 1,
+            ease: "power3.out",
+          });
+
+          if (accent) {
+            gsap.to(accent, {
+              x: 0,
+              y: 0,
+              duration: 1,
+              ease: "power3.out",
+            });
+          }
+        };
+
+        hero.addEventListener(
+          "pointermove",
+          handlePointerMove
+        );
+
+        hero.addEventListener(
+          "pointerenter",
+          handlePointerEnter
+        );
+
+        hero.addEventListener(
+          "pointerleave",
+          handlePointerLeave
+        );
+
+        /*
+         * Magnetic interactions
+         *
+         * Every element assigned through magnetRefs
+         * gets the same magnetic behaviour.
+         */
+        const magnets =
+          magnetRefs.current.filter(Boolean);
+
+        magnets.forEach((button) => {
+          const strength =
+            Number(button.dataset.magneticStrength) ||
+            0.22;
+
+          const xTo = gsap.quickTo(
+            button,
+            "x",
+            {
+              duration: 0.4,
+              ease: "power3.out",
+            }
+          );
+
+          const yTo = gsap.quickTo(
+            button,
+            "y",
+            {
+              duration: 0.4,
+              ease: "power3.out",
+            }
+          );
+
+          const handleMagneticMove = (event) => {
+            const rect =
+              button.getBoundingClientRect();
+
+            const x =
+              event.clientX -
+              (rect.left + rect.width / 2);
+
+            const y =
+              event.clientY -
+              (rect.top + rect.height / 2);
+
+            xTo(x * strength);
+            yTo(y * strength);
+          };
+
+          const handleMagneticLeave = () => {
+            xTo(0);
+            yTo(0);
+          };
+
+          button.addEventListener(
+            "pointermove",
+            handleMagneticMove
+          );
+
+          button.addEventListener(
+            "pointerleave",
+            handleMagneticLeave
+          );
+
+          button._magneticCleanup = () => {
+            button.removeEventListener(
+              "pointermove",
+              handleMagneticMove
+            );
+
+            button.removeEventListener(
+              "pointerleave",
+              handleMagneticLeave
+            );
+          };
+        });
+
+        /*
+         * Hero recession into About.
+         */
+        const recession = gsap.timeline({
+          scrollTrigger: {
+            trigger: hero,
+            start: "top top",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+
+        recession
+          .to(
+            content,
+            {
+              scale: 0.94,
+              y: -30,
+              opacity: 0,
+              filter: "blur(14px)",
+              ease: "none",
+            },
+            0
+          )
+          .to(
+            aurora,
+            {
+              scale: 1.35,
+              opacity: 0,
+              ease: "none",
+            },
+            0
+          )
+          .to(
+            chars,
+            {
+              yPercent: -30,
+              opacity: 0,
+              ease: "none",
+              stagger: 0.01,
+            },
+            0
+          )
+          .to(
+            cue,
+            {
+              opacity: 0,
+              y: 20,
+              ease: "none",
+            },
+            0
+          );
+
+        return () => {
+          hero.removeEventListener(
+            "pointermove",
+            handlePointerMove
+          );
+
+          hero.removeEventListener(
+            "pointerenter",
+            handlePointerEnter
+          );
+
+          hero.removeEventListener(
+            "pointerleave",
+            handlePointerLeave
+          );
+
+          magnets.forEach((button) => {
+            button._magneticCleanup?.();
+          });
+
+          recession.scrollTrigger?.kill();
+          recession.kill();
+        };
       });
 
-      /* Reduced motion: show everything, animate nothing. */
-      mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(heroRef.current, { autoAlpha: 1 });
-      });
+      return () => mm.revert();
     }, heroRef);
 
     return () => ctx.revert();
@@ -267,183 +547,473 @@ export default function HeroSection() {
       id="home"
       style={{ visibility: "hidden" }}
       className="
-        relative isolate min-h-[100svh] overflow-hidden
-        flex items-center
-        px-6 pt-24 md:px-20 md:pt-10
+        relative isolate h-[100svh] overflow-hidden
         bg-[#FAFAF9] text-[#101010]
         dark:bg-[#141414] dark:text-white
       "
     >
-      {/* Aurora field */}
+      {/* Ambient aurora */}
       <div
         ref={auroraRef}
-        aria-hidden
-        className="pointer-events-none absolute inset-[-25%] -z-10"
-      >
-        <div
-          data-blob
-          className="absolute left-[8%] top-[18%] h-[46vw] w-[46vw] rounded-full blur-[110px]
-                     bg-[radial-gradient(circle,rgba(20,184,166,0.30),transparent_70%)]
-                     dark:bg-[radial-gradient(circle,rgba(20,184,166,0.26),transparent_70%)]"
-        />
-        <div
-          data-blob
-          className="absolute right-[6%] top-[38%] h-[38vw] w-[38vw] rounded-full blur-[120px]
-                     bg-[radial-gradient(circle,rgba(56,189,248,0.20),transparent_70%)]
-                     dark:bg-[radial-gradient(circle,rgba(99,102,241,0.22),transparent_70%)]"
-        />
-        <div
-          data-blob
-          className="absolute left-[38%] bottom-[8%] h-[30vw] w-[30vw] rounded-full blur-[100px]
-                     bg-[radial-gradient(circle,rgba(244,114,182,0.14),transparent_70%)]
-                     dark:bg-[radial-gradient(circle,rgba(20,184,166,0.14),transparent_70%)]"
-        />
-      </div>
-
-      {/* Hairline grid */}
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10
-                   bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px)]
-                   dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.045)_1px,transparent_1px)]
-                   bg-[size:7.5rem_100%]
-                   [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)]"
+        aria-hidden="true"
+        className="
+          pointer-events-none absolute
+          -right-[18%] top-[2%]
+          h-[60vw] w-[60vw]
+          max-h-[850px] max-w-[850px]
+          rounded-full
+          bg-teal-400/[0.12]
+          blur-[130px]
+          dark:bg-teal-400/[0.13]
+        "
       />
 
       {/* Cursor spotlight */}
       <div
         ref={spotRef}
-        aria-hidden
-        className="pointer-events-none fixed left-0 top-0 -z-10 hidden h-[480px] w-[480px]
-                   -translate-x-1/2 -translate-y-1/2 rounded-full opacity-70 md:block
-                   bg-[radial-gradient(circle,rgba(20,184,166,0.16),transparent_62%)]
-                   mix-blend-multiply dark:mix-blend-screen"
+        aria-hidden="true"
+        className="
+          pointer-events-none absolute
+          left-0 top-0
+          h-64 w-64
+          -translate-x-1/2
+          -translate-y-1/2
+          rounded-full
+          bg-teal-400/[0.07]
+          blur-3xl
+          opacity-0
+        "
       />
 
-      {/* Film grain */}
+      {/* Subtle editorial grid */}
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 z-20 opacity-[0.14] dark:opacity-[0.10]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E\")",
-        }}
+        aria-hidden="true"
+        className="
+          pointer-events-none absolute inset-0
+          opacity-[0.022]
+          dark:opacity-[0.032]
+          [background-image:linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)]
+          [background-size:80px_80px]
+          dark:[background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)]
+        "
       />
 
-      {/* Content */}
+      {/* Main content */}
       <div
         ref={contentRef}
-        className="relative z-10 w-full max-w-5xl will-change-transform"
+        className="
+          relative z-10
+          flex h-full w-full
+          items-center justify-center
+          px-6
+          md:px-24
+          lg:px-32
+        "
       >
-        <div className="mb-10 flex items-center gap-5">
-          <span className="overflow-hidden">
-            <span
-              data-status
-              className="flex items-center gap-2.5 text-[0.8rem] text-neutral-600 dark:text-neutral-400"
-            >
-              <span className="relative flex h-1.5 w-1.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-500 opacity-75" />
-                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-teal-500" />
-              </span>
-              Full stack developer, open to work
-            </span>
-          </span>
-          <span
-            data-rule
-            className="h-px flex-1 bg-gradient-to-r from-teal-500/50 to-transparent"
-          />
-        </div>
-
-        <h1
-          ref={nameRef}
-          className="font-medium leading-[0.85] tracking-[-0.03em]
-                     text-[clamp(3.25rem,7vw,9rem)]
-                     [transform-style:preserve-3d]"
-          style={{ perspective: "800px" }}
+        <div
+          className="
+            flex w-full max-w-[1500px]
+            flex-col items-center
+            justify-center
+            pb-8
+            pt-20
+            text-center
+            md:pb-4
+            md:pt-6
+          "
         >
-          <span className="sr-only">MD Adil Farhan</span>
-          <span aria-hidden>
-            {NAME_LINES.map((line, i) => (
-              <MaskedLine key={line} text={line} lineIndex={i} />
-            ))}
-          </span>
-        </h1>
-
-        <div data-bio className="mt-10 md:mt-1 max-w-xl space-y-6">
-          <p className="text-[1.0625rem] leading-relaxed text-neutral-600 dark:text-neutral-300">
-            I design and engineer interactive web systems where motion,
-            performance, and structure work together — not separately.
-          </p>
-
-          <div className="flex flex-wrap items-center gap-4">
-            <a
-              ref={addMagnet}
-              href="#work"
-              className="group relative inline-flex items-center overflow-hidden rounded-full
-                         bg-[#101010] px-7 py-3.5 text-sm text-white
-                         outline-offset-4 focus-visible:outline-2 focus-visible:outline-teal-500
-                         dark:bg-white dark:text-[#101010]"
+          {/* Small status */}
+          <div
+            data-status
+            className="
+              flex items-center gap-3
+              text-[9px]
+              font-medium
+              uppercase
+              tracking-[0.3em]
+              text-black/45
+              dark:text-white/45
+            "
+          >
+            <span
+              className="
+                relative flex h-2 w-2
+                items-center justify-center
+              "
             >
-              <span className="absolute inset-0 origin-bottom scale-y-0 bg-teal-500 transition-transform duration-500 ease-[cubic-bezier(.16,1,.3,1)] group-hover:scale-y-100" />
-              <span className="relative transition-colors duration-300 group-hover:text-white dark:group-hover:text-white">
-                See selected work
-              </span>
-            </a>
+              <span
+                className="
+                  absolute h-2 w-2
+                  animate-ping rounded-full
+                  bg-teal-500/40
+                "
+              />
 
-            <a
-              ref={addMagnet}
-              href="#contact"
-              className="rounded-full border border-black/15 px-7 py-3.5 text-sm
-                         transition-colors duration-300 hover:border-teal-500 hover:text-teal-600
-                         outline-offset-4 focus-visible:outline-2 focus-visible:outline-teal-500
-                         dark:border-white/15 dark:hover:text-teal-400"
+              <span
+                className="
+                  relative h-1.5 w-1.5
+                  rounded-full bg-teal-500
+                "
+              />
+            </span>
+
+            <span>
+              Available for work
+            </span>
+          </div>
+
+          {/* Name */}
+          <div
+            ref={nameRef}
+            className="
+              mt-8
+              w-full
+              [perspective:1400px]
+              md:mt-10
+            "
+          >
+            <MaskedLine
+              className="
+                text-[clamp(4.25rem,10vw,12.5rem)]
+                font-medium
+                leading-[0.76]
+                tracking-[-0.085em]
+              "
             >
-              Get in touch
-            </a>
+              {NAME_LINES[0]}
+            </MaskedLine>
+
+            <div
+              className="
+                relative
+                flex items-end justify-center
+              "
+            >
+              <MaskedLine
+                className="
+                  text-[clamp(4.25rem,10vw,12.5rem)]
+                  font-medium
+                  leading-[0.76]
+                  tracking-[-0.085em]
+                "
+              >
+                {NAME_LINES[1]}
+              </MaskedLine>
+
+              {/* Meaningful accent */}
+              <span
+                ref={(el) => {
+                  if (el) {
+                    magnetRefs.current[2] = el;
+                  }
+                }}
+                data-accent
+                className="
+                  absolute
+                  bottom-[0.2em]
+                  ml-[clamp(21rem,40vw,42rem)]
+                  h-3 w-3
+                  rounded-full
+                  bg-teal-500
+                  shadow-[0_0_35px_rgba(20,184,166,0.35)]
+                  md:h-4 md:w-4
+                "
+              />
+            </div>
+          </div>
+
+          {/* Supporting statement */}
+          <div
+            data-bio
+            className="
+              mt-9
+              max-w-[650px]
+              md:mt-11
+            "
+          >
+            <p
+              className="
+                text-[clamp(1rem,1.55vw,1.35rem)]
+                leading-[1.4]
+                tracking-[-0.025em]
+                text-black/60
+                dark:text-white/60
+              "
+            >
+              Java Full Stack Engineer building
+              thoughtful digital products with
+              React, Spring Boot and modern web
+              technologies.
+            </p>
+
+            {/* Magnetic CTAs */}
+            <div
+              className="
+                mt-7
+                flex flex-wrap
+                items-center
+                justify-center
+                gap-3
+                md:mt-8
+              "
+            >
+              <a
+                ref={(el) => {
+                  magnetRefs.current[0] = el;
+                }}
+                data-magnetic-strength="0.24"
+                href="#projects"
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  gap-3
+                  rounded-full
+                  bg-[#101010]
+                  px-6 py-3.5
+                  text-sm
+                  font-medium
+                  text-white
+                  shadow-[0_12px_40px_rgba(0,0,0,0.08)]
+                  transition-colors
+                  duration-300
+                  hover:bg-teal-500
+                  dark:bg-white
+                  dark:text-[#101010]
+                  dark:hover:bg-teal-400
+                "
+              >
+                <span>
+                  Explore selected work
+                </span>
+
+                <FiArrowUpRight
+                  className="
+                    text-base
+                    transition-transform
+                    duration-300
+                    group-hover:translate-x-1
+                    group-hover:-translate-y-1
+                  "
+                />
+              </a>
+
+              <a
+                ref={(el) => {
+                  magnetRefs.current[1] = el;
+                }}
+                data-magnetic-strength="0.24"
+                href="#contact"
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  gap-3
+                  rounded-full
+                  border
+                  border-black/10
+                  bg-black/[0.025]
+                  px-6 py-3.5
+                  text-sm
+                  font-medium
+                  text-[#101010]
+                  backdrop-blur-sm
+                  transition-all
+                  duration-300
+                  hover:border-teal-500/40
+                  hover:bg-teal-500/[0.06]
+                  dark:border-white/10
+                  dark:bg-white/[0.03]
+                  dark:text-white
+                  dark:hover:border-teal-400/40
+                  dark:hover:bg-teal-400/[0.06]
+                "
+              >
+                <FiMail
+                  className="
+                    text-base
+                    text-teal-500
+                    transition-transform
+                    duration-300
+                    group-hover:scale-110
+                  "
+                />
+
+                <span>
+                  Let&apos;s talk
+                </span>
+              </a>
+            </div>
           </div>
         </div>
-
-        <ul
-          data-stack
-          className="mt-12 md:mt-8 flex flex-wrap gap-x-7 gap-y-3 text-[0.8125rem] text-neutral-500 dark:text-neutral-400"
-        >
-          {STACK.map((tech) => (
-            <li
-              key={tech}
-              className="relative cursor-default transition-colors duration-300 hover:text-teal-600 dark:hover:text-teal-400
-                         after:absolute after:-bottom-1 after:left-0 after:h-px after:w-full after:origin-right
-                         after:scale-x-0 after:bg-teal-500 after:transition-transform after:duration-500
-                         after:ease-[cubic-bezier(.16,1,.3,1)] hover:after:origin-left hover:after:scale-x-100"
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
       </div>
 
-      {/* Scroll cue */}
+      {/* Top-right metadata */}
+      <div
+        data-corner-meta
+        className="
+          absolute
+          left-6 top-7
+          z-20
+          hidden
+          text-left
+          md:left-10
+          md:top-9
+          md:block
+          lg:left-14
+        "
+      >
+        <div
+          className="
+            text-[9px]
+            font-medium
+            uppercase
+            tracking-[0.28em]
+            text-black/35
+            dark:text-white/35
+          "
+        >
+          Java Full Stack
+        </div>
+
+        <div
+          className="
+            mt-2
+            text-[10px]
+            uppercase
+            tracking-[0.2em]
+            text-black/55
+            dark:text-white/55
+          "
+        >
+          Kolkata · India
+        </div>
+
+        <div
+          className="
+            mt-1
+            text-[10px]
+            uppercase
+            tracking-[0.2em]
+            text-teal-600
+            dark:text-teal-400
+          "
+        >
+          2026
+        </div>
+      </div>
+
+      {/* Bottom-left stack */}
+      <div
+        data-stack
+        className="
+          absolute
+          bottom-7 left-6
+          z-20
+          hidden
+          md:block
+          lg:left-10
+        "
+      >
+        <div
+          className="
+            mb-3
+            text-[8px]
+            font-medium
+            uppercase
+            tracking-[0.3em]
+            text-black/30
+            dark:text-white/30
+          "
+        >
+          Connect
+        </div>
+
+        <div
+          className="
+            flex
+            flex-wrap
+            items-center
+            gap-x-4
+            gap-y-2
+          "
+        >
+          {SOCIALS.map((item) => {
+            const Icon = item.icon;
+
+            return (
+              <a
+                key={item.name}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Visit my ${item.name}`}
+                className="
+                  group
+                  flex
+                  items-center
+                  gap-1.5
+                  text-[10px]
+                  text-black/45
+                  transition-colors
+                  duration-300
+                  hover:text-teal-500
+                  dark:text-white/45
+                  dark:hover:text-teal-400
+                "
+              >
+                <Icon
+                  className="
+                    text-xs
+                    text-black/55
+                    transition-all
+                    duration-300
+                    group-hover:-translate-y-0.5
+                    group-hover:text-teal-500
+                    dark:text-white/55
+                    dark:group-hover:text-teal-400
+                  "
+                />
+
+                <span>{item.name}</span>
+              </a>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Bottom-right scroll cue */}
       <div
         data-cue
-        aria-hidden
-        className="absolute bottom-8  z-10 flex items-center gap-3 right-20"
+        className="
+          absolute
+          bottom-7 right-6
+          z-20
+          flex
+          items-center
+          gap-3
+          text-[9px]
+          font-medium
+          uppercase
+          tracking-[0.28em]
+          text-black/35
+          dark:text-white/35
+          md:right-10
+          lg:right-14
+        "
       >
-        <span className="relative h-10 w-px overflow-hidden bg-black/15 dark:bg-white/15">
-          <span className="absolute inset-x-0 top-0 h-1/2 animate-[cue_2s_cubic-bezier(.16,1,.3,1)_infinite] bg-teal-500" />
-        </span>
-        <span className="text-[0.8rem] text-neutral-500 dark:text-neutral-500">
-          Scroll
+        <FiMousePointer
+          className="
+            text-sm
+            text-teal-600
+            dark:text-teal-400
+          "
+        />
+
+        <span>
+          Scroll to explore
         </span>
       </div>
-
-      <style>{`
-        @keyframes cue {
-          0%   { transform: translateY(-100%); }
-          100% { transform: translateY(200%); }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          [data-cue] span { animation: none !important; }
-        }
-      `}</style>
     </section>
   );
 }

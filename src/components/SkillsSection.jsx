@@ -1,7 +1,31 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { FiArrowUpRight } from "react-icons/fi";
+import {
+  FiArrowUpRight,
+  FiCloud,
+  FiCpu,
+  FiFigma,
+} from "react-icons/fi";
+import {
+  SiAngular,
+  SiDocker,
+  SiExpress,
+  SiFigma,
+  SiGit,
+  SiGithub,
+  SiHibernate,
+  SiJavascript,
+  SiJenkins,
+  SiJunit5,
+  SiMongodb,
+  SiMysql,
+  SiNodedotjs,
+  SiPostman,
+  SiReact,
+  SiSpringboot,
+  SiTailwindcss,
+} from "react-icons/si";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -10,116 +34,138 @@ const skills = [
     name: "React",
     category: "Frontend",
     note: "Scalable component-based interfaces",
+    icon: SiReact,
   },
   {
     name: "Angular",
     category: "Frontend",
     note: "Enterprise single-page applications",
+    icon: SiAngular,
   },
   {
     name: "JavaScript",
     category: "Frontend",
     note: "Modern ES, async logic & interaction",
+    icon: SiJavascript,
   },
   {
     name: "Tailwind CSS",
     category: "Frontend",
     note: "Utility-first design systems",
+    icon: SiTailwindcss,
   },
 
   {
     name: "Java",
     category: "Backend",
     note: "Enterprise-grade object-oriented systems",
+    icon: null,
   },
   {
     name: "Spring Boot",
     category: "Backend",
     note: "Production-ready REST architectures",
+    icon: SiSpringboot,
   },
   {
     name: "Hibernate / JPA",
     category: "Backend",
     note: "ORM & persistence architecture",
+    icon: SiHibernate,
   },
   {
     name: "Node.js",
     category: "Backend",
     note: "Event-driven backend services",
+    icon: SiNodedotjs,
   },
   {
     name: "Express",
     category: "Backend",
     note: "Lightweight API architecture",
+    icon: SiExpress,
   },
 
   {
     name: "MongoDB",
     category: "Databases",
     note: "Flexible document-based data modeling",
+    icon: SiMongodb,
   },
   {
     name: "MySQL",
     category: "Databases",
     note: "Structured relational data systems",
+    icon: SiMysql,
   },
 
   {
     name: "JUnit",
     category: "Testing & Logging",
     note: "Unit testing & test-driven development",
+    icon: SiJunit5,
   },
   {
     name: "Mockito",
     category: "Testing & Logging",
     note: "Mocking & isolated test environments",
+    icon: null,
   },
   {
     name: "SLF4J",
     category: "Testing & Logging",
     note: "Structured application logging",
+    icon: null,
   },
 
   {
     name: "Git",
     category: "DevOps & Tools",
     note: "Version control & branching workflows",
+    icon: SiGit,
   },
   {
     name: "GitHub",
     category: "DevOps & Tools",
     note: "Collaboration & code review",
+    icon: SiGithub,
   },
   {
     name: "Jenkins",
     category: "DevOps & Tools",
     note: "Continuous integration & delivery",
+    icon: SiJenkins,
   },
   {
     name: "Docker",
     category: "DevOps & Tools",
     note: "Containerized application deployment",
+    icon: SiDocker,
   },
   {
     name: "Postman",
     category: "DevOps & Tools",
     note: "API testing & validation",
+    icon: SiPostman,
   },
 
   {
     name: "Cloud",
     category: "Emerging",
     note: "Deployment & infrastructure fundamentals",
+    icon: FiCloud,
   },
   {
     name: "GenAI",
     category: "Emerging",
     note: "AI-assisted enterprise solutions",
+    icon: FiCpu,
   },
   {
     name: "Figma",
     category: "Emerging",
     note: "Interface design & prototyping",
+    icon: SiFigma || FiFigma,
   },
 ];
 
@@ -132,277 +178,360 @@ const categories = [
   "Emerging",
 ];
 
+const TOTAL = skills.length;
+
+const EASE = "power3.out";
+
 export default function SkillsSection() {
   const sectionRef = useRef(null);
   const listRef = useRef(null);
 
-  const glowRef = useRef(null);
   const cursorGlowRef = useRef(null);
+  const ambientGlowRef = useRef(null);
   const activeLineRef = useRef(null);
-
-  const categoryRef = useRef(null);
-  const nameRef = useRef(null);
-  const noteRef = useRef(null);
-  const counterRef = useRef(null);
-
+  const activeDotRef = useRef(null);
   const backgroundWordRef = useRef(null);
+  const activeIconRef = useRef(null);
 
   const activeIndexRef = useRef(0);
 
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const activeSkill = skills[activeIndex];
+
   useEffect(() => {
+    const section = sectionRef.current;
+
+    if (!section) return;
+
     const ctx = gsap.context(() => {
+      const items = gsap.utils.toArray(".skill-item");
+
       const mm = gsap.matchMedia();
 
       mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const items = gsap.utils.toArray(".skill-item");
-
-        
-
-        gsap.from(".skills-eyebrow", {
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          ease: "power3.out",
+        /*
+         * Intro animation
+         */
+        const intro = gsap.timeline({
           scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
+            trigger: section,
+            start: "top 78%",
+            once: true,
           },
         });
 
-        gsap.from(".skills-heading-line", {
-          opacity: 0,
-          y: 70,
-          duration: 1,
-          stagger: 0.08,
-          ease: "power4.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        });
+        intro
+          .from(".skills-eyebrow", {
+            opacity: 0,
+            y: 20,
+            duration: 0.7,
+            ease: EASE,
+          })
+          .from(
+            ".skills-heading-line",
+            {
+              opacity: 0,
+              y: 80,
+              duration: 1,
+            },
+            "-=0.45"
+          )
+          .from(
+            ".skills-description",
+            {
+              opacity: 0,
+              y: 20,
+              duration: 0.7,
+            },
+            "-=0.65"
+          );
 
-        gsap.from(".skills-description", {
-          opacity: 0,
-          y: 20,
-          duration: 0.8,
-          delay: 0.3,
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: sectionRef.current,
-            start: "top 80%",
-          },
-        });
-
-        
-
+        /*
+         * Initial list reveal
+         */
         gsap.from(items, {
           opacity: 0,
-          y: 30,
-          duration: 0.7,
-          stagger: 0.025,
-          ease: "power3.out",
+          y: 35,
+          duration: 0.8,
+          stagger: 0.035,
+          ease: EASE,
           scrollTrigger: {
             trigger: listRef.current,
-            start: "top 80%",
+            start: "top 82%",
+            once: true,
           },
         });
 
-        
-
-        function focusSkill(index, instant = false) {
-          if (index < 0 || index >= skills.length) return;
-
-          activeIndexRef.current = index;
-
-          const activeItem = items[index];
-          const skill = skills[index];
-
-          
-
-          items.forEach((item, i) => {
-            const distance = Math.abs(i - index);
-
-            let opacity = 0.22;
-            let scale = 1;
-            let x = 0;
-
-            if (i === index) {
-              opacity = 1;
-              scale = 1.025;
-              x = 10;
-            } else if (distance === 1) {
-              opacity = 0.5;
-            }
-
-            gsap.to(item, {
-              opacity,
-              scale,
-              x,
-              duration: instant ? 0 : 0.45,
-              ease: "power3.out",
-              overwrite: "auto",
-            });
-
-            const title = item.querySelector(".skill-title");
-
-            gsap.to(title, {
-              color:
-                i === index
-                  ? "rgba(255,255,255,1)"
-                  : "rgba(255,255,255,0.3)",
-              duration: instant ? 0 : 0.4,
-              ease: "power2.out",
-            });
-
-            const number = item.querySelector(".skill-number");
-
-            gsap.to(number, {
-              color:
-                i === index
-                  ? "rgba(45,212,191,0.9)"
-                  : "rgba(255,255,255,0.18)",
-              duration: instant ? 0 : 0.4,
-            });
-
-            const arrow = item.querySelector(".skill-arrow");
-
-            gsap.to(arrow, {
-              opacity: i === index ? 1 : 0.15,
-              x: i === index ? 0 : -4,
-              duration: instant ? 0 : 0.35,
-            });
-          });
-
-          
-
-          const bounds = activeItem.getBoundingClientRect();
-          const sectionBounds =
-            sectionRef.current.getBoundingClientRect();
-
-          const center =
-            bounds.top -
-            sectionBounds.top +
-            bounds.height / 2;
-
-          
-          gsap.to(glowRef.current, {
-            y: center - 180,
-            opacity: 1,
-            duration: instant ? 0 : 0.65,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-
-          
-
-          gsap.to(activeLineRef.current, {
-            y: center,
-            opacity: 1,
-            duration: instant ? 0 : 0.45,
-            ease: "power3.out",
-            overwrite: "auto",
-          });
-
-          
-
-          gsap.to(backgroundWordRef.current, {
-            opacity: 0,
-            y: 15,
-            duration: instant ? 0 : 0.18,
-            ease: "power2.in",
-            onComplete: () => {
-              backgroundWordRef.current.textContent =
-                skill.category.toUpperCase();
-
-              gsap.to(backgroundWordRef.current, {
-                opacity: 1,
-                y: 0,
-                duration: instant ? 0 : 0.5,
-                ease: "power3.out",
-              });
-            },
-          });
-
-          
-
-          const elements = [
-            categoryRef.current,
-            nameRef.current,
-            noteRef.current,
-          ];
+        /*
+         * Updates the large background word.
+         */
+        const updateBackgroundWord = (skill, instant = false) => {
+          if (!backgroundWordRef.current) return;
 
           if (instant) {
-            categoryRef.current.textContent =
-              skill.category.toUpperCase();
+            backgroundWordRef.current.textContent =
+              skill.name.toUpperCase();
 
-            nameRef.current.textContent = skill.name;
-
-            noteRef.current.textContent = skill.note;
-
-            counterRef.current.textContent =
-              `${String(index + 1).padStart(2, "0")} / ${String(
-                skills.length
-              ).padStart(2, "0")}`;
-
-            gsap.set(elements, {
+            gsap.set(backgroundWordRef.current, {
               opacity: 1,
               y: 0,
+              scale: 1,
+              filter: "blur(0px)",
             });
 
             return;
           }
 
-          const tl = gsap.timeline();
+          gsap.killTweensOf(backgroundWordRef.current);
 
-          tl.to(elements, {
+          gsap.to(backgroundWordRef.current, {
             opacity: 0,
-            y: -8,
-            duration: 0.13,
-            stagger: 0.015,
+            y: 25,
+            scale: 0.97,
+            filter: "blur(8px)",
+            duration: 0.18,
             ease: "power2.in",
-          });
+            overwrite: true,
+            onComplete: () => {
+              if (!backgroundWordRef.current) return;
 
-          tl.call(() => {
-            categoryRef.current.textContent =
-              skill.category.toUpperCase();
+              backgroundWordRef.current.textContent =
+                skill.name.toUpperCase();
 
-            nameRef.current.textContent = skill.name;
-
-            noteRef.current.textContent = skill.note;
-
-            counterRef.current.textContent =
-              `${String(index + 1).padStart(2, "0")} / ${String(
-                skills.length
-              ).padStart(2, "0")}`;
-          });
-
-          tl.fromTo(
-            elements,
-            {
-              opacity: 0,
-              y: 12,
+              gsap.fromTo(
+                backgroundWordRef.current,
+                {
+                  opacity: 0,
+                  y: -20,
+                  scale: 1.02,
+                  filter: "blur(8px)",
+                },
+                {
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  filter: "blur(0px)",
+                  duration: 0.65,
+                  ease: "power3.out",
+                }
+              );
             },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.4,
-              stagger: 0.035,
-              ease: "power3.out",
+          });
+        };
+
+        /*
+         * Moves the active rail indicator.
+         */
+        const moveIndicator = (item, instant = false) => {
+          if (!item || !listRef.current) return;
+
+          const listBounds = listRef.current.getBoundingClientRect();
+          const itemBounds = item.getBoundingClientRect();
+
+          const center =
+            itemBounds.top -
+            listBounds.top +
+            itemBounds.height / 2;
+
+          gsap.to(activeLineRef.current, {
+            y: center,
+            opacity: 1,
+            duration: instant ? 0 : 0.65,
+            ease: EASE,
+            overwrite: true,
+          });
+
+          gsap.to(activeDotRef.current, {
+            y: center,
+            scale: 1,
+            duration: instant ? 0 : 0.55,
+            ease: EASE,
+            overwrite: true,
+          });
+        };
+
+        /*
+         * Main focus system.
+         *
+         * Only one skill owns the visual focus at a time.
+         */
+        const focusSkill = (index, instant = false) => {
+          if (index < 0 || index >= TOTAL) return;
+
+          const previousIndex = activeIndexRef.current;
+
+          if (!instant && previousIndex === index) return;
+
+          activeIndexRef.current = index;
+
+          const item = items[index];
+          const skill = skills[index];
+
+          if (!item) return;
+
+          setActiveIndex(index);
+
+          /*
+           * Skill rows
+           */
+          items.forEach((skillItem, i) => {
+            const distance = Math.abs(i - index);
+
+            let opacity = 0.18;
+            let x = 0;
+            let scale = 1;
+
+            if (i === index) {
+              opacity = 1;
+              x = 12;
+              scale = 1.015;
+            } else if (distance === 1) {
+              opacity = 0.48;
             }
-          );
-        }
 
-        
+            gsap.to(skillItem, {
+              opacity,
+              x,
+              scale,
+              duration: instant ? 0 : 0.55,
+              ease: EASE,
+              overwrite: "auto",
+            });
 
+            const title =
+              skillItem.querySelector(".skill-title");
+
+            const number =
+              skillItem.querySelector(".skill-number");
+
+            const icon =
+              skillItem.querySelector(".skill-row-icon");
+
+            const arrow =
+              skillItem.querySelector(".skill-arrow");
+
+            const meta =
+              skillItem.querySelector(".skill-meta");
+
+            gsap.to(title, {
+              color:
+                i === index
+                  ? "rgba(255,255,255,1)"
+                  : "rgba(255,255,255,0.25)",
+              duration: instant ? 0 : 0.45,
+              ease: "power2.out",
+              overwrite: true,
+            });
+
+            gsap.to(number, {
+              color:
+                i === index
+                  ? "rgba(45,212,191,0.95)"
+                  : "rgba(255,255,255,0.18)",
+              duration: instant ? 0 : 0.4,
+              overwrite: true,
+            });
+
+            gsap.to(icon, {
+              opacity: i === index ? 1 : 0.25,
+              scale: i === index ? 1.05 : 1,
+              duration: instant ? 0 : 0.45,
+              ease: EASE,
+              overwrite: true,
+            });
+
+            gsap.to(arrow, {
+              opacity: i === index ? 1 : 0.12,
+              x: i === index ? 0 : -5,
+              duration: instant ? 0 : 0.4,
+              ease: EASE,
+              overwrite: true,
+            });
+
+            gsap.to(meta, {
+              opacity: i === index ? 1 : 0,
+              x: i === index ? 0 : 8,
+              duration: instant ? 0 : 0.4,
+              ease: EASE,
+              overwrite: true,
+            });
+          });
+
+          /*
+           * Active indicator
+           */
+          moveIndicator(item, instant);
+
+          /*
+           * Ambient glow
+           */
+          const sectionBounds =
+            section.getBoundingClientRect();
+
+          const itemBounds =
+            item.getBoundingClientRect();
+
+          const center =
+            itemBounds.top -
+            sectionBounds.top +
+            itemBounds.height / 2;
+
+          gsap.to(ambientGlowRef.current, {
+            y: center - 220,
+            opacity: 1,
+            duration: instant ? 0 : 0.75,
+            ease: EASE,
+            overwrite: true,
+          });
+
+          /*
+           * Background typography
+           */
+          updateBackgroundWord(skill, instant);
+
+          /*
+           * Active icon
+           */
+          if (activeIconRef.current) {
+            gsap.killTweensOf(activeIconRef.current);
+
+            gsap.fromTo(
+              activeIconRef.current,
+              {
+                opacity: instant ? 1 : 0,
+                y: instant ? 0 : 10,
+                scale: instant ? 1 : 0.85,
+                rotate: instant ? 0 : -8,
+              },
+              {
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                rotate: 0,
+                duration: instant ? 0 : 0.65,
+                ease: EASE,
+              }
+            );
+          }
+        };
+
+        /*
+         * Initial state
+         */
         focusSkill(0, true);
 
-        
-
+        /*
+         * Scroll-driven focus.
+         *
+         * Each item gets a narrow activation zone so two
+         * skills don't fight for focus at the same time.
+         */
         items.forEach((item, index) => {
           ScrollTrigger.create({
             trigger: item,
-            start: "top 62%",
-            end: "bottom 38%",
+            start: "center 58%",
+            end: "center 42%",
 
             onEnter: () => {
               focusSkill(index);
@@ -413,18 +542,19 @@ export default function SkillsSection() {
             },
           });
 
-         
-
+          /*
+           * Desktop hover interaction
+           */
           item.addEventListener("mouseenter", () => {
             focusSkill(index);
           });
         });
 
-       
-
+        /*
+         * Cursor-following ambient light.
+         */
         const handleMouseMove = (event) => {
-          const rect =
-            sectionRef.current.getBoundingClientRect();
+          const rect = section.getBoundingClientRect();
 
           const x = event.clientX - rect.left;
           const y = event.clientY - rect.top;
@@ -432,33 +562,63 @@ export default function SkillsSection() {
           gsap.to(cursorGlowRef.current, {
             x,
             y,
-            duration: 0.8,
+            duration: 0.9,
             ease: "power3.out",
             overwrite: "auto",
           });
         };
 
-        sectionRef.current.addEventListener(
+        section.addEventListener(
           "mousemove",
           handleMouseMove
         );
 
+        /*
+         * Keep the indicator aligned after resize.
+         */
+        const handleResize = () => {
+          const currentItem = items[activeIndexRef.current];
+
+          if (currentItem) {
+            moveIndicator(currentItem, true);
+          }
+        };
+
+        window.addEventListener("resize", handleResize);
 
         return () => {
-          sectionRef.current?.removeEventListener(
+          section.removeEventListener(
             "mousemove",
             handleMouseMove
+          );
+
+          window.removeEventListener(
+            "resize",
+            handleResize
           );
         };
       });
 
-      
-
+      /*
+       * Reduced motion
+       */
       mm.add("(prefers-reduced-motion: reduce)", () => {
-        gsap.set(".skill-item", {
+        const items = gsap.utils.toArray(".skill-item");
+
+        gsap.set(items, {
           opacity: 1,
           x: 0,
           scale: 1,
+        });
+
+        gsap.set(".skills-heading-line", {
+          opacity: 1,
+          y: 0,
+        });
+
+        gsap.set(".skills-description", {
+          opacity: 1,
+          y: 0,
         });
       });
     }, sectionRef);
@@ -466,13 +626,15 @@ export default function SkillsSection() {
     return () => ctx.revert();
   }, []);
 
+  const ActiveIcon = activeSkill.icon;
+
   return (
     <section
       ref={sectionRef}
       id="skills"
       className="
         relative
-        overflow-hidden
+        overflow-x-clip
         bg-[#1E1E1E]
         px-6
         py-28
@@ -482,8 +644,7 @@ export default function SkillsSection() {
         xl:px-24
       "
     >
-     
-
+      {/* Background grid */}
       <div
         aria-hidden="true"
         className="
@@ -496,29 +657,29 @@ export default function SkillsSection() {
         "
       />
 
-      
-
+      {/* Giant active technology */}
       <div
         ref={backgroundWordRef}
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
-          right-[-5%]
-          top-[35%]
+          right-[-6%]
+          top-[38%]
           z-0
           select-none
           whitespace-nowrap
-          text-[12vw]
+          text-[14vw]
           font-semibold
-          tracking-[-0.08em]
+          leading-none
+          tracking-[-0.09em]
           text-white/[0.018]
         "
       >
-        FRONTEND
+        REACT
       </div>
 
-     
+      {/* Cursor glow */}
       <div
         ref={cursorGlowRef}
         aria-hidden="true"
@@ -538,51 +699,74 @@ export default function SkillsSection() {
         "
       />
 
-     
-
+      {/* Active ambient glow */}
       <div
-        ref={glowRef}
+        ref={ambientGlowRef}
         aria-hidden="true"
         className="
           pointer-events-none
           absolute
-          left-[35%]
+          left-[28%]
           top-0
           z-0
-          h-[360px]
-          w-[360px]
+          h-[440px]
+          w-[440px]
           rounded-full
           bg-teal-400/[0.045]
-          blur-[110px]
+          blur-[120px]
           opacity-0
         "
       />
 
       <div className="relative z-10 mx-auto max-w-7xl">
-       
+        {/* =====================================================
+            HEADER
+        ====================================================== */}
+        <div className="mb-24 grid gap-12 lg:grid-cols-[280px_minmax(0,1fr)]">
+          {/* Eyebrow */}
+          <div className="skills-eyebrow flex items-start gap-3">
+            <span
+              className="
+                mt-1.5
+                h-1.5
+                w-1.5
+                rounded-full
+                bg-teal-400
+                shadow-[0_0_16px_rgba(45,212,191,0.6)]
+              "
+            />
 
-        <div className="mb-20 grid gap-12 lg:grid-cols-[280px_minmax(0,1fr)]">
-          {/* LEFT */}
+            <div>
+              <span
+                className="
+                  text-[11px]
+                  font-medium
+                  tracking-[0.32em]
+                  text-white/45
+                "
+              >
+                SKILLS
+              </span>
 
-          <div className="skills-eyebrow flex items-center gap-3">
-            
-
-            <span className="text-[12px] font-medium tracking-[0.3em] text-white/40">
-              SKILLS
-            </span>
+              <p className="mt-3 max-w-[180px] text-[10px] leading-relaxed text-white/20">
+                THE SYSTEMS
+                <br />
+                BEHIND THE WORK
+              </p>
+            </div>
           </div>
 
-          {/* RIGHT */}
-
+          {/* Heading */}
           <div>
             <h2
               className="
                 overflow-hidden
                 text-5xl
                 font-medium
-                leading-[0.9]
-                tracking-[-0.055em]
-                sm:text-5xl
+                leading-[0.88]
+                tracking-[-0.06em]
+                sm:text-6xl
+                md:text-7xl
                 lg:text-[6.5rem]
               "
             >
@@ -590,7 +774,7 @@ export default function SkillsSection() {
                 The tools
               </span>
 
-              <span className="skills-heading-line block text-white/35">
+              <span className="skills-heading-line block text-white/30">
                 behind the work.
               </span>
             </h2>
@@ -598,10 +782,10 @@ export default function SkillsSection() {
             <p
               className="
                 skills-description
-                mt-8
+                mt-10
                 max-w-xl
                 text-sm
-                leading-relaxed
+                leading-[1.8]
                 text-white/40
                 md:text-base
               "
@@ -612,139 +796,245 @@ export default function SkillsSection() {
           </div>
         </div>
 
-       
-
+        {/* =====================================================
+            MAIN EXPERIENCE
+        ====================================================== */}
         <div
           className="
             grid
             items-start
             gap-16
             lg:grid-cols-[280px_minmax(0,1fr)]
+            lg:gap-20
           "
         >
-          
-
-          <aside
-            className="
-              lg:sticky
-              lg:top-24
-              lg:h-fit
-            "
-          >
+          {/* ===================================================
+              STICKY INFORMATION PANEL
+          ==================================================== */}
+          <aside className="lg:sticky lg:top-24 lg:h-fit">
+            {/* Active skill */}
             <div className="border-t border-white/10 pt-6">
-              <p
-                ref={categoryRef}
-                className="
-                  text-[10px]
-                  font-medium
-                  tracking-[0.3em]
-                  text-teal-400
-                "
-              >
-                FRONTEND
-              </p>
+              <div className="flex items-start justify-between gap-5">
+                <div>
+                  <p
+                    className="
+                      text-[10px]
+                      font-medium
+                      tracking-[0.3em]
+                      text-teal-400
+                    "
+                  >
+                    {activeSkill.category.toUpperCase()}
+                  </p>
+
+                  <h3
+                    className="
+                      mt-5
+                      text-3xl
+                      font-medium
+                      tracking-[-0.05em]
+                      md:text-4xl
+                    "
+                  >
+                    {activeSkill.name}
+                  </h3>
+                </div>
+
+                {/* Active technology icon */}
+                <div
+                  ref={activeIconRef}
+                  className="
+                    flex
+                    h-12
+                    w-12
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-full
+                    border
+                    border-teal-400/20
+                    bg-teal-400/[0.04]
+                    text-teal-400
+                  "
+                >
+                  {ActiveIcon ? (
+                    <ActiveIcon className="h-5 w-5" />
+                  ) : (
+                    <FiCpu className="h-5 w-5" />
+                  )}
+                </div>
+              </div>
 
               <p
-                ref={nameRef}
                 className="
                   mt-5
-                  text-3xl
-                  font-medium
-                  tracking-[-0.04em]
-                  md:text-4xl
-                "
-              >
-                React
-              </p>
-
-              <p
-                ref={noteRef}
-                className="
-                  mt-4
                   max-w-[240px]
                   text-sm
-                  leading-relaxed
-                  text-white/40
+                  leading-[1.8]
+                  text-white/35
                 "
               >
-                Scalable component-based interfaces
+                {activeSkill.note}
               </p>
             </div>
 
-            {/* COUNTER */}
+            {/* Progress */}
+            <div className="mt-10 border-t border-white/10 pt-5">
+              <div className="flex items-center justify-between">
+                <span
+                  className="
+                    font-mono
+                    text-[10px]
+                    tracking-[0.2em]
+                    text-white/30
+                  "
+                >
+                  {String(activeIndex + 1).padStart(2, "0")} /{" "}
+                  {String(TOTAL).padStart(2, "0")}
+                </span>
 
-            <div
-              className="
-                mt-8
-                flex
-                items-center
-                justify-between
-                border-t
-                border-white/10
-                pt-5
-              "
-            >
-              <span
-                ref={counterRef}
-                className="
-                  font-mono
-                  text-[10px]
-                  tracking-widest
-                  text-white/30
-                "
-              >
-                01 / 22
-              </span>
+                <span
+                  className="
+                    text-[9px]
+                    tracking-[0.28em]
+                    text-white/20
+                  "
+                >
+                  ACTIVE
+                </span>
+              </div>
 
-              <span
-                className="
-                  text-[9px]
-                  tracking-[0.25em]
-                  text-white/20
-                "
-              >
-                EXPLORE
-              </span>
+              {/* Progress bar */}
+              <div className="mt-4 h-px w-full bg-white/[0.07]">
+                <div
+                  className="
+                    h-px
+                    bg-teal-400
+                    transition-[width]
+                    duration-500
+                    ease-out
+                  "
+                  style={{
+                    width: `${((activeIndex + 1) / TOTAL) * 100}%`,
+                  }}
+                />
+              </div>
             </div>
 
-            {/* CATEGORY INDEX */}
+            {/* Category index */}
+            <div className="mt-12 hidden lg:block">
+              <p
+                className="
+                  mb-5
+                  text-[9px]
+                  tracking-[0.28em]
+                  text-white/15
+                "
+              >
+                SYSTEM MAP
+              </p>
 
-            <div className="mt-12 hidden space-y-3 lg:block">
-              {categories.map((category, index) => (
-                <div
-                  key={category}
-                  className="flex items-center gap-3"
-                >
-                  <span className="font-mono text-[9px] text-white/15">
-                    0{index + 1}
-                  </span>
+              <div className="space-y-3">
+                {categories.map((category, index) => {
+                  const categoryStart = skills.findIndex(
+                    (skill) => skill.category === category
+                  );
 
-                  <span className="text-[9px] tracking-[0.2em] text-white/20">
-                    {category.toUpperCase()}
-                  </span>
-                </div>
-              ))}
+                  const isActive =
+                    activeSkill.category === category;
+
+                  return (
+                    <div
+                      key={category}
+                      className="
+                        flex
+                        items-center
+                        gap-3
+                      "
+                    >
+                      <span
+                        className={`
+                          font-mono
+                          text-[9px]
+                          transition-colors
+                          duration-300
+                          ${
+                            isActive
+                              ? "text-teal-400"
+                              : "text-white/15"
+                          }
+                        `}
+                      >
+                        0{index + 1}
+                      </span>
+
+                      <span
+                        className={`
+                          text-[9px]
+                          tracking-[0.2em]
+                          transition-colors
+                          duration-300
+                          ${
+                            isActive
+                              ? "text-white/55"
+                              : "text-white/20"
+                          }
+                        `}
+                      >
+                        {category.toUpperCase()}
+                      </span>
+
+                      <span className="ml-auto font-mono text-[8px] text-white/10">
+                        {String(categoryStart + 1).padStart(
+                          2,
+                          "0"
+                        )}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </aside>
 
-      
-
+          {/* ===================================================
+              SKILL LIST
+          ==================================================== */}
           <div
             ref={listRef}
-            className="relative"
+            className="
+              relative
+              pl-0
+              lg:pl-8
+            "
           >
-            {/* ACTIVE SCAN LINE */}
+            {/* Vertical rail */}
+            <div
+              aria-hidden="true"
+              className="
+                pointer-events-none
+                absolute
+                left-0
+                top-0
+                hidden
+                h-full
+                w-px
+                bg-white/[0.06]
+                lg:block
+              "
+            />
 
+            {/* Active horizontal scan */}
             <div
               ref={activeLineRef}
               aria-hidden="true"
               className="
                 pointer-events-none
                 absolute
-                -left-5
+                left-0
                 hidden
                 h-px
-                w-[calc(100%+20px)]
+                w-[calc(100%+32px)]
                 bg-gradient-to-r
                 from-teal-400
                 via-teal-400/30
@@ -753,7 +1043,26 @@ export default function SkillsSection() {
               "
             />
 
-            {categories.map((category) => {
+            {/* Active rail dot */}
+            <div
+              ref={activeDotRef}
+              aria-hidden="true"
+              className="
+                pointer-events-none
+                absolute
+                -left-[3px]
+                top-0
+                hidden
+                h-[7px]
+                w-[7px]
+                rounded-full
+                bg-teal-400
+                shadow-[0_0_20px_rgba(45,212,191,0.8)]
+                lg:block
+              "
+            />
+
+            {categories.map((category, categoryIndex) => {
               const categorySkills = skills.filter(
                 (skill) => skill.category === category
               );
@@ -761,14 +1070,28 @@ export default function SkillsSection() {
               return (
                 <div
                   key={category}
-                  className="mb-16 last:mb-0"
+                  className={
+                    categoryIndex === categories.length - 1
+                      ? ""
+                      : "mb-20"
+                  }
                 >
-                  {/* CATEGORY HEADER */}
-
-                  <div className="mb-4 flex items-center gap-4">
+                  {/* Category heading */}
+                  <div className="mb-5 flex items-center gap-4">
                     <span
                       className="
-                        text-[10px]
+                        font-mono
+                        text-[9px]
+                        tracking-[0.2em]
+                        text-white/15
+                      "
+                    >
+                      0{categoryIndex + 1}
+                    </span>
+
+                    <span
+                      className="
+                        text-[9px]
                         font-medium
                         tracking-[0.3em]
                         text-white/25
@@ -777,16 +1100,17 @@ export default function SkillsSection() {
                       {category.toUpperCase()}
                     </span>
 
-                    <span className="h-px flex-1 bg-white/[0.06]" />
+                    <div className="h-px flex-1 bg-white/[0.06]" />
                   </div>
 
-                  {/* SKILLS */}
-
-                  <div className="grid gap-x-10 md:grid-cols-2">
+                  {/* Category skills */}
+                  <div>
                     {categorySkills.map((skill) => {
                       const index = skills.findIndex(
                         (item) => item.name === skill.name
                       );
+
+                      const SkillIcon = skill.icon;
 
                       return (
                         <div
@@ -796,72 +1120,109 @@ export default function SkillsSection() {
                             group
                             relative
                             origin-left
-                            cursor-default
                             border-b
                             border-white/[0.07]
-                            py-5
+                            py-7
                             will-change-transform
                           "
                         >
-                          <div
-                            className="
-                              flex
-                              items-center
-                              gap-4
-                            "
-                          >
-                            {/* NUMBER */}
-
+                          <div className="flex items-center gap-5">
+                            {/* Number */}
                             <span
                               className="
                                 skill-number
-                                w-5
+                                w-6
                                 shrink-0
                                 font-mono
                                 text-[9px]
-                                tracking-wider
+                                tracking-[0.15em]
                                 text-white/20
                               "
                             >
                               {String(index + 1).padStart(2, "0")}
                             </span>
 
-                            {/* NAME */}
+                            {/* Technology icon */}
+                            <div
+                              className="
+                                skill-row-icon
+                                flex
+                                h-9
+                                w-9
+                                shrink-0
+                                items-center
+                                justify-center
+                                text-white/25
+                                will-change-transform
+                              "
+                            >
+                              {SkillIcon ? (
+                                <SkillIcon className="h-[19px] w-[19px]" />
+                              ) : (
+                                <FiCpu className="h-[19px] w-[19px]" />
+                              )}
+                            </div>
 
+                            {/* Skill name */}
                             <span
                               className="
                                 skill-title
-                                text-2xl
+                                text-[clamp(1.8rem,4vw,3.6rem)]
                                 font-medium
-                                tracking-[-0.035em]
-                                text-white/30
-                                transition-transform
-                                duration-500
-                                group-hover:translate-x-2
-                                sm:text-[1.7rem]
+                                leading-none
+                                tracking-[-0.055em]
+                                text-white/25
                               "
                             >
                               {skill.name}
                             </span>
 
-                            {/* ARROW */}
+                            {/* Metadata */}
+                            <span
+                              className="
+                                skill-meta
+                                ml-auto
+                                hidden
+                                text-right
+                                text-[9px]
+                                leading-relaxed
+                                tracking-[0.12em]
+                                text-white/25
+                                opacity-0
+                                md:block
+                              "
+                            >
+                              {skill.category.toUpperCase()}
+                            </span>
 
+                            {/* Arrow */}
                             <span
                               className="
                                 skill-arrow
-                                ml-auto
-                                text-sm
+                                flex
+                                h-10
+                                w-10
+                                shrink-0
+                                items-center
+                                justify-center
+                                rounded-full
+                                border
+                                border-white/10
                                 text-teal-400
-                                opacity-15
+                                opacity-[0.12]
+                                transition-all
+                                duration-500
+                                group-hover:border-teal-400/30
+                                group-hover:bg-teal-400/[0.04]
                               "
                             >
-                             <FiArrowUpRight className="h-4 w-4" />
+                              <FiArrowUpRight className="h-4 w-4" />
                             </span>
                           </div>
 
-                          {/* HOVER LINE */}
-
+                          {/* Bottom interaction line */}
                           <div
+                            aria-hidden="true"
                             className="
                               absolute
                               bottom-0
@@ -876,32 +1237,15 @@ export default function SkillsSection() {
                             "
                           />
 
-                          {/* HOVER DESCRIPTION */}
-
+                          {/* Mobile description */}
                           <div
                             className="
-                              pointer-events-none
-                              absolute
-                              bottom-full
-                              left-0
-                              z-20
-                              mb-2
-                              hidden
-                              w-64
-                              rounded-lg
-                              border
-                              border-white/10
-                              bg-[#242424]/95
-                              p-4
-                              opacity-0
-                              backdrop-blur-xl
-                              transition-all
-                              duration-300
-                              group-hover:opacity-100
-                              md:block
+                              mt-4
+                              pl-[4.5rem]
+                              md:hidden
                             "
                           >
-                            <p className="text-[10px] leading-relaxed text-white/45">
+                            <p className="max-w-sm text-[10px] leading-[1.7] text-white/25">
                               {skill.note}
                             </p>
                           </div>
@@ -915,24 +1259,53 @@ export default function SkillsSection() {
           </div>
         </div>
 
-
+        {/* =====================================================
+            FOOTER
+        ====================================================== */}
         <div
           className="
-            mt-24
+            mt-28
             flex
-            items-center
-            justify-between
+            flex-col
+            gap-4
             border-t
             border-white/10
             pt-6
+            sm:flex-row
+            sm:items-center
+            sm:justify-between
           "
         >
-          <p className="text-[9px] tracking-[0.3em] text-white/20">
-            ALWAYS LEARNING
-          </p>
+          <div className="flex items-center gap-3">
+            <span
+              className="
+                h-1.5
+                w-1.5
+                rounded-full
+                bg-teal-400
+                shadow-[0_0_14px_rgba(45,212,191,0.7)]
+              "
+            />
 
-          <p className="text-[9px] tracking-[0.3em] text-white/20">
-            {skills.length} TECHNOLOGIES
+            <p
+              className="
+                text-[9px]
+                tracking-[0.3em]
+                text-white/25
+              "
+            >
+              ALWAYS LEARNING
+            </p>
+          </div>
+
+          <p
+            className="
+              text-[9px]
+              tracking-[0.3em]
+              text-white/20
+            "
+          >
+            {TOTAL} TECHNOLOGIES
           </p>
         </div>
       </div>

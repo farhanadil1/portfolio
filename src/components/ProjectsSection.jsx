@@ -39,24 +39,59 @@ const CATEGORIES = [
 
 const EASE = [0.16, 1, 0.3, 1];
 const REVEAL = { duration: 1, ease: EASE };
-
 function MaskedHeading({ text, className }) {
+  const words = text.split(" ");
+
   return (
-    
-    
     <span className={`block overflow-hidden ${className ?? ""}`}>
       <motion.span
         className="block"
-        initial={{ y: "115%" }}
-        whileInView={{ y: "0%" }}
-        viewport={{ once: true, amount: 0.6 }}
-        transition={REVEAL}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.7 }}
+        variants={{
+          hidden: {},
+          visible: {
+            transition: {
+              staggerChildren: 0.06,
+              delayChildren: 0.05,
+            },
+          },
+        }}
       >
-        
-        {text}
+        {words.map((word, wordIndex) => (
+          <span
+            key={`${word}-${wordIndex}`}
+            className="mr-[0.3em] inline-block overflow-hidden align-bottom"
+          >
+            {word.split("").map((char, charIndex) => (
+              <motion.span
+                key={`${char}-${charIndex}`}
+                className="inline-block"
+                variants={{
+                  hidden: {
+                    y: "110%",
+                    opacity: 0,
+                    filter: "blur(6px)",
+                  },
+                  visible: {
+                    y: "0%",
+                    opacity: 1,
+                    filter: "blur(0px)",
+                  },
+                }}
+                transition={{
+                  duration: 0.75,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </span>
+        ))}
       </motion.span>
     </span>
-    
   );
 }
 
@@ -169,7 +204,7 @@ function FeaturedProject() {
         rotateY: tiltY,
         transformPerspective: 1200,
       }}
-      className="group relative mb-10 block aspect-[16/10] overflow-hidden rounded-2xl bg-neutral-100 will-change-transform dark:bg-neutral-900 md:aspect-[20/9]"
+      className="group relative mb-10 block aspect-[16/10] overflow-hidden bg-neutral-100 will-change-transform dark:bg-neutral-900 md:aspect-[20/9]"
     >
       {/* TEMP DEBUG confirmed this is safe on its own. Now restoring
           parallax + hover (neither gated by whileInView, so both render
@@ -261,76 +296,201 @@ function MagneticArrow() {
 
 function ProjectCard({ project, index }) {
   const reduce = useReducedMotion();
+
+  const titleVariants = {
+    rest: {},
+    hover: {},
+  };
+
+  const letterVariants = {
+    rest: {
+      y: "115%",
+      opacity: 0,
+      filter: "blur(8px)",
+    },
+    hover: {
+      y: "0%",
+      opacity: 1,
+      filter: "blur(0px)",
+    },
+  };
+
   return (
     <motion.a
       href={project.href}
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className="group relative block aspect-[16/10] overflow-hidden rounded-2xl bg-neutral-100 dark:bg-neutral-900"
+      className="group relative block aspect-[16/10] overflow-hidden bg-neutral-100 dark:bg-neutral-900"
     >
-      {/* Ghost index — appears behind the title on hover, echoing the
-          numeral treatment used in the Experience section. */}
+      {/* Large ghost index */}
       <motion.span
         aria-hidden
-        variants={{ rest: { opacity: 0, scale: 0.9 }, hover: { opacity: 1, scale: 1 } }}
-        transition={{ duration: 0.5, ease: EASE }}
-        className="pointer-events-none absolute -right-2 -top-4 z-0 select-none text-[7rem] font-bold leading-none text-white/10"
+        variants={{
+          rest: {
+            opacity: 0,
+            scale: 0.85,
+            y: 20,
+          },
+          hover: {
+            opacity: 1,
+            scale: 1,
+            y: 0,
+          },
+        }}
+        transition={{
+          duration: 0.7,
+          ease: EASE,
+        }}
+        className="pointer-events-none absolute -right-3 -top-5 z-0 select-none text-[8rem] font-bold leading-none tracking-[-0.08em] text-white/10"
       >
         {String(index + 1).padStart(2, "0")}
       </motion.span>
 
-      {/* Reveal via an opaque curtain that wipes away, not clip-path on the
-          image itself — the image renders immediately and is always
-          visible (no initial/whileInView on it), only a cosmetic panel on
-          top of it is gated by whileInView. This is the reliable version
-          of the effect that was failing above. */}
+      {/* Project image */}
       <motion.img
         src={project.imgSrc}
         alt={project.title}
         loading="lazy"
         decoding="async"
         draggable={false}
-        whileHover={{
-          scale: 1.08,
-          rotate: index % 2 ? 0.6 : -0.6,
+        whileHover={
+          reduce
+            ? {}
+            : {
+                scale: 1.08,
+                rotate: index % 2 ? 0.6 : -0.6,
+              }
+        }
+        transition={{
+          duration: 0.8,
+          ease: EASE,
         }}
-        transition={{ duration: 0.5, ease: EASE }}
         className="absolute inset-0 h-full w-full object-cover"
       />
+
+      {/* Reveal curtain */}
       <motion.div
         initial={{ scaleY: 1 }}
         whileInView={{ scaleY: 0 }}
         viewport={{ once: true, amount: 0.1 }}
-        transition={{ duration: 0.8, ease: EASE, delay: reduce ? 0 : index * 0.08 }}
+        transition={{
+          duration: 0.8,
+          ease: EASE,
+          delay: reduce ? 0 : index * 0.08,
+        }}
         style={{ transformOrigin: "bottom" }}
         className="absolute inset-0 z-[1] bg-neutral-100 dark:bg-neutral-900"
       />
 
+      {/* Hover atmosphere */}
       <motion.div
-        variants={{ rest: { opacity: 0.15 }, hover: { opacity: 0.55 } }}
+        variants={{
+          rest: {
+            opacity: 0.12,
+          },
+          hover: {
+            opacity: 0.52,
+          },
+        }}
+        transition={{
+          duration: 0.6,
+          ease: EASE,
+        }}
         className="absolute inset-0 z-[1] bg-black"
       />
 
+      {/* Subtle radial glow */}
       <motion.div
         variants={{
-          rest: { opacity: 0, y: 10 },
-          hover: { opacity: 1, y: 0 },
+          rest: {
+            opacity: 0,
+            scale: 0.7,
+          },
+          hover: {
+            opacity: 1,
+            scale: 1,
+          },
         }}
-        transition={{ duration: 0.4, ease: EASE }}
-        className="absolute inset-0 z-[2] hidden flex-col items-center justify-center gap-3 text-white md:flex"
+        transition={{
+          duration: 0.8,
+          ease: EASE,
+        }}
+        className="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_50%_55%,rgba(45,212,191,0.12),transparent_55%)]"
+      />
+
+      {/* Project information */}
+      <motion.div
+        variants={{
+          rest: {
+            y: 18,
+            opacity: 0,
+          },
+          hover: {
+            y: 0,
+            opacity: 1,
+          },
+        }}
+        transition={{
+          duration: 0.5,
+          ease: EASE,
+        }}
+        className="absolute inset-0 z-[2] hidden flex-col items-center justify-center text-white md:flex"
       >
-        <h4 className="text-2xl font-semibold tracking-wider">
-          {project.title}
-        </h4>
-        <MagneticArrow />
+
+        {/* Animated title */}
+        <motion.h4
+          variants={titleVariants}
+          className="overflow-hidden px-6 text-center text-3xl font-medium tracking-wider md:text-4xl"
+        >
+          <span className="flex justify-center overflow-hidden">
+            {project.title.split("").map((char, i) => (
+              <motion.span
+                key={`${char}-${i}`}
+                variants={letterVariants}
+                transition={{
+                  duration: 0.55,
+                  delay: 0.08 + i * 0.035,
+                  ease: EASE,
+                }}
+                className="inline-block"
+              >
+                {char === " " ? "\u00A0" : char}
+              </motion.span>
+            ))}
+          </span>
+        </motion.h4>
+
+        {/* Bottom interaction */}
+        <motion.div
+          variants={{
+            rest: {
+              opacity: 0,
+              y: 12,
+            },
+            hover: {
+              opacity: 1,
+              y: 0,
+            },
+          }}
+          transition={{
+            duration: 0.45,
+            delay: 0.25,
+            ease: EASE,
+          }}
+          className="mt-4 flex items-center gap-3"
+        >
+
+          <MagneticArrow />
+        </motion.div>
       </motion.div>
 
-      {/* Mobile: always-visible caption, no hover state to rely on */}
+      {/* Mobile */}
       <div className="absolute inset-0 z-[2] flex flex-col items-center justify-center gap-2 bg-black/30 text-white md:hidden">
         <h4 className="text-xl font-semibold tracking-tight">
           {project.title}
         </h4>
+
         <div className="flex items-center gap-2 text-xs opacity-80">
           View project
           <FiArrowUpRight />
@@ -348,7 +508,7 @@ export default function ProjectsSection() {
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-4">
-          <p className="text-sm tracking-[0.25em] text-gray-500 dark:text-gray-400">
+          <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-gray-500 dark:text-gray-400">
             <MaskedHeading text="SELECTED WORK" />
           </p>
           <motion.p
