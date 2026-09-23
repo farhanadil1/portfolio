@@ -247,8 +247,6 @@ export default function ContactSection() {
         px-5
         py-16
         text-black
-        dark:bg-[#1E1E1E]
-        dark:text-white
         sm:px-8
         sm:py-20
         lg:flex
@@ -268,10 +266,8 @@ export default function ContactSection() {
           absolute
           inset-0
           opacity-[0.035]
-          dark:opacity-[0.025]
           [background-image:linear-gradient(rgba(0,0,0,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,.7)_1px,transparent_1px)]
           [background-size:70px_70px]
-          dark:[background-image:linear-gradient(rgba(255,255,255,.7)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.7)_1px,transparent_1px)]
         "
       />
 
@@ -290,7 +286,6 @@ export default function ContactSection() {
           leading-none
           tracking-[-0.09em]
           text-black/[0.05]
-          dark:text-white/[0.018]
         "
       >
         TALK
@@ -310,7 +305,6 @@ export default function ContactSection() {
           rounded-full
           bg-[radial-gradient(circle,rgba(20,184,166,0.11),transparent_70%)]
           blur-3xl
-          dark:bg-[radial-gradient(circle,rgba(20,184,166,0.13),transparent_70%)]
         "
       />
 
@@ -342,7 +336,7 @@ export default function ContactSection() {
             <div className="flex items-center gap-3 lg:pt-3">
              
 
-              <span className="text-[10px] font-medium tracking-[0.3em] text-black/40 dark:text-white/35">
+              <span className="text-[10px] font-medium tracking-[0.3em] text-black/40 ">
                 CONTACT
               </span>
             </div>
@@ -365,7 +359,7 @@ export default function ContactSection() {
                 </span>
               </span>
 
-              <span className="block overflow-hidden pb-1 text-black/30 dark:text-white/35">
+              <span className="block overflow-hidden pb-1 text-black/30 ">
                 <span className="contact-heading-line block">
                   something meaningful.
                 </span>
@@ -373,9 +367,9 @@ export default function ContactSection() {
             </h2>
 
             <div className="mt-6 flex max-w-xl items-start gap-3">
-              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500 dark:bg-teal-400" />
+              <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-teal-500 " />
 
-              <p className="contact-reveal text-sm leading-relaxed text-black/55 dark:text-white/40 sm:text-base">
+              <p className="contact-reveal text-sm leading-relaxed text-black/55  sm:text-base">
                 I'm open to full-time opportunities and thoughtful
                 collaborations where engineering, design, and ideas
                 come together.
@@ -391,11 +385,10 @@ export default function ContactSection() {
                   rounded-full
                   bg-teal-500
                   shadow-[0_0_16px_rgba(20,184,166,0.65)]
-                  dark:bg-teal-400
                 "
               />
 
-              <span className="text-[10px] tracking-[0.18em] text-black/40 dark:text-white/30">
+              <span className="text-[10px] tracking-[0.18em] text-black/40 ">
                 AVAILABLE FOR OPPORTUNITIES
               </span>
             </div>
@@ -410,18 +403,17 @@ export default function ContactSection() {
             border-t
             border-black/10
             pt-6
-            dark:border-white/10
             sm:mt-14
             sm:pt-7
             lg:mt-16
           "
         >
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-[9px] tracking-[0.3em] text-black/30 dark:text-white/25">
+            <span className="text-[9px] tracking-[0.3em] text-black/30 ">
               DROP ME A LINE
             </span>
 
-            <FiMail className="text-sm text-black/30 dark:text-white/25" />
+            <FiMail className="text-sm text-black/30 " />
           </div>
 
           <button
@@ -439,7 +431,6 @@ export default function ContactSection() {
               outline-none
               focus-visible:ring-1
               focus-visible:ring-teal-500
-              dark:focus-visible:ring-teal-400
             "
           >
             <span
@@ -452,7 +443,6 @@ export default function ContactSection() {
                 leading-none
                 tracking-[-0.045em]
                 text-black
-                dark:text-white
               "
             >
               {email}
@@ -471,7 +461,6 @@ export default function ContactSection() {
                   duration-700
                   ease-[cubic-bezier(.16,1,.3,1)]
                   group-hover:scale-x-100
-                  dark:bg-teal-400
                 "
               />
             </span>
@@ -487,7 +476,6 @@ export default function ContactSection() {
                 tracking-[0.15em]
                 text-teal-600
                 sm:flex
-                dark:text-teal-400
               "
             >
               {copyFailed ? (
@@ -508,7 +496,7 @@ export default function ContactSection() {
 
           {/* Keep the copy hint available on phones without adding much height. */}
           <div className="mt-3 sm:hidden">
-            <span className="flex items-center gap-2 text-[10px] text-teal-600 dark:text-teal-400">
+            <span className="flex items-center gap-2 text-[10px] text-teal-600 ">
               {copyFailed ? (
                 "Couldn't copy — select manually"
               ) : copied ? (
@@ -555,12 +543,6 @@ export default function ContactSection() {
               focus-visible:outline-2
               focus-visible:outline-teal-500
               focus-visible:outline-offset-4
-              dark:border-white/10
-              dark:text-white/60
-              dark:hover:border-teal-400/40
-              dark:hover:bg-teal-400/[0.04]
-              dark:hover:text-white
-              dark:focus-visible:outline-teal-400
             "
           >
             <FaLinkedin className="text-base" />
@@ -578,7 +560,7 @@ export default function ContactSection() {
             />
           </a>
 
-          <span className="text-[10px] tracking-[0.08em] text-black/35 dark:text-white/20">
+          <span className="text-[10px] tracking-[0.08em] text-black/35 ">
             Based in India · Remote & on-site
           </span>
         </div>
@@ -600,9 +582,6 @@ export default function ContactSection() {
           bg-black
           py-3
           text-white
-          dark:border-white/[0.08]
-          dark:bg-teal-400
-          dark:text-[#1E1E1E]
           sm:mt-14
           sm:py-3.5
           lg:mt-10
@@ -633,8 +612,8 @@ export default function ContactSection() {
                   {item}
                 </span>
 
-                <span className="text-teal-400 dark:text-[#1E1E1E]">
-                 <PiSparkle className="h-5 w-5 text-teal-400 dark:text-[#1E1E1E]" />
+                <span className="text-teal-400 ">
+                 <PiSparkle className="h-5 w-5 text-teal-400 " />
                 </span>
               </div>
             ))
@@ -653,7 +632,6 @@ export default function ContactSection() {
           max-w-7xl
           border-black/10
           pt-4
-          dark:border-white/10
           sm:mt-8
         "
       >

@@ -100,9 +100,9 @@ function MaskedHeading({ text, className }) {
 function Marquee() {
   const reduce = useReducedMotion();
   return (
-    <div className="relative mt-10 overflow-hidden border-y border-black/10 py-3 dark:border-white/10">
+    <div className="relative mt-10 overflow-hidden border-y border-black/10 py-3">
       <div
-        className={`flex w-max gap-10 whitespace-nowrap text-xs tracking-[0.25em] text-neutral-400 dark:text-neutral-600 ${
+        className={`flex w-max gap-10 whitespace-nowrap text-xs tracking-[0.25em] text-neutral-400  ${
           reduce ? "" : "animate-[marquee_22s_linear_infinite]"
         }`}
       >
@@ -204,7 +204,7 @@ function FeaturedProject() {
         rotateY: tiltY,
         transformPerspective: 1200,
       }}
-      className="group relative mb-10 block aspect-[16/10] overflow-hidden bg-neutral-100 will-change-transform dark:bg-neutral-900 md:aspect-[20/9]"
+      className="group relative mb-10 block aspect-[16/10] overflow-hidden bg-neutral-100 will-change-transform  md:aspect-[20/9]"
     >
       {/* TEMP DEBUG confirmed this is safe on its own. Now restoring
           parallax + hover (neither gated by whileInView, so both render
@@ -227,7 +227,7 @@ function FeaturedProject() {
         viewport={{ once: true, amount: 0.1 }}
         transition={{ duration: 1, ease: EASE }}
         style={{ transformOrigin: "bottom" }}
-        className="absolute inset-0 z-[1] bg-neutral-100 dark:bg-neutral-900"
+        className="absolute inset-0 z-[1] bg-neutral-100 "
       />
 
       <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/15 to-transparent transition-opacity duration-500 group-hover:from-black/90" />
@@ -321,7 +321,7 @@ function ProjectCard({ project, index }) {
       initial="rest"
       whileHover="hover"
       animate="rest"
-      className="group relative block aspect-[16/10] overflow-hidden bg-neutral-100 dark:bg-neutral-900"
+      className="group relative block aspect-[16/10] overflow-hidden bg-neutral-100 "
     >
       {/* Large ghost index */}
       <motion.span
@@ -380,7 +380,7 @@ function ProjectCard({ project, index }) {
           delay: reduce ? 0 : index * 0.08,
         }}
         style={{ transformOrigin: "bottom" }}
-        className="absolute inset-0 z-[1] bg-neutral-100 dark:bg-neutral-900"
+        className="absolute inset-0 z-[1] bg-neutral-100 "
       />
 
       {/* Hover atmosphere */}
@@ -504,11 +504,11 @@ export default function ProjectsSection() {
   return (
     <section
       id="projects"
-      className="relative overflow-hidden bg-white px-6 py-28 text-black dark:bg-[#1E1E1E] dark:text-white md:px-20"
+      className="relative overflow-hidden bg-white px-6 py-28 text-black  md:px-20"
     >
       <div className="mx-auto max-w-7xl">
         <div className="mb-4">
-          <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-gray-500 dark:text-gray-400">
+          <p className="text-[11px] font-medium uppercase tracking-[0.32em] text-gray-500 ">
             <MaskedHeading text="SELECTED WORK" />
           </p>
           <motion.p
@@ -516,7 +516,7 @@ export default function ProjectsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.6 }}
             transition={{ ...REVEAL, delay: 0.1 }}
-            className="mt-3 max-w-xl text-gray-600 dark:text-gray-400"
+            className="mt-3 max-w-xl text-gray-600"
           >
             A curated set of projects focused on interaction design, system
             thinking, and real-world problem solving.
@@ -546,7 +546,7 @@ export default function ProjectsSection() {
             href="https://github.com/farhanadil1"
             target="_blank"
             rel="noopener noreferrer"
-            className="group inline-flex items-center gap-2 text-sm font-medium text-gray-700 outline-offset-4 transition-colors focus-visible:outline-2 focus-visible:outline-teal-500 dark:text-gray-300"
+            className="group inline-flex items-center gap-2 text-sm font-medium text-gray-700 outline-offset-4 transition-colors focus-visible:outline-2 focus-visible:outline-teal-500"
           >
             <span className="relative">
               View more projects on GitHub

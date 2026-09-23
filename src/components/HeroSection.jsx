@@ -549,7 +549,6 @@ export default function HeroSection() {
       className="
         relative isolate h-[100svh] overflow-hidden
         bg-[#FAFAF9] text-[#101010]
-        dark:bg-[#141414] dark:text-white
       "
     >
       {/* Ambient aurora */}
@@ -564,7 +563,6 @@ export default function HeroSection() {
           rounded-full
           bg-teal-400/[0.12]
           blur-[130px]
-          dark:bg-teal-400/[0.13]
         "
       />
 
@@ -591,10 +589,8 @@ export default function HeroSection() {
         className="
           pointer-events-none absolute inset-0
           opacity-[0.022]
-          dark:opacity-[0.032]
           [background-image:linear-gradient(to_right,#000_1px,transparent_1px),linear-gradient(to_bottom,#000_1px,transparent_1px)]
           [background-size:80px_80px]
-          dark:[background-image:linear-gradient(to_right,#fff_1px,transparent_1px),linear-gradient(to_bottom,#fff_1px,transparent_1px)]
         "
       />
 
@@ -632,7 +628,6 @@ export default function HeroSection() {
               uppercase
               tracking-[0.3em]
               text-black/45
-              dark:text-white/45
             "
           >
             <span
@@ -737,7 +732,6 @@ export default function HeroSection() {
                 leading-[1.4]
                 tracking-[-0.025em]
                 text-black/60
-                dark:text-white/60
               "
             >
               Java Full Stack Engineer building
@@ -778,9 +772,7 @@ export default function HeroSection() {
                   transition-colors
                   duration-300
                   hover:bg-teal-500
-                  dark:bg-white
-                  dark:text-[#101010]
-                  dark:hover:bg-teal-400
+                  
                 "
               >
                 <span>
@@ -822,11 +814,6 @@ export default function HeroSection() {
                   duration-300
                   hover:border-teal-500/40
                   hover:bg-teal-500/[0.06]
-                  dark:border-white/10
-                  dark:bg-white/[0.03]
-                  dark:text-white
-                  dark:hover:border-teal-400/40
-                  dark:hover:bg-teal-400/[0.06]
                 "
               >
                 <FiMail
@@ -870,7 +857,6 @@ export default function HeroSection() {
             uppercase
             tracking-[0.28em]
             text-black/35
-            dark:text-white/35
           "
         >
           Java Full Stack
@@ -883,7 +869,6 @@ export default function HeroSection() {
             uppercase
             tracking-[0.2em]
             text-black/55
-            dark:text-white/55
           "
         >
           Kolkata · India
@@ -896,7 +881,6 @@ export default function HeroSection() {
             uppercase
             tracking-[0.2em]
             text-teal-600
-            dark:text-teal-400
           "
         >
           2026
@@ -923,7 +907,6 @@ export default function HeroSection() {
             uppercase
             tracking-[0.3em]
             text-black/30
-            dark:text-white/30
           "
         >
           Connect
@@ -958,8 +941,7 @@ export default function HeroSection() {
                   transition-colors
                   duration-300
                   hover:text-teal-500
-                  dark:text-white/45
-                  dark:hover:text-teal-400
+
                 "
               >
                 <Icon
@@ -970,8 +952,7 @@ export default function HeroSection() {
                     duration-300
                     group-hover:-translate-y-0.5
                     group-hover:text-teal-500
-                    dark:text-white/55
-                    dark:group-hover:text-teal-400
+
                   "
                 />
 
@@ -997,7 +978,6 @@ export default function HeroSection() {
           uppercase
           tracking-[0.28em]
           text-black/35
-          dark:text-white/35
           md:right-10
           lg:right-14
         "
@@ -1006,7 +986,6 @@ export default function HeroSection() {
           className="
             text-sm
             text-teal-600
-            dark:text-teal-400
           "
         />
 
