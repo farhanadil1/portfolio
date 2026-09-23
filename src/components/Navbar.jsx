@@ -879,31 +879,34 @@ export default function Navbar() {
               >
                 <div className="flex items-end justify-between">
                   <div>
-                    <p
-                      className="
-                        text-[9px]
-                        tracking-[0.25em]
-                        text-neutral-400
-                      "
-                    >
+                    <p className="text-[9px] tracking-[0.25em] text-neutral-400">
                       CONNECT
                     </p>
 
                     <div className="mt-3 flex gap-5">
-                      {["GitHub", "LinkedIn", "Email"].map((link) => (
+                      {[
+                        {
+                          name: "GitHub",
+                          href: "https://github.com/farhanadil1",
+                        },
+                        {
+                          name: "LinkedIn",
+                          href: "https://www.linkedin.com/in/adil-farhan-b4956424a/",
+                        },
+                        {
+                          name: "Email",
+                          href: "mailto:imfarhan574@gmail.com",
+                        },
+                      ].map((link) => (
                         <a
-                          key={link}
-                          href="#contact"
+                          key={link.name}
+                          href={link.href}
+                          target={link.name === "Email" ? undefined : "_blank"}
+                          rel={link.name === "Email" ? undefined : "noopener noreferrer"}
                           onClick={closeMenu}
-                          className="
-                            text-xs
-                            text-neutral-500
-                            transition-colors
-                            duration-300
-                            hover:text-teal-600
-                          "
+                          className="text-xs text-neutral-500 transition-colors duration-300 hover:text-teal-600"
                         >
-                          {link}
+                          {link.name}
                         </a>
                       ))}
                     </div>
